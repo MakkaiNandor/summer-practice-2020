@@ -22,5 +22,5 @@ namespace Practice.Api
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-    }
+    } 
 }
