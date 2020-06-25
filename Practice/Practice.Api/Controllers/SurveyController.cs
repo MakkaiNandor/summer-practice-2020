@@ -14,7 +14,20 @@ namespace Practice.Api.Controllers
     {
 
         //[EnableCors]
-        
+        //[HttpGet("getAllSurvey")]
+
+        //[EnableCors]
+        //[HttpGet("getSurvey/{id}")]
+
+        //[EnableCors]
+        //[HttpDelete("deleteSurvey/{id}")]
+
+        //[EnableCors]
+        //[HttpPatch("editSurvey/{id}")]
+
+        //[EnableCors]
+        //[HttpPost("createSurvey")]
+
 
     }
 

@@ -12,5 +12,23 @@ namespace Practice.Api.Controllers
     [ApiController]
     public class SurveyTemplateController : ControllerBase
     {
+
+        //[EnableCors]
+        //[HttpGet("getAllSurveyTemplate")]
+
+        //[EnableCors]
+        //[HttpGet("getSurveyTemplate/{id}")]
+
+        //[EnableCors]
+        //[HttpGet("getSurveyTemplate/{name}")]
+
+        //[EnableCors]
+        //[HttpDelete("deleteSurveyTemplate/{id}")]
+
+        //[EnableCors]
+        //[HttpPatch("editSurveyTemplate/{id}")]
+
+        //[EnableCors]
+        //[HttpPost("createSurveyTemplate")]
     }
 }

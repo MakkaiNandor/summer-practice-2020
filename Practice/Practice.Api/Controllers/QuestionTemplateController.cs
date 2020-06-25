@@ -12,5 +12,20 @@ namespace Practice.Api.Controllers
     [ApiController]
     public class QuestionTemplateController : ControllerBase
     {
+
+        //[EnableCors]
+        //[HttpGet("getAllQuestionTemplates")]
+
+        //[EnableCors]
+        //[HttpGet("getQuestionTemplate/{id}")]
+
+        //[EnableCors]
+        //[HttpDelete("deleteQuestionTemplate/{id}")]
+
+        //[EnableCors]
+        //[HttpPatch("editQuestionTemplate/{id}")]
+
+        //[EnableCors]
+        //[HttpPost("createQuestionTemplate")]
     }
 }
