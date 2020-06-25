@@ -2,16 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 
-namespace Practice.Api.Models
+namespace Practice.Api.Data
 {
-    public class Answer
+    public class Answer : Document
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
         public int AnswerId { get; set; }
         public string Value { get; set; }
         public bool Selected { get; set; }

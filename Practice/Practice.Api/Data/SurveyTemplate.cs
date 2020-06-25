@@ -2,16 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 
-namespace Practice.Api.Models
+namespace Practice.Api.Data
 {
-    public class SurveyTemplate
+    public class SurveyTemplate : Document
     {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
         public int SurveyTemplateId { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
