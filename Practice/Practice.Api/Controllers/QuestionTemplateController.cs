@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Cors;
 
 namespace Practice.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("QuestionTemplate")]
     [ApiController]
     public class QuestionTemplateController : ControllerBase
     {

@@ -8,13 +8,18 @@ using Microsoft.AspNetCore.Cors;
 
 namespace Practice.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("Survey")]
     [ApiController]
     public class SurveyController : ControllerBase
     {
 
         //[EnableCors]
         //[HttpGet("getAllSurvey")]
+        /*[HttpGet("getMessage")]
+        public string kiir()
+        {
+            return "{\"message\":\"Hello rofi\"}";
+        }*/
 
         //[EnableCors]
         //[HttpGet("getSurvey/{id}")]

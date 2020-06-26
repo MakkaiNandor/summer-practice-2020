@@ -31,7 +31,7 @@ namespace Practice.Api
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.WithOrigins("https://localhost:44309").AllowAnyHeader()
+                        builder.WithOrigins("https://localhost:44349").AllowAnyHeader()
                                                   .AllowAnyMethod();
                     });
             });
