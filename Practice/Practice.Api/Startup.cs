@@ -32,8 +32,10 @@ namespace Practice.Api
             services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<DatabaseSettings>>().Value);
             var settings=Configuration.GetSection("DatabaseSettings").Get<DatabaseSettings>();
             services.AddTransient<IRepository<Document>>(provider => new Repository<Document>(settings,"UserCollection"));
+            services.AddTransient<IRepository<Document>>(provider => new Repository<Document>(settings, "SurveyTemplateCollection"));
+            services.AddTransient<IRepository<Document>>(provider => new Repository<Document>(settings, "SurveyCollection"));
+            services.AddTransient<IRepository<Document>>(provider => new Repository<Document>(settings, "QuestionTemplateCollection"));
 
-           
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddControllers();
 
