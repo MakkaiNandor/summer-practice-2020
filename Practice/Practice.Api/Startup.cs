@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Practice.Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Practice.Api
 {
@@ -27,12 +28,15 @@ namespace Practice.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<DatabaseSettings>(
-                Configuration.GetSection(nameof(DatabaseSettings)));
 
-            services.AddSingleton<IDatabaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+            services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+            var settings=Configuration.GetSection("DatabaseSettings").Get<DatabaseSettings>();
+            services.AddTransient<IRepository<Document>>(provider => new Repository<Document>(settings,"UserCollection"));
+
+           
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddControllers();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

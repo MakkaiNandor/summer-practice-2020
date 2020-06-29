@@ -10,6 +10,7 @@ namespace Practice.Api.Models
         public string SurveyCollection { get; set; }
         public string SurveyTemplateCollection { get; set; }
         public string UserCollection { get; set; }
+        public string Document { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }
@@ -17,9 +18,11 @@ namespace Practice.Api.Models
     public class IDatabaseSettings
     {
         string QuestionTemplateCollection { get; set; }
+        
         string SurveyCollection { get; set; }
         string SurveyTemplateCollection { get; set; }
         string UserCollection { get; set; }
+        string Document { get; set; }
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
     }
