@@ -24,4 +24,6 @@ export class Home extends Component {
     console.log(data);
     this.setState({datas:data});
   }
+
+
 }
