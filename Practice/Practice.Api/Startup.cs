@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Practice.Api.Models;
 using Microsoft.EntityFrameworkCore;
+using Practice.Api.Data.Repositories;
+using Practice.Api.Data;
 
 namespace Practice.Api
 {
@@ -31,12 +33,10 @@ namespace Practice.Api
 
             services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<DatabaseSettings>>().Value);
             var settings=Configuration.GetSection("DatabaseSettings").Get<DatabaseSettings>();
-            services.AddTransient<IRepository<Document>>(provider => new Repository<Document>(settings,"UserCollection"));
-            services.AddTransient<IRepository<Document>>(provider => new Repository<Document>(settings, "SurveyTemplateCollection"));
-            services.AddTransient<IRepository<Document>>(provider => new Repository<Document>(settings, "SurveyCollection"));
-            services.AddTransient<IRepository<Document>>(provider => new Repository<Document>(settings, "QuestionTemplateCollection"));
-
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddTransient<IRepository<User>>(provider => new Repository<User>(settings,"UserCollection"));
+            services.AddTransient<IRepository<SurveyTemplate>>(provider => new Repository<SurveyTemplate>(settings, "SurveyTemplateCollection"));
+            services.AddTransient<IRepository<Survey>>(provider => new Repository<Survey>(settings, "SurveyCollection"));
+            services.AddTransient<IRepository<QuestionTemplate>>(provider => new Repository<QuestionTemplate>(settings, "QuestionTemplateCollection"));
             services.AddControllers();
 
         }
