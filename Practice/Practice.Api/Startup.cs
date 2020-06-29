@@ -30,6 +30,16 @@ namespace Practice.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.WithOrigins("https://localhost:44349").AllowAnyHeader()
+                                                  .AllowAnyMethod();
+                    });
+            });
+
             services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<DatabaseSettings>>().Value);
             var settings=Configuration.GetSection("DatabaseSettings").Get<DatabaseSettings>();
             services.AddTransient<IRepository<User>>(provider => new Repository<User>(settings,"UserCollection"));
@@ -50,6 +60,8 @@ namespace Practice.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthorization();
 
