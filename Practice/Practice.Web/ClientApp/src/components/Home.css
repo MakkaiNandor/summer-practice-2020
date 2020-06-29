@@ -1,0 +1,26 @@
+#title {
+    color: black;
+    text-align: center;
+  }
+
+#login_button{
+    color: black;
+    text-align: center;
+}
+
+.boxed{
+    border: 3px solid black ;
+    padding: 40px;
+    margin: 60px;
+    border-radius: 25px;
+}
+
+
+.boxed_medium{
+    border: 3px solid black ;
+    padding: 10px;
+    margin: 60px;
+    border-radius: 25px;
+}
+
+
