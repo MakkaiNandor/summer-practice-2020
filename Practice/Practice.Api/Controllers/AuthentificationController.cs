@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Practice.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("Authentification")]
     [ApiController]
     public class AuthentificationController : ControllerBase
     {
