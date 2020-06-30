@@ -47,7 +47,6 @@ namespace Practice.Api
             services.AddTransient<IRepository<Survey>>(provider => new Repository<Survey>(settings, "SurveyCollection"));
             services.AddTransient<IRepository<QuestionTemplate>>(provider => new Repository<QuestionTemplate>(settings, "QuestionTemplateCollection"));
             services.AddControllers();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
