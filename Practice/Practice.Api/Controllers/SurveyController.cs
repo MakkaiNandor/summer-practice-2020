@@ -9,6 +9,7 @@ using Practice.Api.Data.Repositories;
 using Practice.Api.Data;
 using MongoDB.Driver;
 using Microsoft.CodeAnalysis.Differencing;
+using Practice.Api.Models;
 
 namespace Practice.Api.Controllers
 {
@@ -27,30 +28,33 @@ namespace Practice.Api.Controllers
 
         [EnableCors]
         [HttpGet("getAllSurvey")]
-        public ActionResult<IEnumerable<Survey>> GetSurveys()
+        public ActionResult<IEnumerable<SurveyView>> GetSurveys()
         {
-            var temp = _surveys.GetAll();
-            if (temp == null) return NotFound();
-            return temp;
+
+            var surveys = _surveys.GetAll();
+            if (surveys == null) return NotFound();
+
+            var views = ToViews(surveys);
+            return views;
         }
 
 
         [EnableCors]
         [HttpGet("getSurvey/{id}")]
-        public ActionResult<Survey> GetSurveyById(int id)
+        public ActionResult<SurveyView> GetSurveyById(int id)
         {
 
             var survey = _surveys.FindOne(s => s.SurveyId == id);
             if (survey == null) return NotFound();
-            return survey;
+            return ToSurveyView(survey);
         }
-
 
         [EnableCors]
         [HttpPost("createSurvey")]
-        public void CreateSurvey(Survey survey)
+        public void CreateSurvey(Survey NewSurvey)
         {
-            _surveys.Insert(survey);
+            var alreadyExists = _surveys.FindOne(survey => survey.SurveyId == NewSurvey.SurveyId);
+            if (alreadyExists == null) _surveys.Insert(NewSurvey);
         }
 
         [EnableCors]
@@ -62,20 +66,67 @@ namespace Practice.Api.Controllers
 
         [EnableCors]
         [HttpPatch("editSurvey/{id}")]
-        public void EditSurvey(Survey survey,int id)
+        public void EditSurvey(SurveyView view,int id)
         {
+            var oldSurvey = _surveys.FindOne(variable => variable.SurveyId == id);
+            if (oldSurvey == null) return;
             _surveys.Delete(s=> s.SurveyId == id);
-            _surveys.Insert(survey);
+            var newSurvey = SurveyViewToSurvey(view, oldSurvey);
+            _surveys.Insert(newSurvey);
         }
 
         [EnableCors]
         [HttpPost("sendAnswer/S{SurveyId}P{PageNumber}Q{QuestionId}")]
         public void SendAnswer(Answer answer, int SurveyId,int PageNumber, int QuestionId)
         {
-            var temp =_surveys.FindOne(s => s.SurveyId == SurveyId);
-            temp.Pages.Find(p => p.PageNumber == PageNumber).Questions.Find(q => q.QuestionId == QuestionId).Answers.Add(answer);
-            EditSurvey(temp, SurveyId);
+            var survey =_surveys.FindOne(s => s.SurveyId == SurveyId);
+            if (survey == null) return;
+            survey.Pages.Find(p => p.PageNumber == PageNumber).Questions.Find(q => q.QuestionId == QuestionId).Answers.Add(answer);
+            _surveys.Delete(s => s.SurveyId == SurveyId);
+            _surveys.Insert(survey);
         }
+
+        
+
+
+        // PRIVATE FUNCTIONS -- NOT ENDPOINTS
+        private List<SurveyView> ToViews(List<Survey> surveys)
+        {
+            List<SurveyView> list = new List<SurveyView>();
+            foreach (var survey in surveys)
+            {
+                
+                list.Add(ToSurveyView(survey));
+            }
+            return list;
+        }
+
+        private SurveyView ToSurveyView(Survey survey)
+        {
+            var view = new SurveyView()
+            {
+                SurveyId = survey.SurveyId,
+                Title = survey.Title,
+                Description = survey.Description,
+                Ending = survey.Ending,
+                ExpirationDate = survey.ExpirationDate,
+                Status = survey.Status,
+                Pages = survey.Pages
+            };
+            return view;
+        }
+
+        private Survey SurveyViewToSurvey (SurveyView view, Survey oldSurvey)
+        {
+            oldSurvey.Title = view.Title;
+            oldSurvey.Description = view.Description;
+            oldSurvey.Ending = view.Ending;
+            oldSurvey.ExpirationDate = view.ExpirationDate;
+            oldSurvey.Status = view.Status;
+            oldSurvey.Pages = view.Pages;
+            return oldSurvey;
+        }
+        
 
     }
 

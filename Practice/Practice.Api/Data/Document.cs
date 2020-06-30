@@ -9,7 +9,7 @@ namespace Practice.Api.Data
 {
     public abstract class Document
     {
-
+        [BsonId]
         public BsonObjectId id { get; set; }
         
     }
