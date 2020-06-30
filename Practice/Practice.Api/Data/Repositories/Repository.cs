@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using Practice.Api.Data;
 using Practice.Api.Models;
@@ -6,15 +7,17 @@ using Practice.Api.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Practice.Api.Data.Repositories
 {
     public interface IRepository<T> where T : Document
     {
+        T FindOne(Expression<Func<T, bool>> filterExpression);
         T FindById(string id);
-        void Edit(T survey);
-        void Delete(T survey);
+        void Edit(T document, Expression<Func<T, bool>> filterExpression);
+        void Delete(Expression<Func<T, bool>> filterExpression);
         T Insert(T survey);
         public List<T> GetAll();
 
@@ -54,15 +57,20 @@ namespace Practice.Api.Data.Repositories
             return _collection.Find(filter).SingleOrDefault();
         }
 
-        void IRepository<T>.Edit(T document)
+
+        public virtual T FindOne(Expression<Func<T, bool>> filterExpression)
         {
-            var filter = Builders<T>.Filter.Eq(doc => doc.id, document.id);
-            _collection.FindOneAndReplace(filter, document);
+            return _collection.Find(filterExpression).FirstOrDefault();
         }
-        void IRepository<T>.Delete(T document)
+
+        void IRepository<T>.Edit(T document, Expression<Func<T, bool>> filterExpression)
         {
-            var filter = Builders<T>.Filter.Eq(doc => doc.id, document.id);
-            _collection.FindOneAndDelete(filter);
+            _collection.FindOneAndReplace(filterExpression, document);
+        }
+
+        void IRepository<T>.Delete(Expression<Func<T, bool>> filterExpression)
+        {
+            _collection.FindOneAndDelete(filterExpression);
         }
 
         public List<T> GetAll() =>
