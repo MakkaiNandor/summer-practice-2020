@@ -33,9 +33,6 @@ namespace Practice.Api.Controllers
         //[EnableCors]
         //[HttpPost("createSurvey")]
 
-        //[EnableCors]
-        //[HttpGet("sendAnswers")]
-
     }
 
 }
