@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Cors;
 using Practice.Api.Data.Repositories;
 using Practice.Api.Data;
+using MongoDB.Driver;
+using Microsoft.CodeAnalysis.Differencing;
+using Practice.Api.Models;
+using Practice.Api.Models.Views;
 
 namespace Practice.Api.Controllers
 {
@@ -14,21 +18,109 @@ namespace Practice.Api.Controllers
     [ApiController]
     public class SurveyController : ControllerBase
     {
+
         private readonly IRepository<Survey> _surveys;
+
 
         public SurveyController(IRepository<Survey> surveys)
         {
             _surveys = surveys;
         }
 
-        [HttpGet("getSurvey/{id}")]
-        public ActionResult<Survey> GetSurveyById(int id)
+        [EnableCors]
+        [HttpGet("getAllSurvey")]
+        public ActionResult<IEnumerable<SurveyView>> GetSurveys()
         {
+
+            var surveys = _surveys.GetAll();
+            if (surveys == null) return NotFound();
+
+            var views = ToViews(surveys);
+            return views;
+        }
+
+
+        [EnableCors]
+        [HttpGet("getSurvey/{id}")]
+        public ActionResult<SurveyView> GetSurveyById(int id)
+        {
+
             var survey = _surveys.FindOne(s => s.SurveyId == id);
             if (survey == null) return NotFound();
-            Survey view = new Survey()
+            return ToSurveyView(survey);
+        }
+
+        [EnableCors]
+        [HttpPost("createSurvey")]
+        public void CreateSurvey(Survey NewSurvey)
+        {
+            var alreadyExists = _surveys.FindOne(survey => survey.SurveyId == NewSurvey.SurveyId);
+            if (alreadyExists == null) _surveys.Insert(NewSurvey);
+        }
+
+        [EnableCors]
+        [HttpDelete("deleteSurvey/{id}")]
+        public void DeleteSurvey(int id)
+        {
+            _surveys.Delete(s => s.SurveyId == id);
+        }
+
+        [EnableCors]
+        [HttpPatch("editSurvey/{id}")]
+        public void EditSurvey(SurveyView view, int id)
+        {
+            var oldSurvey = _surveys.FindOne(variable => variable.SurveyId == id);
+            if (oldSurvey == null) return;
+            _surveys.Delete(s => s.SurveyId == id);
+            var newSurvey = SurveyViewToSurvey(view, oldSurvey);
+            _surveys.Insert(newSurvey);
+        }
+
+        [EnableCors]
+        [HttpPost("sendAnswer/S{SurveyId}P{PageNumber}Q{QuestionId}")]
+        public void SendAnswer(Answer answer, int SurveyId, int PageNumber, int QuestionId)
+        {
+            var survey = _surveys.FindOne(s => s.SurveyId == SurveyId);
+            if (survey == null) return;
+            survey.Pages.Find(p => p.PageNumber == PageNumber).Questions.Find(q => q.QuestionId == QuestionId).Answers.Add(answer);
+            _surveys.Delete(s => s.SurveyId == SurveyId);
+            _surveys.Insert(survey);
+        }
+
+        [EnableCors]
+        [HttpGet("getReport/{id}")]
+        public ActionResult<ReportView> GetReport (int id)
+        {
+            Survey survey =_surveys.FindOne(survey => survey.SurveyId == id);
+            ReportView report = new ReportView()
+            {
+                CompletedCounter = survey.CompletedCounter,
+                LeftCounter = survey.LeftCounter
+            };
+            return report;
+        }
+        
+
+
+        // PRIVATE FUNCTIONS -- NOT ENDPOINTS
+        private List<SurveyView> ToViews(List<Survey> surveys)
+        {
+            List<SurveyView> list = new List<SurveyView>();
+            foreach (var survey in surveys)
+            {
+                
+                list.Add(ToSurveyView(survey));
+            }
+            return list;
+        }
+
+        private SurveyView ToSurveyView(Survey survey)
+        {
+            var view = new SurveyView()
             {
                 SurveyId = survey.SurveyId,
+                CompletedCounter = survey.CompletedCounter,
+                LeftCounter = survey.LeftCounter,
                 Title = survey.Title,
                 Description = survey.Description,
                 Ending = survey.Ending,
@@ -39,27 +131,19 @@ namespace Practice.Api.Controllers
             return view;
         }
 
-
-        //[EnableCors]
-        //[HttpGet("getAllSurvey")]
-        /*[HttpGet("getMessage")]
-        public string kiir()
+        private Survey SurveyViewToSurvey (SurveyView view, Survey oldSurvey)
         {
-            return "{\"message\":\"Hello rofi\"}";
-        }*/
-
-        //[EnableCors]
-        //[HttpGet("getSurvey/{id}")]
-
-        //[EnableCors]
-        //[HttpDelete("deleteSurvey/{id}")]
-
-        //[EnableCors]
-        //[HttpPatch("editSurvey/{id}")]
-
-        //[EnableCors]
-        //[HttpPost("createSurvey")]
-
+            oldSurvey.Title = view.Title;
+            oldSurvey.CompletedCounter = view.CompletedCounter;
+            oldSurvey.LeftCounter = view.LeftCounter;
+            oldSurvey.Description = view.Description;
+            oldSurvey.Ending = view.Ending;
+            oldSurvey.ExpirationDate = view.ExpirationDate;
+            oldSurvey.Status = view.Status;
+            oldSurvey.Pages = view.Pages;
+            return oldSurvey;
+        }
+        
 
     }
 
