@@ -10,6 +10,7 @@ using Practice.Api.Data;
 using MongoDB.Driver;
 using Microsoft.CodeAnalysis.Differencing;
 using Practice.Api.Models;
+using Practice.Api.Models.Views;
 
 namespace Practice.Api.Controllers
 {
@@ -66,26 +67,38 @@ namespace Practice.Api.Controllers
 
         [EnableCors]
         [HttpPatch("editSurvey/{id}")]
-        public void EditSurvey(SurveyView view,int id)
+        public void EditSurvey(SurveyView view, int id)
         {
             var oldSurvey = _surveys.FindOne(variable => variable.SurveyId == id);
             if (oldSurvey == null) return;
-            _surveys.Delete(s=> s.SurveyId == id);
+            _surveys.Delete(s => s.SurveyId == id);
             var newSurvey = SurveyViewToSurvey(view, oldSurvey);
             _surveys.Insert(newSurvey);
         }
 
         [EnableCors]
         [HttpPost("sendAnswer/S{SurveyId}P{PageNumber}Q{QuestionId}")]
-        public void SendAnswer(Answer answer, int SurveyId,int PageNumber, int QuestionId)
+        public void SendAnswer(Answer answer, int SurveyId, int PageNumber, int QuestionId)
         {
-            var survey =_surveys.FindOne(s => s.SurveyId == SurveyId);
+            var survey = _surveys.FindOne(s => s.SurveyId == SurveyId);
             if (survey == null) return;
             survey.Pages.Find(p => p.PageNumber == PageNumber).Questions.Find(q => q.QuestionId == QuestionId).Answers.Add(answer);
             _surveys.Delete(s => s.SurveyId == SurveyId);
             _surveys.Insert(survey);
         }
 
+        [EnableCors]
+        [HttpGet("getReport/{id}")]
+        public ActionResult<ReportView> GetReport (int id)
+        {
+            Survey survey =_surveys.FindOne(survey => survey.SurveyId == id);
+            ReportView report = new ReportView()
+            {
+                CompletedCounter = survey.CompletedCounter,
+                LeftCounter = survey.LeftCounter
+            };
+            return report;
+        }
         
 
 
@@ -106,6 +119,8 @@ namespace Practice.Api.Controllers
             var view = new SurveyView()
             {
                 SurveyId = survey.SurveyId,
+                CompletedCounter = survey.CompletedCounter,
+                LeftCounter = survey.LeftCounter,
                 Title = survey.Title,
                 Description = survey.Description,
                 Ending = survey.Ending,
@@ -119,6 +134,8 @@ namespace Practice.Api.Controllers
         private Survey SurveyViewToSurvey (SurveyView view, Survey oldSurvey)
         {
             oldSurvey.Title = view.Title;
+            oldSurvey.CompletedCounter = view.CompletedCounter;
+            oldSurvey.LeftCounter = view.LeftCounter;
             oldSurvey.Description = view.Description;
             oldSurvey.Ending = view.Ending;
             oldSurvey.ExpirationDate = view.ExpirationDate;

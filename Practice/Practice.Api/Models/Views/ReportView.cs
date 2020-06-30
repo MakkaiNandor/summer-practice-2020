@@ -7,5 +7,7 @@ namespace Practice.Api.Models.Views
 {
     public class ReportView
     {
+        public int CompletedCounter { get; set; }
+        public int LeftCounter { get; set; }
     }
 }

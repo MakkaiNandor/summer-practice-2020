@@ -9,6 +9,8 @@ namespace Practice.Api.Models
     public class SurveyView
     {
         public int SurveyId { get; set; }
+        public int CompletedCounter { get; set; }
+        public int LeftCounter { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Ending { get; set; }
