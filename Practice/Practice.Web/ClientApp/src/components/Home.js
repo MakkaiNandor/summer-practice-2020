@@ -10,7 +10,7 @@ export class Home extends Component {
     this.state={datas:""};
   }
   componentDidMount(){
-    this.getData();
+    //this.getData();
   }
   render () {
     return (
@@ -29,12 +29,12 @@ export class Home extends Component {
     );
   }
 
-  async getData(){
+  /*async getData(){
     const response= await fetch('https://localhost:44309/Survey/getMessage');
     const data=await response.json();
     console.log(data);
     this.setState({datas:data});
-  }
+  }*/
 
 
 }
