@@ -32,7 +32,10 @@ export class NavMenu extends Component {
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <ul className="navbar-nav flex-grow">
               <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/survey/2">Survey</NavLink>
+                <NavLink tag={Link} className="text-dark" to="/survey/2?name=Karcsi&age=20&email=abc@xyz.com&gender=Male">Survey</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink tag={Link} className="text-dark" to="/personal/2">Personal</NavLink>
               </NavItem>
             </ul>
 {/*
