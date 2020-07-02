@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Practice.Api.Data
 {
-    public class Answer 
+    public class PersonalData_Answers
     {
-        public int AnswerId { get; set; }
-        public string Value { get; set; }
+        public PersonalData PersonalData { get; set; }
+        public List<Page> Pages { get; set; }
     }
 }
