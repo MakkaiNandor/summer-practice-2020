@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 
 namespace Practice.Api.Data
 {
-    public class Question 
+    public class NameAgeEmail
     {
-        public int QuestionId {get; set;}
-        public string Label { get; set; }
         public string Type { get; set; }
-        public List<Answer> Answers { get; set; }
+        public string Label { get; set; }
+        public string Answer { get; set; }
+
+
+
     }
 }

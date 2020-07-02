@@ -18,10 +18,7 @@ namespace Practice.Api.Controllers
     [ApiController]
     public class SurveyController : ControllerBase
     {
-
         private readonly IRepository<Survey> _surveys;
-
-
         public SurveyController(IRepository<Survey> surveys)
         {
             _surveys = surveys;
@@ -44,7 +41,7 @@ namespace Practice.Api.Controllers
         [HttpGet("getSurvey/{id}")]
         public ActionResult<SurveyView> GetSurveyById(int id)
         {
-
+            
             var survey = _surveys.FindOne(s => s.SurveyId == id);
             if (survey == null) return NotFound();
             return ToSurveyView(survey);
@@ -76,31 +73,7 @@ namespace Practice.Api.Controllers
             _surveys.Insert(newSurvey);
         }
 
-        [EnableCors]
-        [HttpPost("sendAnswer/S{SurveyId}P{PageNumber}Q{QuestionId}")]
-        public void SendAnswer(Answer answer, int SurveyId, int PageNumber, int QuestionId)
-        {
-            var survey = _surveys.FindOne(s => s.SurveyId == SurveyId);
-            if (survey == null) return;
-            survey.Pages.Find(p => p.PageNumber == PageNumber).Questions.Find(q => q.QuestionId == QuestionId).Answers.Add(answer);
-            _surveys.Delete(s => s.SurveyId == SurveyId);
-            _surveys.Insert(survey);
-        }
-
-        [EnableCors]
-        [HttpGet("getReport/{id}")]
-        public ActionResult<ReportView> GetReport (int id)
-        {
-            Survey survey =_surveys.FindOne(survey => survey.SurveyId == id);
-            ReportView report = new ReportView()
-            {
-                CompletedCounter = survey.CompletedCounter,
-                LeftCounter = survey.LeftCounter
-            };
-            return report;
-        }
         
-
 
         // PRIVATE FUNCTIONS -- NOT ENDPOINTS
         private List<SurveyView> ToViews(List<Survey> surveys)
@@ -119,13 +92,12 @@ namespace Practice.Api.Controllers
             var view = new SurveyView()
             {
                 SurveyId = survey.SurveyId,
-                CompletedCounter = survey.CompletedCounter,
-                LeftCounter = survey.LeftCounter,
                 Title = survey.Title,
                 Description = survey.Description,
                 Ending = survey.Ending,
                 ExpirationDate = survey.ExpirationDate,
                 Status = survey.Status,
+                PersonalData = survey.PersonalData,
                 Pages = survey.Pages
             };
             return view;
@@ -134,8 +106,6 @@ namespace Practice.Api.Controllers
         private Survey SurveyViewToSurvey (SurveyView view, Survey oldSurvey)
         {
             oldSurvey.Title = view.Title;
-            oldSurvey.CompletedCounter = view.CompletedCounter;
-            oldSurvey.LeftCounter = view.LeftCounter;
             oldSurvey.Description = view.Description;
             oldSurvey.Ending = view.Ending;
             oldSurvey.ExpirationDate = view.ExpirationDate;
@@ -143,8 +113,6 @@ namespace Practice.Api.Controllers
             oldSurvey.Pages = view.Pages;
             return oldSurvey;
         }
-        
-
     }
 
 }
