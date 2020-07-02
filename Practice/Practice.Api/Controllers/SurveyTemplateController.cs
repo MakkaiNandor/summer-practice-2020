@@ -37,6 +37,7 @@ namespace Practice.Api.Controllers
         public ActionResult<SurveyTemplateView> GetSurveyTemplateById(int id)
         {
             var template = _SurveyTemplates.FindOne(template => template.SurveyTemplateId == id);
+            if (template == null) return NotFound();
             return ToSurveyTemplateView(template);
         }
 
@@ -64,8 +65,19 @@ namespace Practice.Api.Controllers
             _SurveyTemplates.Delete(template => template.SurveyTemplateId == id);
         }
 
-        //[EnableCors]
-        //[HttpPatch("editSurveyTemplate/{id}")]
+        [EnableCors]
+        [HttpPatch("editSurveyTemplate/{id}")]
+        public void EditSurveyTemplate(SurveyTemplateView view, int id)
+        {
+            SurveyTemplate oldTemplate=_SurveyTemplates.FindOne(template => template.SurveyTemplateId == id);
+            oldTemplate.Name = view.Name;
+            oldTemplate.Title = view.Title;
+            oldTemplate.Description = view.Description;
+            oldTemplate.Ending = view.Ending;
+            oldTemplate.Pages = view.Pages;
+            _SurveyTemplates.Delete(template => template.SurveyTemplateId == id);
+            _SurveyTemplates.Insert(oldTemplate);
+        }
 
         [EnableCors]
         [HttpPost("createSurveyTemplate")]
@@ -85,6 +97,8 @@ namespace Practice.Api.Controllers
             }
             return list;
         }
+
+        
 
         private SurveyTemplateView ToSurveyTemplateView(SurveyTemplate template)
         {
