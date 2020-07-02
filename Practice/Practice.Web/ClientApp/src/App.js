@@ -19,7 +19,7 @@ export default class App extends Component {
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data' component={FetchData} />
         <Route path='/login' component={Login} />
-        <Route path='/personal' component={Personal} />
+        <Route path='/personal/:id' component={Personal} />
       </Layout>
     );
   }
