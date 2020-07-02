@@ -4,17 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using Practice.Api.Data;
 
-namespace Practice.Api.Models
+namespace Practice.Api.Models.Views
 {
-    public class SurveyView
+    public class SurveyTemplateView
     {
-        public int SurveyId { get; set; }
+        public int SurveyTemplateId { get; set; }
+        public string Name { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Ending { get; set; }
-        public DateTime ExpirationDate { get; set; }
-        public string Status { get; set; }
-        public PersonalData PersonalData { get; set; }
         public List<Page> Pages { get; set; }
     }
 }
