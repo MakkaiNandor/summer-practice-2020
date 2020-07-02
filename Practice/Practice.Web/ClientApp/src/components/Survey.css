@@ -1,0 +1,64 @@
+#survey-page {
+    text-align: center;
+}
+#survey-title {
+    border: 1px solid black;
+    border-radius: 2em;
+    padding: 1em;
+    margin: 1em;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+.description {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.question {
+    border: 1px solid black;
+    border-radius: 2em;
+    margin: 1em;
+    padding: 1em;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+label {
+    margin-left: 1em;
+}
+.answer-holder {
+    text-align: left;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+.survey-button {
+    margin: 1em;
+    padding: 0.5em;
+    border-radius: 0.5em;
+}
+.survey-button:hover {
+    border: 1px solid black;
+    background-color: blue;
+    color: white;
+}
+#progress-bar-holder {
+    margin-bottom: 1em;
+}
+#progress-bar-holder > p {
+    margin: 0;
+}
+#progress-bar-frame {
+    margin-left: auto;
+    margin-right: auto;
+    width: 25%;
+    height: 1em;
+    background-color: grey;
+    border-radius: 1em;
+}
+#progress-bar {
+    background-color: yellowgreen;
+    border-radius: 1em;
+    height: 1em;
+}
