@@ -8,8 +8,6 @@ namespace Practice.Api.Data
     public class Survey : Document
     {
         public int SurveyId { get; set; }
-        public int CompletedCounter { get; set; }
-        public int LeftCounter { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Ending { get; set; }
@@ -17,6 +15,7 @@ namespace Practice.Api.Data
         public DateTime ExpirationDate { get; set; }
         public string Status { get; set; }
         public User Creator { get; set; }
+        public PersonalData PersonalData {get; set;}
         public List<Page> Pages { get; set; }
     }
 }
