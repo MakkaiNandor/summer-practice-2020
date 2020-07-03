@@ -9,6 +9,6 @@ namespace Practice.Api.Data
     {
         public string Type { get; set; }
         public string Label { get; set; }
-        public List<String> Answer { get; set; }
+        public List<Answer> Answer { get; set; }
     }
 }

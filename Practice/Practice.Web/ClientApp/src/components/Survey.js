@@ -24,7 +24,6 @@ export class Survey extends Component {
         this.getDefaultValue = this.getOldValue.bind(this);
 
         this.personalData = {name: null, age: null, email: null, gender: null};
-
         this.survey = null;
         this.userAnswers = null;
     }
@@ -104,22 +103,25 @@ export class Survey extends Component {
     }
 
     // event handlers for buttons
-    nextPage(){
-        this.saveAnswersOfPage();
+    nextPage(event){
+        if(this.saveAnswersOfPage()) this.savePageOfSurvey();
+        else return;
         if(this.state.firstPage) this.setState({ firstPage: false });
         if(this.state.currPage === this.state.numberOfPages - 2) this.setState({ lastPage: true });
         this.setState({ currPage: this.state.currPage + 1 });
     }
     
-    prevPage(){
-        this.saveAnswersOfPage();
+    prevPage(event){
+        this.saveAnswersOfPage(); 
+        this.savePageOfSurvey();
         if(this.state.lastPage) this.setState({ lastPage: false });
         if(this.state.currPage === 1) this.setState({ firstPage: true });
         this.setState({ currPage: this.state.currPage - 1 });
     }
     
-    submitSurvey(){
-        this.saveAnswersOfPage();
+    submitSurvey(event){
+        if(this.saveAnswersOfPage()) this.savePageOfSurvey();
+        else return;
         this.setState({ submitted: true });
         console.log(this.userAnswers);
     }
@@ -171,6 +173,7 @@ export class Survey extends Component {
     
     // save answers of one page
     saveAnswersOfPage(){
+        let noAnswer = false;
         this.userAnswers[this.state.currPage].questions.map(question => {
             question.answers = [];
             return question;
@@ -185,8 +188,13 @@ export class Survey extends Component {
                     });
                 }
             });
+            if(question.answers.length === 0){
+                document.getElementById("question_" + question.questionId).style.borderColor = "red";
+                noAnswer = true;
+            }
+            else document.getElementById("question_" + question.questionId).style.borderColor = "black";
         });
-        this.savePageOfSurvey();
+        return !noAnswer;
     }
     
     // set up user's old answers
