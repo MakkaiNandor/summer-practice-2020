@@ -8,6 +8,8 @@ using Practice.Api.Data.Repositories;
 using Practice.Api.Data;
 using Microsoft.AspNetCore.Cors;
 using Practice.Api.Models.Views;
+using System.Runtime.InteropServices.ComTypes;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Practice.Api.Controllers
 {
@@ -101,7 +103,17 @@ namespace Practice.Api.Controllers
                 var oldPage = _answers.FindOne(ans => ans.SurveyId == id).Answers.Find(ans => ans.PersonalData.Email == Pdata_Answer.PersonalData.Email).Pages.Find(page => page.PageNumber == Pdata_Answer.Pages[0].PageNumber);
                 if (oldPage!=null)
                 {
-                    existingAnswer.Answers.Find(answer => answer.PersonalData.Email == Pdata_Answer.PersonalData.Email).Pages.Remove(oldPage);
+                    //Oldpage Exists
+                    List<Page> PageList = existingAnswer.Answers.Find(answer => answer.PersonalData.Email == Pdata_Answer.PersonalData.Email).Pages;
+                    foreach( var page in PageList)
+                    {
+                        if (page.PageNumber== Pdata_Answer.Pages[0].PageNumber)
+                        {
+                            PageList.Remove(page);
+                            break;
+                        }
+                    }
+                    existingAnswer.Answers.Find(answer => answer.PersonalData.Email == Pdata_Answer.PersonalData.Email).Pages = PageList;
                 }
                 existingAnswer.Answers.Find(answer => answer.PersonalData.Email == Pdata_Answer.PersonalData.Email).Pages.Add(Pdata_Answer.Pages[0]);
                 _answers.Delete(answer => answer.SurveyId == id);
