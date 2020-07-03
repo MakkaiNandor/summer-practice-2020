@@ -88,18 +88,18 @@ export class Personal extends Component {
             case "radio":
                 return (
                     question.answer.map(answer =>
-                        <div className="answer" key={answer}>
-                            <input type="radio" id={"question_" + key + "_answer_" + answer} name={"question_" + key} value={answer}/>
-                            <label htmlFor={"question_" + key + "_answer_" + answer}>{answer}</label>
+                        <div className="answer" key={answer.answerId}>
+                            <input type="radio" id={"question_" + key + "_answer_" + answer.answerId} name={"question_" + key} value={answer.value}/>
+                            <label htmlFor={"question_" + key + "_answer_" + answer.answerId}>{answer.value}</label>
                         </div>
                     )
                 );
             case "checkbox":
                 return (
                     question.answer.map(answer => 
-                        <div className="answer" key={answer}>
-                            <input type="checkbox" id={"question_" + key + "_answer_" + answer} name={"question_" + key} value={answer}/>
-                            <label htmlFor={"question_" + key + "_answer_" + answer}>{answer}</label>
+                        <div className="answer" key={answer.answerId}>
+                            <input type="checkbox" id={"question_" + key + "_answer_" + answer.answerId} name={"question_" + key} value={answer.value}/>
+                            <label htmlFor={"question_" + key + "_answer_" + answer.answerId}>{answer.value}</label>
                         </div>
                     )
                 );
@@ -116,7 +116,8 @@ export class Personal extends Component {
                     this.personalData[key] = null;
                 }
                 else if(key === "age"){
-                    this.personalData[key] = "" + parseInt(answerInput.value);
+                    let age = parseInt(answerInput.value);
+                    if(age) this.personalData[key] = "" + age;
                 }
                 else{
                     this.personalData[key] = answerInput.value;
