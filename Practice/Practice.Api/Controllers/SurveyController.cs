@@ -95,6 +95,7 @@ namespace Practice.Api.Controllers
                 Title = survey.Title,
                 Description = survey.Description,
                 Ending = survey.Ending,
+                CreateDate=survey.CreateDate,
                 ExpirationDate = survey.ExpirationDate,
                 Status = survey.Status,
                 PersonalData = survey.PersonalData,

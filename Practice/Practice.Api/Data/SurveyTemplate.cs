@@ -8,7 +8,8 @@ namespace Practice.Api.Data
     public class SurveyTemplate : Document
     {
         public int SurveyTemplateId { get; set; }
-       
+        public int Used { get; set; }
+        public List<int> CreatedSurveys { get; set; }
         public string Name { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
