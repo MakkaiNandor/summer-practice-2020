@@ -35,7 +35,7 @@ export class NavMenu extends Component {
                 <NavLink tag={Link} className="text-dark" to="/survey/2?name=Karcsi&age=20&email=abc@xyz.com&gender=Male">Survey</NavLink>
               </NavItem>
             </ul>
-{/*
+
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
                 <NavItem>
