@@ -105,10 +105,13 @@ namespace Practice.Api.Controllers
             var view = new SurveyTemplateView()
             {
                 SurveyTemplateId = template.SurveyTemplateId,
+                CreatedSurveys=template.CreatedSurveys,
                 Name = template.Name,
+                Used =template.Used,
                 Title = template.Title,
                 Description = template.Description,
                 Ending = template.Ending,
+                CreateDate=template.CreateDate,
                 Pages = template.Pages
             };
             return view;
@@ -119,8 +122,10 @@ namespace Practice.Api.Controllers
             SurveyTemplate template = new SurveyTemplate()
             {
                 SurveyTemplateId = survey.SurveyId,
+                CreatedSurveys = new List<int>(),
                 Title = survey.Title,
                 Name = "Untitled",
+                Used=0,
                 Description = survey.Description,
                 Ending = survey.Ending,
                 Pages = survey.Pages,

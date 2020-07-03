@@ -136,6 +136,20 @@ namespace Practice.Api.Controllers
             };
         }
 
+        [EnableCors]
+        [HttpPatch("setCounters/{id}")]
+        public void setCounters(ReportView newCounters,int id)
+        {
+            var answer=_answers.FindOne(answer => answer.SurveyId == id);
+            if (answer == null) return;
+            answer.LeftCounter = newCounters.LeftCounter;
+            answer.CompletedCounter = newCounters.CompletedCounter;
+            _answers.Delete(answer => answer.SurveyId == id);
+            _answers.Insert(answer);
+        }
+
+        
+
 
 
 
