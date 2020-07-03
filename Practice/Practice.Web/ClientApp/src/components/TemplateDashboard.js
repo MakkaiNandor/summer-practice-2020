@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import "./Template.css"
 
 export class TemplateDashboard extends Component {
     static displayName = TemplateDashboard.name;
@@ -12,6 +13,7 @@ export class TemplateDashboard extends Component {
         };
 
         this.templates = null;
+        this.title = "Template Dashboard";
     }
         
 
@@ -34,10 +36,10 @@ export class TemplateDashboard extends Component {
     //Generate Table
     renderTable(templates) {
         return (
-            <table>
+            <table id="TemplateTable">
                 <thead>
                     <tr>
-                        <th>Template Name</th> <th>Create Date</th> <th></th> <th></th>
+                        <th>Template Name</th><th>Create Date</th><th>Used</th><th></th><th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,7 +47,8 @@ export class TemplateDashboard extends Component {
                         templates.map(template=>
                             <tr key={template.name}> 
                                 <td>{template.name}</td>
-                                <td>NotImplemented</td>
+                                <td>{template.createDate}</td>
+                                <td>{template.used}</td>
                                 <td><button>Edit</button></td>
                                 <td><button>Delete</button></td>
                             </tr>
@@ -71,7 +74,7 @@ export class TemplateDashboard extends Component {
                 let table=this.renderTable(this.templates);
                 return (
                     <div>
-                        <p> Hello </p>
+                        <h2 id="survey-title">{this.title}</h2>
                         {table}
                     </div>
                     
