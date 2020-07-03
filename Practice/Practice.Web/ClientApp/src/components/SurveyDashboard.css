@@ -1,0 +1,22 @@
+#title {
+    border: 1px solid black;
+    border-radius: 2em;
+    padding: 1em;
+    margin: 1em;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+#survey-table-holder {
+    text-align: center;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+#survey-table {
+    border-collapse: collapse;
+}
+#survey-table tr > * {
+    padding: 0.5em;
+    border: 1px solid black;
+}
