@@ -7,10 +7,10 @@ export class Login extends Component {
   render() {
     return (
       <div>
-        <h1 class="boxed" id="title">Login</h1>
+        <h1 className="boxed" id="title">Login</h1>
 
 
-        <form class="boxed" id="loginform">
+        <form className="boxed" id="loginform">
             <label><b>Username</b></label><br></br>
             <input type="text" placeholder="Enter Username" required></input><br></br>
 
