@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Practice.Api.Data;
 
-namespace Practice.Api.Data
+namespace Practice.Api.Models.Views
 {
-    public class QuestionTemplate : Document
+    public class QuestionTemplateView
     {
         public int QuestionTemplateId { get; set; }
         public string Label { get; set; }

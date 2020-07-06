@@ -14,6 +14,9 @@ export class TemplateDashboard extends Component {
 
         this.templates = null;
         this.title = "Template Dashboard";
+        this.surveyIds=[];
+        this.surveyNames=[];
+        this.surveyId=null;
     }
         
 
@@ -32,6 +35,16 @@ export class TemplateDashboard extends Component {
         this.setState({ loading: false });
     }
 
+    //Get survey by id
+    async getSurveyById(id)
+    {
+        const response= await fetch('https://localhost:44309/Survey/getSurvey/'+this.surveyId);
+        if (!response.ok) this.setState({error:"Cant get a survey by id!"});
+        else
+        {
+            this.surveyNames.push((await response.json()).title);
+        }
+    }
 
     //Generate Table
     renderTable(templates) {
@@ -75,6 +88,11 @@ export class TemplateDashboard extends Component {
                 return (
                     <div>
                         <h2 id="survey-title">{this.title}</h2>
+                        <div>
+                            <button id="left_button">Surveys</button>
+                            <button id="right_button">Questions</button>
+                        </div>
+                        <br></br>
                         {table}
                     </div>
                     
