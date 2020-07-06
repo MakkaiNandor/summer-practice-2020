@@ -65,9 +65,10 @@ namespace Practice.Api.Controllers
             QuestionTemplate template = new QuestionTemplate()
             {
                 QuestionTemplateId = GenerateTemplateId(),
+                Used = 0,
                 Label = question.Label,
                 Type = question.Type,
-                CreateDate = DateTime.Now,
+                CreateDate = DateTime.Now.ToString(),
                 Answers = question.Answers
             };
             _templates.Insert(template);
@@ -89,6 +90,7 @@ namespace Practice.Api.Controllers
             QuestionTemplateView view = new QuestionTemplateView()
             {
                 QuestionTemplateId = template.QuestionTemplateId,
+                Used = template.Used,
                 Label = template.Label,
                 Type = template.Type,
                 CreateDate = template.CreateDate,
