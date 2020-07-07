@@ -61,13 +61,14 @@ tr:hover {background-color:#f5f5f5;}
     bottom:0;
     height: 100%;
     background-color: rgba(0,0,0,0.5);
-    display:none;
 }
 #container
 {
+    position: absolute;
+    top:40%;
+    left:50%;
     display: flex;
     justify-content: center;
-    display:none;
 }
 
 #yes
@@ -83,4 +84,10 @@ tr:hover {background-color:#f5f5f5;}
     margin-right: 20%;
     font-size: 20px;
     background-color: red;
+}
+
+.expandable
+{
+    background-color: rgb(230, 230, 230);
+    height: 200px;
 }

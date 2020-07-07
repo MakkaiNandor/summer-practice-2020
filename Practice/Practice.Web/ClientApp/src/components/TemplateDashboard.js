@@ -12,19 +12,22 @@ export class TemplateDashboard extends Component {
             error: null,
             TemplateType: 1,
             templates : null,
+            overlay:0,
+            templateId:null
         };
 
         
         this.title = "Template Dashboard";
-        
-        
+
         this.ChangeToQuestionTemplate=this.ChangeToQuestionTemplate.bind(this);
         this.ChangeToSurveyTemplate=this.ChangeToSurveyTemplate.bind(this);
         this.renderQuestionTemplateTable=this.renderQuestionTemplateTable.bind(this);
         this.renderSurveyTemplateTable=this.renderSurveyTemplateTable.bind(this);
         this.DeleteSurveyTemplate=this.DeleteSurveyTemplate.bind(this);
         this.DeleteQuestionTemplate=this.DeleteQuestionTemplate.bind(this);
-        this.ToggleOverlay=this.ToggleOverlay.bind(this);
+        this.OverlayON=this.OverlayON.bind(this);
+        this.Delete=this.Delete.bind(this);
+        this.OverlayOFF=this.OverlayOFF.bind(this);
     }
         
 
@@ -94,14 +97,16 @@ export class TemplateDashboard extends Component {
                                 <td>{template.createDate}</td>
                                 <td>{template.used}</td>
                                 <td><button>Edit</button></td>
-                                <td><button id ={template.surveyTemplateId} onClick={this.ToggleOverlay}>Delete</button></td>
+                                <td><button id ={template.surveyTemplateId} onClick={this.OverlayON}>Delete</button></td>
                             </tr>
+                            
                             )
                     }
                 </tbody>
             </table>
             )
     }
+
     renderQuestionTemplateTable(templates) {
         return (
             <table className="TemplateTable" key={2}>
@@ -118,7 +123,7 @@ export class TemplateDashboard extends Component {
                                 <td>{template.createDate}</td>
                                 <td>{template.used}</td>
                                 <td><button>Edit</button></td>
-                                <td><button id={template.questionTemplateId}onClick={this.DeleteQuestionTemplate}>Delete</button></td>
+                                <td><button id={template.questionTemplateId}onClick={this.OverlayON}>Delete</button></td>
                             </tr>
                             )
                     }
@@ -128,10 +133,10 @@ export class TemplateDashboard extends Component {
     }
 
     //Delete Template
-    async DeleteSurveyTemplate(event)
+    async DeleteSurveyTemplate()
     {
         
-        await fetch('https://localhost:44309/SurveyTemplate/deleteSurveyTemplate/'+event.target.id[0],{
+        await fetch('https://localhost:44309/SurveyTemplate/deleteSurveyTemplate/'+this.state.templateId,{
         method: "DELETE"
        });
         this.getSurveyTemplates();
@@ -139,27 +144,56 @@ export class TemplateDashboard extends Component {
     }
     async DeleteQuestionTemplate(event)
     {
-        await fetch('https://localhost:44309/QuestionTemplate/deleteQuestionTemplate/'+event.target.id[0],{
+        await fetch('https://localhost:44309/QuestionTemplate/deleteQuestionTemplate/'+this.state.templateId,{
         method: "DELETE"
         });
         this.getQuestionTemplates();
     }
 
     //Overlay
-    ToggleOverlay()
+
+    renderOverlay()
     {
-        let overlay=document.getElementById("overlay");
-        if (overlay.style.display=="none") overlay.style.display="block";
+        return(
+                <div id ="overlay">
+                    <div id="container">
+                        <div id="warning">
+                            <p id="warning_message"> Delete template? </p>
+                            <button id="yes" onClick={this.Delete}>Yes</button><button id="no" onClick={this.OverlayOFF}>No</button>
+                            <br></br>
+                            <br></br>
+                        </div>
+                    </div>
+                </div>
+        );
+    }
+
+    OverlayON(event)
+    {
+        this.setState({templateId:event.target.id[0]});
+        if (this.state.overlay===0) this.setState({overlay:1});
+    }
+
+    OverlayOFF()
+    {
+        if (this.state.overlay===1) this.setState({overlay:0});
+    }
+
+    Delete ()
+    {
+        if (this.state.TemplateType===1) this.DeleteSurveyTemplate();
+        else this.DeleteQuestionTemplate();
+        this.OverlayOFF();
     }
 
     //Change Template Type
     async ChangeToSurveyTemplate(event)
     {
-
         await this.getSurveyTemplates();
         if (this.state.TemplateType!==1) 
             this.setState({TemplateType:1});
     }
+    
     async ChangeToQuestionTemplate(event)
     {
         await this.getQuestionTemplates();
@@ -181,29 +215,24 @@ export class TemplateDashboard extends Component {
             }
             else {
                 
+                let overlay=null;
                 let table=null;
                 if (this.state.TemplateType===1) table = this.renderSurveyTemplateTable(this.state.templates);
                 else table=this.renderQuestionTemplateTable(this.state.templates);
+                if (this.state.overlay===1) overlay=this.renderOverlay();
 
                 
                 return (
                     <div>
                         <h2 id="survey-title">{this.title}</h2>
+                        {overlay}
                         <div>
                             <button id="left_button" onClick={this.ChangeToSurveyTemplate}>Surveys</button>
                             <button id="right_button" onClick={this.ChangeToQuestionTemplate}>Questions</button>
                         </div>
                         <br></br>
                         {table}
-                        <div id ="overlay"></div>
-                        <div id="container">
-                            <div id="warning">
-                                <p id="warning_message"> Delete template? </p>
-                                <button id="yes">Yes</button><button id="no">No</button>
-                                <br></br>
-                                <br></br>
-                            </div>
-                        </div>
+                        
                     </div>
                     
                     );
