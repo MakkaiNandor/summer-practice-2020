@@ -50,6 +50,7 @@ namespace Practice.Api
             services.AddTransient<IRepository<SurveyTemplate>>(provider => new Repository<SurveyTemplate>(settings, "SurveyTemplateCollection"));
             services.AddTransient<IRepository<Survey>>(provider => new Repository<Survey>(settings, "SurveyCollection"));
             services.AddTransient<IRepository<QuestionTemplate>>(provider => new Repository<QuestionTemplate>(settings, "QuestionTemplateCollection"));
+            services.AddTransient<IRepository<SentAnswer>>(provider => new Repository<SentAnswer>(settings, "AnswerCollection"));
             services.AddControllers();
 
 
