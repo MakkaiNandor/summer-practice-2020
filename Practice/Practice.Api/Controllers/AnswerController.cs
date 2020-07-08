@@ -129,6 +129,14 @@ namespace Practice.Api.Controllers
         public ActionResult<ReportView> GetReport(int id)
         {
             var existingAnswer = _answers.FindOne(ans => id == ans.SurveyId);
+            if(existingAnswer == null)
+            {
+                return new ReportView()
+                {
+                    CompletedCounter = 0,
+                    LeftCounter = 0
+                };
+            }
             return new ReportView()
             {
                 CompletedCounter = existingAnswer.CompletedCounter,

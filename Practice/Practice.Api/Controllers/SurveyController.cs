@@ -51,8 +51,13 @@ namespace Practice.Api.Controllers
         [HttpPost("createSurvey")]
         public void CreateSurvey(Survey NewSurvey)
         {
-            var alreadyExists = _surveys.FindOne(survey => survey.SurveyId == NewSurvey.SurveyId);
-            if (alreadyExists == null) _surveys.Insert(NewSurvey);
+            Random RandomID = new Random();
+            while (true)
+            {
+                NewSurvey.SurveyId = RandomID.Next(1, 1000);
+                if (_surveys.FindOne(survey => survey.SurveyId == NewSurvey.SurveyId) == null) break;
+            }
+            _surveys.Insert(NewSurvey);
         }
 
         [EnableCors]

@@ -7,6 +7,7 @@ import { Login } from './components/Login';
 import { Personal } from './components/Personal';
 import { TemplateDashboard } from './components/TemplateDashboard';
 import { SurveyDashboard } from './components/SurveyDashboard';
+import { CreateSurvey } from './components/CreateSurvey';
 
 import './custom.css'
 
@@ -22,6 +23,7 @@ export default class App extends Component {
         <Route path='/TemplateDashboard' component={TemplateDashboard}/>
         <Route path='/personal/:id' component={Personal} />
         <Route path='/SurveyDashboard' component={SurveyDashboard} />
+        <Route path='/CreateSurvey' component={CreateSurvey} />
       </Layout>
     );
   }
