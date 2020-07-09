@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Login.css';
+import { Link } from 'react-router-dom';
 
 //import './Home.css';
 
@@ -39,6 +40,9 @@ export class Login extends Component {
     });
     
     console.log(await response.json()  );
+    if(response.ok){
+      window.location.href = window.location.href.replace("login","MainMenu");
+    }
     
     /*
     const asd = await authService.getAccessToken();
