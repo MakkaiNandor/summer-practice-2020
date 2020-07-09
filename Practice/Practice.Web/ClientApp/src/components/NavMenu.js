@@ -40,6 +40,16 @@ export class NavMenu extends Component {
                 </NavItem>
               </ul>
             </Collapse>
+            <ul className="navbar-nav flex-grow">
+              <NavItem>
+                <NavLink tag={Link} className="text-dark" to="/editform/2">Edit Survey</NavLink>
+              </NavItem>
+            </ul>
+            <ul className="navbar-nav flex-grow">
+              <NavItem>
+                <NavLink tag={Link} className="text-dark" to="/createform">Create Survey</NavLink>
+              </NavItem>
+            </ul>
             
           </Container>
         </Navbar>

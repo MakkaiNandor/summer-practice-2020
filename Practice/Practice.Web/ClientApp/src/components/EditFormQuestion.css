@@ -1,7 +1,8 @@
-#survey_page {
+#edit_survey_page {
     text-align: center;
 }
-#survey_title {
+
+#edit_survey_title {
     border: 1px solid black;
     border-radius: 2em;
     padding: 1em;
@@ -10,35 +11,54 @@
     margin-right: auto;
     width: fit-content;
 }
+
+.edit_question {
+    border: 1px solid black;
+    border-radius: 2em;
+    margin: 1em;
+    padding: 1em;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#edit_part_form {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+#edit_part_form > *{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
 .description {
     width: 50%;
     margin-left: auto;
     margin-right: auto;
 }
-.question {
-    border: 1px solid black;
-    border-radius: 2em;
-    margin: 1em;
-    padding: 1em;
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
+
+.holder {
+    display: inline-block;
 }
-label {
-    margin-left: 1em;
+
+.label-holder {
+    width: 30%;
+    margin-right: 1em;
+    text-align: right;
 }
-.answer-holder-personal {
-    text-align: left;
-    width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
+
+.answer-holder {
+    width: 60%;
 }
-.survey-button {
+
+.edit_survey-button {
     margin: 1em;
     padding: 0.5em;
     border-radius: 0.5em;
 }
-.survey-button:hover {
+
+.edit_survey-button:hover {
     border: 1px solid black;
     background-color: blue;
     color: white;

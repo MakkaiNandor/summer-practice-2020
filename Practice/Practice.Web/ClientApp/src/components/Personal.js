@@ -30,7 +30,7 @@ export class Personal extends Component {
                 this.setState({ error: "Survey is not active!" });
             }
             else{
-                this.setState({loading: false,});
+                this.setState({loading: false});
             }
         }
     }
@@ -55,22 +55,22 @@ export class Personal extends Component {
             <div className="question-holder">
                 <div className="question" id={"question_name"} >
                     <p className="question_label"><b>1.</b>{this.survey.personalData.name.label}</p>
-                    <div className="answer-holder">{this.generateAnswers(this.survey.personalData.name,"name")}</div>
+                    <div className="answer-holder-personal">{this.generateAnswers(this.survey.personalData.name,"name")}</div>
                 </div>
 
                 <div className="question" id={"question_" + this.survey.personalData.age} >
                         <p className="question_label"><b>2.</b>{this.survey.personalData.age.label}</p>
-                        <div className="answer-holder">{this.generateAnswers(this.survey.personalData.age,"age")}</div>
+                        <div className="answer-holder-personal">{this.generateAnswers(this.survey.personalData.age,"age")}</div>
                 </div>
 
                 <div className="question" id={"question_" + this.survey.personalData.email} >
                     <p className="question_label"><b>3.</b>{this.survey.personalData.email.label}</p>
-                    <div className="answer-holder">{this.generateAnswers(this.survey.personalData.email,"email")}</div>
+                    <div className="answer-holder-personal">{this.generateAnswers(this.survey.personalData.email,"email")}</div>
                 </div>
 
                 <div className="question" id={"question_" + this.survey.personalData.gender} >
                     <p className="question_label"><b>4.</b>{this.survey.personalData.gender.label}</p>
-                    <div className="answer-holder">{this.generateAnswers(this.survey.personalData.gender,"gender")}</div>
+                    <div className="answer-holder-personal">{this.generateAnswers(this.survey.personalData.gender,"gender")}</div>
                 </div>
             </div>
         );
