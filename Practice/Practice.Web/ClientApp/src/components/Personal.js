@@ -30,7 +30,7 @@ export class Personal extends Component {
                 this.setState({ error: "Survey is not active!" });
             }
             else{
-                this.setState({loading: false,});
+                this.setState({loading: false});
             }
         }
     }
@@ -55,22 +55,22 @@ export class Personal extends Component {
             <div className="question-holder">
                 <div className="question" id={"question_name"} >
                     <p className="question_label"><b>1.</b>{this.survey.personalData.name.label}</p>
-                    <div className="answer-holder">{this.generateAnswers(this.survey.personalData.name,"name")}</div>
+                    <div className="answer-holder-personal">{this.generateAnswers(this.survey.personalData.name,"name")}</div>
                 </div>
 
                 <div className="question" id={"question_" + this.survey.personalData.age} >
                         <p className="question_label"><b>2.</b>{this.survey.personalData.age.label}</p>
-                        <div className="answer-holder">{this.generateAnswers(this.survey.personalData.age,"age")}</div>
+                        <div className="answer-holder-personal">{this.generateAnswers(this.survey.personalData.age,"age")}</div>
                 </div>
 
                 <div className="question" id={"question_" + this.survey.personalData.email} >
                     <p className="question_label"><b>3.</b>{this.survey.personalData.email.label}</p>
-                    <div className="answer-holder">{this.generateAnswers(this.survey.personalData.email,"email")}</div>
+                    <div className="answer-holder-personal">{this.generateAnswers(this.survey.personalData.email,"email")}</div>
                 </div>
 
                 <div className="question" id={"question_" + this.survey.personalData.gender} >
                     <p className="question_label"><b>4.</b>{this.survey.personalData.gender.label}</p>
-                    <div className="answer-holder">{this.generateAnswers(this.survey.personalData.gender,"gender")}</div>
+                    <div className="answer-holder-personal">{this.generateAnswers(this.survey.personalData.gender,"gender")}</div>
                 </div>
             </div>
         );
@@ -88,18 +88,18 @@ export class Personal extends Component {
             case "radio":
                 return (
                     question.answer.map(answer =>
-                        <div className="answer" key={answer}>
-                            <input type="radio" id={"question_" + key + "_answer_" + answer} name={"question_" + key} value={answer}/>
-                            <label htmlFor={"question_" + key + "_answer_" + answer}>{answer}</label>
+                        <div className="answer" key={answer.answerId}>
+                            <input type="radio" id={"question_" + key + "_answer_" + answer.answerId} name={"question_" + key} value={answer.value}/>
+                            <label htmlFor={"question_" + key + "_answer_" + answer.answerId}>{answer.value}</label>
                         </div>
                     )
                 );
             case "checkbox":
                 return (
                     question.answer.map(answer => 
-                        <div className="answer" key={answer}>
-                            <input type="checkbox" id={"question_" + key + "_answer_" + answer} name={"question_" + key} value={answer}/>
-                            <label htmlFor={"question_" + key + "_answer_" + answer}>{answer}</label>
+                        <div className="answer" key={answer.answerId}>
+                            <input type="checkbox" id={"question_" + key + "_answer_" + answer.answerId} name={"question_" + key} value={answer.value}/>
+                            <label htmlFor={"question_" + key + "_answer_" + answer.answerId}>{answer.value}</label>
                         </div>
                     )
                 );

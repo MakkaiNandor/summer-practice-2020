@@ -5,6 +5,8 @@ import { Home } from './components/Home';
 import { Survey } from './components/Survey';
 import { Login } from './components/Login';
 import { Personal } from './components/Personal';
+import { EditForm } from './components/EditFormPage';
+import { EditFormQuestion } from './components/EditFormQuestion';
 
 import './custom.css'
 
@@ -18,6 +20,8 @@ export default class App extends Component {
         <Route path='/survey/:id' component={Survey} />
         <Route path='/login' component={Login} />
         <Route path='/personal/:id' component={Personal} />
+        <Route path='/editform/:id' component={EditForm} />
+        <Route path='/editformquestion/:id' component={EditFormQuestion} />
       </Layout>
     );
   }
