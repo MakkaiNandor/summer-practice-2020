@@ -1,0 +1,49 @@
+#title {
+    border: 1px solid black;
+    border-radius: 2em;
+    padding: 1em;
+    margin: 1em;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+#survey-table-holder {
+    text-align: center;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+#survey-table {
+    border-collapse: collapse;
+}
+#survey-table tr > * {
+    min-width: 5em;
+    padding: 0.5em;
+    border: 1px solid black;
+}
+#survey-table > thead {
+    background-color: lightgray;
+}
+#survey-table > thead > tr:hover{
+    background-color: lightgray;
+}
+.button {
+    padding: 0.5em;
+    border-radius: 0.5em;
+}
+.button:hover {
+    background-color: blue;
+    color: white;
+}
+#new-survey-button {
+    margin: 1em;
+}
+#link-page {
+    text-align: center;
+}
+#link-page button {
+    margin: 1em;
+}
+#link-page label {
+    margin-right: 1em;
+}
