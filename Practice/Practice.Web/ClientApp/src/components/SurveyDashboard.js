@@ -10,21 +10,33 @@ export class SurveyDashboard extends Component {
             loading: true,
             error: null,
             survey: null,
-            option: null
+            option: null,
+            surveys: null
         };
-        this.surveys = null;
         this.respondents = [];
         this.onClickHandler = this.onClickHandler.bind(this);
         this.publishSurvey = this.publishSurvey.bind(this);
     }
 
+    componentDidMount(){
+        this.getAllSurvey();
+    }
+
+    /*
+        -------------------------------
+        Asynchronous database functions
+        -------------------------------
+    */
+
+    // get all surveys
     async getAllSurvey(){
         const response = await fetch('https://localhost:44309/Survey/getAllSurvey');
         if(!response.ok) this.setState({ error: "Surveys not found!" });
         else{
-            this.surveys = await response.json();
+            let data = await response.json();
+            this.setState({ surveys: data });
             await this.getRespondentsOfAllSurveys();
-            this.surveys.sort((a, b) => {
+            data.sort((a, b) => {
                 if(a.status === b.status){
                     return this.getRespondents(b.surveyId) - this.getRespondents(a.surveyId);
                 }
@@ -36,23 +48,25 @@ export class SurveyDashboard extends Component {
         }
     }
 
+    // get respondents of every surveys
     async getRespondentsOfAllSurveys(){
-        for(let i = 0 ; i < this.surveys.length ; ++i){
-            const response = await fetch('https://localhost:44309/Answer/getReport/' + this.surveys[i].surveyId);
+        for(let i = 0 ; i < this.state.surveys.length ; ++i){
+            const response = await fetch('https://localhost:44309/Answer/getReport/' + this.state.surveys[i].surveyId);
             if(!response.ok) this.respondents.push({
-                surveyId: this.surveys[i].surveyId,
+                surveyId: this.state.surveys[i].surveyId,
                 completedCounter: 0
             });
             else{
                 const counters = await response.json();
                 this.respondents.push({
-                    surveyId: this.surveys[i].surveyId,
+                    surveyId: this.state.surveys[i].surveyId,
                     completedCounter: counters.completedCounter
                 });
             }
         }
     }
 
+    // update survey
     async editSurvey(){
         const response = await fetch('https://localhost:44309/Survey/editSurvey/' + this.state.survey.surveyId, {
             method: 'PATCH',
@@ -65,6 +79,25 @@ export class SurveyDashboard extends Component {
         else alert("Survey is activated!");
     }
 
+    // delete survey
+    async deleteSurvey(surveyId){
+        const response = await fetch('https://localhost:44309/Survey/deleteSurvey/' + surveyId, {
+            method: 'DELETE'
+        });
+        if(!response.ok) alert('Survey deleting failed!');
+        else{
+            this.setState((prevState) => ({ surveys: prevState.surveys.filter(survey => {return survey.surveyId !== surveyId}) }));
+            alert('Survey is deleted!');
+        }
+    }
+
+    /*
+        -------------------
+        Auxiliary functions
+        -------------------
+    */
+
+    // get respondents of one survey by id
     getRespondents(surveyId){
         let respondents = 0;
         this.respondents.forEach(element => {
@@ -75,32 +108,43 @@ export class SurveyDashboard extends Component {
         return respondents;
     }
 
+    // get survey by id
     getSurvey(surveyId){
-        for(let i = 0 ; i < this.surveys.length ; ++i){
-            if(this.surveys[i].surveyId === surveyId)
-                return this.surveys[i];
+        let result = this.state.surveys.filter(survey => {return survey.surveyId === surveyId});
+        if(result.length === 1) {
+            console.log(result[0].personalData);
+            return result[0];
         }
+        else return null;
     }
 
-    componentDidMount(){
-        this.getAllSurvey();
-    }
+    /*
+        -----------------------
+        Event handler functions
+        -----------------------
+    */
 
+    // button click event handler
     onClickHandler(event){
         let [option, , surveyId] = event.target.id.split("-");
         switch(option){
             case "publish":
             case "link":
+                this.setState({ survey: this.getSurvey(parseInt(surveyId)), option: option});
                 break;
             case "view":
+                window.location.href = window.location.href.replace("SurveyDashboard", "editform/" + surveyId);
                 break;
             case "report":
                 break;
+            case "delete":
+                if(window.confirm("Delete survey?")) this.deleteSurvey(parseInt(surveyId));
+                break;
             default:
         }
-        this.setState({ survey: this.getSurvey(parseInt(surveyId)), option: option});
     }
 
+    // copy generated link for survey
     copyLink(event){
         let linkInput = document.getElementById("link");
         linkInput.disabled = false;
@@ -109,6 +153,7 @@ export class SurveyDashboard extends Component {
         document.execCommand("copy");
     }
 
+    // event handler for publish button, publishing the survey
     publishSurvey(event){
         switch(this.state.survey.status){
             case "active":
@@ -127,10 +172,18 @@ export class SurveyDashboard extends Component {
         }
     }
 
+    // add new survey
     addNewSurvey(event){
         window.location.href = window.location.href.replace("SurveyDashboard", "CreateSurvey");
     }
 
+    /*
+        ----------------
+        Render functions
+        ----------------
+    */
+
+    // generate table of surveys
     renderTable(){
         return (
             <table id="survey-table">
@@ -144,19 +197,22 @@ export class SurveyDashboard extends Component {
                         <th></th>
                         <th></th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                {this.surveys.map(survey => 
+                {this.state.surveys.map(survey => 
                     <tr key={survey.surveyId}>
                         <td>{survey.title}</td>
                         <td>{survey.status}</td>
                         <td>{this.getRespondents(survey.surveyId)}</td>
-                        <td>{survey.createDate.replace(/[TZ]/g, " ")}</td>
-                        <td>{survey.expirationDate.replace(/[TZ]/g, " ")}</td>
+                        <td>{survey.createDate.slice(0, 16).replace("T", " ")}</td>
+                        <td>{survey.expirationDate.slice(0, 16).replace("T", " ")}</td>
                         <td>{survey.status === "active" ? <button id={"link-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Get Link</button> : survey.status === "created" ? <button id={"publish-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Publish</button> : null} </td>
-                        <td>{survey.status !== "closed" ? <button id={"view-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>View</button> : null}</td>
+                        <td>{survey.status !== "closed" ? <button id={"view-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Edit</button> : null}</td>
                         <td>{survey.status !== "created" ? <button id={"report-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Results</button> : null}</td>
+                        <td><button id={"delete-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Delete</button></td>
+                        
                     </tr>
                 )}
                 </tbody>

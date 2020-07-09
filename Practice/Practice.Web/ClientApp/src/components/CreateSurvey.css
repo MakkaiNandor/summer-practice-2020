@@ -138,3 +138,25 @@ textarea {
 .back-button {
     margin: 1em;
 }
+.delete-answer-button {
+    width: 2em;
+    height: 2em;
+    margin-left: 1em;
+    text-align: center;
+    font-size: small;
+    font-weight: bold;
+    background-color: red;
+    color: white;
+    border: 1px solid red;
+    border-radius: 50%;
+}
+.add-answer-button {
+    position: absolute;
+    font-size: small;
+    margin-left: 5em;
+}
+.remove-question-button {
+    position: relative;
+    left: 80%;
+    font-size: small;
+}
