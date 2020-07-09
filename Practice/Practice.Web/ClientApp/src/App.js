@@ -6,8 +6,10 @@ import { Survey } from './components/Survey';
 import { Login } from './components/Login';
 import { Personal } from './components/Personal';
 import { TemplateDashboard } from './components/TemplateDashboard';
-
+import { MainMenu } from './components/MainMenu';
+import { EditSurveyTemplate } from './components/EditSurveyTemplate';
 import './custom.css'
+
 
 export default class App extends Component {
   static displayName = App.name;
@@ -18,8 +20,11 @@ export default class App extends Component {
         <Route exact path='/' component={Home} />
         <Route path='/survey/:id' component={Survey} />
         <Route path='/login' component={Login} />
-            <Route path='/personal/:id' component={Personal} />
-            <Route path='/TemplateDashboard' component={TemplateDashboard}/>
+        <Route path='/personal/:id' component={Personal} />
+        <Route path='/TemplateDashboard' component={TemplateDashboard} />
+        <Route path='/MainMenu' component={MainMenu} />
+            <Route path='/EditSurveyTemplate/:id' component={EditSurveyTemplate}/>
+
       </Layout>
     );
   }

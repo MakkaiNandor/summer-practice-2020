@@ -81,9 +81,16 @@ namespace Practice.Api.Controllers
 
         [EnableCors]
         [HttpPost("createSurveyTemplate")]
-        public void CreatesurveyTemplate (Survey template)
+        public void CreatesurveyTemplate (Survey survey)
         {
-            _SurveyTemplates.Insert(SurveyToSurveyTemplate(template));
+            Random RandomID = new Random();
+            SurveyTemplate template = SurveyToSurveyTemplate(survey);
+            while (true)
+            {
+                template.SurveyTemplateId = RandomID.Next(1, 1000);
+                if (_SurveyTemplates.FindOne(element => element.SurveyTemplateId == template.SurveyTemplateId)==null) break;
+            }
+            _SurveyTemplates.Insert(template);
         }
 
 
