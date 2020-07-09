@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import "./Template.css"
+import { Link } from 'react-router-dom';
 
 export class TemplateDashboard extends Component {
     static displayName = TemplateDashboard.name;
@@ -13,7 +14,7 @@ export class TemplateDashboard extends Component {
             TemplateType: 1,
             templates : null,
             overlay:0,
-            templateId:null
+            templateId:this.props.match.params.id
         };
 
         
@@ -96,7 +97,7 @@ export class TemplateDashboard extends Component {
                                 <td>{template.name}</td>
                                 <td>{template.createDate}</td>
                                 <td>{template.used}</td>
-                                <td><button>Edit</button></td>
+                                <td><Link to={"./EditSurveyTemplate/"+template.surveyTemplateId}><button >Edit</button></Link></td>
                                 <td><button id ={template.surveyTemplateId} onClick={this.OverlayON}>Delete</button></td>
                             </tr>
                             
@@ -122,8 +123,8 @@ export class TemplateDashboard extends Component {
                                 <td>{template.label}</td>
                                 <td>{template.createDate}</td>
                                 <td>{template.used}</td>
-                                <td><button>Edit</button></td>
-                                <td><button id={template.questionTemplateId}onClick={this.OverlayON}>Delete</button></td>
+                                <td><Link to={"./EditSurveyTemplate/"+template.questionTemplateId}><button id={template.questionTemplateId} >Edit</button></Link></td>
+                                <td><button id={template.questionTemplateId} onClick={this.OverlayON}>Delete</button></td>
                             </tr>
                             )
                     }

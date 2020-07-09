@@ -53,12 +53,13 @@ namespace Practice.Api.Controllers
         public void CreateSurvey(Survey NewSurvey)
         {
             Random RandomID = new Random();
-            while (true)
+
+            while(true)
             {
                 NewSurvey.SurveyId = RandomID.Next(1, 1000);
                 if (_surveys.FindOne(survey => survey.SurveyId == NewSurvey.SurveyId) == null) break;
             }
-            _surveys.Insert(NewSurvey);
+             _surveys.Insert(NewSurvey);
         }
 
         [EnableCors]
