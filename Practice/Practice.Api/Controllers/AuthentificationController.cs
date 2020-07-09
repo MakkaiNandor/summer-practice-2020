@@ -19,6 +19,8 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Practice.Api.Helpers;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Practice.Api.Controllers
 {

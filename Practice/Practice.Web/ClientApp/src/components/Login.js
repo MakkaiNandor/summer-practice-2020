@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Login.css';
+
 //import './Home.css';
 
 export class Login extends Component {
@@ -37,19 +38,13 @@ export class Login extends Component {
       //body:(this.state)
     });
     
-    //console.log(await response.json()  );
+    console.log(await response.json()  );
     
-
-    console.log( await response.json());
-
-
-
-    
-   
-    
-    
-
-
+    /*
+    const asd = await authService.getAccessToken();
+    console.log(asd);
+*/
+   // console.log(  response);
 
 
     //console.log( response );
