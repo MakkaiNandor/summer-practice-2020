@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import './SurveyDashboard.css';
 
 export class SurveyDashboard extends Component {
@@ -133,7 +134,6 @@ export class SurveyDashboard extends Component {
                 this.setState({ survey: this.getSurvey(parseInt(surveyId)), option: option});
                 break;
             case "view":
-                window.location.href = window.location.href.replace("SurveyDashboard", "editform/" + surveyId);
                 break;
             case "report":
                 break;
@@ -172,11 +172,6 @@ export class SurveyDashboard extends Component {
         }
     }
 
-    // add new survey
-    addNewSurvey(event){
-        window.location.href = window.location.href.replace("SurveyDashboard", "CreateSurvey");
-    }
-
     /*
         ----------------
         Render functions
@@ -209,7 +204,7 @@ export class SurveyDashboard extends Component {
                         <td>{survey.createDate.slice(0, 16).replace("T", " ")}</td>
                         <td>{survey.expirationDate.slice(0, 16).replace("T", " ")}</td>
                         <td>{survey.status === "active" ? <button id={"link-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Get Link</button> : survey.status === "created" ? <button id={"publish-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Publish</button> : null} </td>
-                        <td>{survey.status !== "closed" ? <button id={"view-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Edit</button> : null}</td>
+                        <td>{survey.status !== "closed" ? <Link to={"./editForm/"+survey.surveyId}><button id={"view-button-"+survey.surveyId} className="button">Edit</button></Link> : null}</td>
                         <td>{survey.status !== "created" ? <button id={"report-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Results</button> : null}</td>
                         <td><button id={"delete-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Delete</button></td>
                         
@@ -255,7 +250,7 @@ export class SurveyDashboard extends Component {
                     <h2 id="title">My Forms</h2>
                     <div id="survey-table-holder">
                         {table}
-                        <button id="new-survey-button" className="button" onClick={this.addNewSurvey}>Add new form</button>
+                        <Link to="./CreateSurvey"><button id="new-survey-button" className="button" /*onClick={this.addNewSurvey}*/>Add new form</button></Link>
                     </div>
                 </div>
             );
