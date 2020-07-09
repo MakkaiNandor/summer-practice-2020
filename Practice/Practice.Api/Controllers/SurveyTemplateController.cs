@@ -9,6 +9,7 @@ using Practice.Api.Data;
 using Practice.Api.Data.Repositories;
 using Practice.Api.Models.Views;
 using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Practice.Api.Controllers
 {

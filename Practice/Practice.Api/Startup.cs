@@ -15,6 +15,10 @@ using Practice.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Practice.Api.Data.Repositories;
 using Practice.Api.Data;
+using Practice.Api.Helpers;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Practice.Api
 {
@@ -48,6 +52,33 @@ namespace Practice.Api
             services.AddTransient<IRepository<QuestionTemplate>>(provider => new Repository<QuestionTemplate>(settings, "QuestionTemplateCollection"));
             services.AddTransient<IRepository<SentAnswer>>(provider => new Repository<SentAnswer>(settings, "AnswerCollection"));
             services.AddControllers();
+
+
+            // configure strongly typed settings objects
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            // configure jwt authentication
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +96,8 @@ namespace Practice.Api
             app.UseCors();
 
             app.UseAuthorization();
+
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
