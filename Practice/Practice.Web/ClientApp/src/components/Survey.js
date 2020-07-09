@@ -24,9 +24,9 @@ export class Survey extends Component {
         this.getDefaultValue = this.getOldValue.bind(this);
 
         this.personalData = {name: null, age: null, email: null, gender: null};
-
         this.survey = null;
         this.userAnswers = null;
+        this.counters = null;
     }
 
     // get survey by id
@@ -70,11 +70,34 @@ export class Survey extends Component {
                 pages: [this.userAnswers[this.state.currPage]]
             })
         });
+        if(!response.ok) this.setState({ error: "Submittion went wrong!" });
         console.log(response);
     }
 
+    async getCounters(){
+        const response = await fetch('https://localhost:44309/Answer/getReport/' + this.props.match.params.id);
+        if(!response.ok) this.setState({ error: "Survey not found!" });
+        else{
+            this.counters = await response.json();
+            ++this.counters.leftCounter;
+            this.setCounters();
+        }
+    }
+
+    async setCounters(){
+        const response = await fetch('https://localhost:44309/Answer/setCounters/' + this.props.match.params.id, {
+            method: 'PATCH',
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(this.counters)
+        });
+        if(!response.ok) this.setState({ error: "Setting counters went wrong!" });
+    }  
+
     componentDidMount(){
         this.getSurvey();
+        this.getCounters();
         this.getParameters();
     }
 
@@ -104,22 +127,28 @@ export class Survey extends Component {
     }
 
     // event handlers for buttons
-    nextPage(){
-        this.saveAnswersOfPage();
+    nextPage(event){
+        if(this.saveAnswersOfPage()) this.savePageOfSurvey();
+        else return;
         if(this.state.firstPage) this.setState({ firstPage: false });
         if(this.state.currPage === this.state.numberOfPages - 2) this.setState({ lastPage: true });
         this.setState({ currPage: this.state.currPage + 1 });
     }
     
-    prevPage(){
-        this.saveAnswersOfPage();
+    prevPage(event){
+        this.saveAnswersOfPage(); 
+        this.savePageOfSurvey();
         if(this.state.lastPage) this.setState({ lastPage: false });
         if(this.state.currPage === 1) this.setState({ firstPage: true });
         this.setState({ currPage: this.state.currPage - 1 });
     }
     
-    submitSurvey(){
-        this.saveAnswersOfPage();
+    async submitSurvey(event){
+        if(this.saveAnswersOfPage()) await this.savePageOfSurvey();
+        else return;
+        --this.counters.leftCounter;
+        ++this.counters.completedCounter;
+        this.setCounters();
         this.setState({ submitted: true });
         console.log(this.userAnswers);
     }
@@ -171,6 +200,7 @@ export class Survey extends Component {
     
     // save answers of one page
     saveAnswersOfPage(){
+        let noAnswer = false;
         this.userAnswers[this.state.currPage].questions.map(question => {
             question.answers = [];
             return question;
@@ -185,8 +215,13 @@ export class Survey extends Component {
                     });
                 }
             });
+            if(question.answers.length === 0){
+                document.getElementById("question_" + question.questionId).style.borderColor = "red";
+                noAnswer = true;
+            }
+            else document.getElementById("question_" + question.questionId).style.borderColor = "black";
         });
-        this.savePageOfSurvey();
+        return !noAnswer;
     }
     
     // set up user's old answers

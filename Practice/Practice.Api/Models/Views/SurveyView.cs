@@ -12,6 +12,7 @@ namespace Practice.Api.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public string Ending { get; set; }
+        public DateTime CreateDate { get; set; }
         public DateTime ExpirationDate { get; set; }
         public string Status { get; set; }
         public PersonalData PersonalData { get; set; }

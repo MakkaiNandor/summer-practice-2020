@@ -116,7 +116,8 @@ export class Personal extends Component {
                     this.personalData[key] = null;
                 }
                 else if(key === "age"){
-                    this.personalData[key] = "" + parseInt(answerInput.value);
+                    let age = parseInt(answerInput.value);
+                    if(age) this.personalData[key] = "" + age;
                 }
                 else{
                     this.personalData[key] = answerInput.value;

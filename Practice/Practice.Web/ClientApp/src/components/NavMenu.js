@@ -30,15 +30,13 @@ export class NavMenu extends Component {
           <Container>
             <NavbarBrand tag={Link} to="/">site_name</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-            <ul className="navbar-nav flex-grow">
-              <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/survey/2?name=Karcsi&age=20&email=abc@xyz.com&gender=Male">Survey</NavLink>
-              </NavItem>
-            </ul>
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
                 <NavItem>
-                  <NavLink tag={Link} className="text-dark" to="/personal/2">Personal</NavLink>
+                  <NavLink tag={Link} className="text-dark" to="/SurveyDashboard">Survey Dashboard</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} className="text-dark" to="/personal/3">Personal</NavLink>
                 </NavItem>
               </ul>
             </Collapse>

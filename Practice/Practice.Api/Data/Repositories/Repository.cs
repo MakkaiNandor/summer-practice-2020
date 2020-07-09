@@ -31,7 +31,6 @@ namespace Practice.Api.Data.Repositories
         {
 
             var database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
-            //_collection = database.GetCollection<TDocument>(GetCollectionName(typeof(TDocument)));
             _collection = database.GetCollection<T>(CollectionName);
         }
 

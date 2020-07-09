@@ -11,6 +11,7 @@ using MongoDB.Driver;
 using Microsoft.CodeAnalysis.Differencing;
 using Practice.Api.Models;
 using Practice.Api.Models.Views;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Practice.Api.Controllers
 {
@@ -51,8 +52,14 @@ namespace Practice.Api.Controllers
         [HttpPost("createSurvey")]
         public void CreateSurvey(Survey NewSurvey)
         {
-            var alreadyExists = _surveys.FindOne(survey => survey.SurveyId == NewSurvey.SurveyId);
-            if (alreadyExists == null) _surveys.Insert(NewSurvey);
+            Random RandomID = new Random();
+
+            while(true)
+            {
+                NewSurvey.SurveyId = RandomID.Next(1, 1000);
+                if (_surveys.FindOne(survey => survey.SurveyId == NewSurvey.SurveyId) == null) break;
+            }
+             _surveys.Insert(NewSurvey);
         }
 
         [EnableCors]
@@ -95,6 +102,7 @@ namespace Practice.Api.Controllers
                 Title = survey.Title,
                 Description = survey.Description,
                 Ending = survey.Ending,
+                CreateDate=survey.CreateDate,
                 ExpirationDate = survey.ExpirationDate,
                 Status = survey.Status,
                 PersonalData = survey.PersonalData,
