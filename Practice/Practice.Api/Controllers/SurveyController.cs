@@ -11,6 +11,7 @@ using MongoDB.Driver;
 using Microsoft.CodeAnalysis.Differencing;
 using Practice.Api.Models;
 using Practice.Api.Models.Views;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Practice.Api.Controllers
 {
