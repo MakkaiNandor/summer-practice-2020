@@ -71,6 +71,13 @@ namespace Practice.Api.Controllers
                 CreateDate = DateTime.Now.ToString(),
                 Answers = question.Answers
             };
+            Random RandomID = new Random();
+            while (true)
+            {
+                template.QuestionTemplateId = RandomID.Next(1, 1000);
+                if (_templates.FindOne(item => item.QuestionTemplateId == template.QuestionTemplateId) == null) break;
+            }
+
             _templates.Insert(template);
         }
 

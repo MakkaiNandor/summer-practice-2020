@@ -14,7 +14,7 @@ export class TemplateDashboard extends Component {
             TemplateType: 1,
             templates : null,
             overlay:0,
-            templateId:this.props.match.params.id
+            templateId:null
         };
 
         
@@ -123,7 +123,7 @@ export class TemplateDashboard extends Component {
                                 <td>{template.label}</td>
                                 <td>{template.createDate}</td>
                                 <td>{template.used}</td>
-                                <td><Link to={"./EditSurveyTemplate/"+template.questionTemplateId}><button id={template.questionTemplateId} >Edit</button></Link></td>
+                                <td><Link to={"./EditQuestionTemplate/"+parseInt(template.questionTemplateId)}><button id={template.questionTemplateId} >Edit</button></Link></td>
                                 <td><button id={template.questionTemplateId} onClick={this.OverlayON}>Delete</button></td>
                             </tr>
                             )
@@ -171,7 +171,7 @@ export class TemplateDashboard extends Component {
 
     OverlayON(event)
     {
-        this.setState({templateId:event.target.id[0]});
+        this.setState({templateId:parseInt(event.target.id)});
         if (this.state.overlay===0) this.setState({overlay:1});
     }
 
@@ -206,12 +206,22 @@ export class TemplateDashboard extends Component {
         render(){
             if (this.state.error) {
                 return (
-                    <p> {this.state.error} </p>
+                    <div>
+                        <div id="homepage_button_holder">
+                            <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        </div>
+                        <p> {this.state.error} </p>
+                    </div>
                 );
             }
             else if (this.state.loading) {
                 return (
-                    <p> Loading ... </p>
+                    <div>
+                        <div id="homepage_button_holder">
+                            <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        </div>
+                        <p> Loading ... </p>
+                    </div>
                 );
             }
             else {
@@ -225,12 +235,16 @@ export class TemplateDashboard extends Component {
                 
                 return (
                     <div>
+                        <div id="homepage_button_holder">
+                            <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        </div>
                         <h2 id="survey-title">{this.title}</h2>
                         {overlay}
                         <div>
                             <button id="left_button" onClick={this.ChangeToSurveyTemplate}>Surveys</button>
                             <button id="right_button" onClick={this.ChangeToQuestionTemplate}>Questions</button>
                         </div>
+                        <div id='create_button_container'><Link to="CreateSurvey"><button id="create_survey">Create survey</button></Link></div>
                         <br></br>
                         {table}
                         

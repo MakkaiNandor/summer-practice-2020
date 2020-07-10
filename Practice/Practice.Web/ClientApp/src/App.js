@@ -9,7 +9,7 @@ import { EditForm } from './components/EditFormPage';
 import { EditFormQuestion } from './components/EditFormQuestion';
 import { TemplateDashboard } from './components/TemplateDashboard';
 import { MainMenu } from './components/MainMenu';
-import { EditSurveyTemplate } from './components/EditSurveyTemplate';
+import { EditQuestionTemplate } from './components/EditQuestionTemplate';
 import { SurveyDashboard } from './components/SurveyDashboard';
 import { CreateSurvey } from './components/CreateSurvey';
 
@@ -28,7 +28,7 @@ export default class App extends Component {
         <Route path='/personal/:id' component={Personal} />
         <Route path='/TemplateDashboard' component={TemplateDashboard} />
         <Route path='/MainMenu' component={MainMenu} />
-        <Route path='/EditSurveyTemplate/:id' component={EditSurveyTemplate}/>
+        <Route path='/EditQuestionTemplate/:id' component={EditQuestionTemplate}/>
         <Route path='/SurveyDashboard' component={SurveyDashboard} />
         <Route path='/CreateSurvey' component={CreateSurvey} />
         <Route path='/EditTemplate/:id' component={CreateSurvey} />

@@ -213,7 +213,7 @@ export class SurveyDashboard extends Component {
                         <td>{survey.createDate.slice(0, 16).replace("T", " ")}</td>
                         <td>{survey.expirationDate.slice(0, 16).replace("T", " ")}</td>
                         <td>{survey.status === "active" ? <button id={"link-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Get Link</button> : survey.status === "created" ? <button id={"publish-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Publish</button> : null} </td>
-                        <td>{survey.status !== "closed" ? <Link to={"./editForm/"+survey.surveyId}><button id={"view-button-"+survey.surveyId} className="button">Edit</button></Link> : null}</td>
+                        <td>{survey.status !== "closed" ? <Link to={"./editform/"+survey.surveyId}><button id={"view-button-"+survey.surveyId} className="button">Edit</button></Link> : null}</td>
                         <td>{survey.status !== "created" ? <button id={"report-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Results</button> : null}</td>
                         <td><button id={"delete-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Delete</button></td>
                         
@@ -227,12 +227,22 @@ export class SurveyDashboard extends Component {
     render() {
         if(this.state.error){
             return (
-                <p>{this.state.error}</p>
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>{this.state.error}</p>
+                </div>
             );
         }
         else if(this.state.loading){
             return (
-                <p>Loading...</p>
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>Loading...</p>
+                </div>
             );
         }
         else if(this.state.option === "link" || this.state.option === "publish"){
@@ -256,6 +266,9 @@ export class SurveyDashboard extends Component {
             let table = this.renderTable();
             return (
                 <div id="dashboard-page">
+                    <div id="homepage_button_holder">
+                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
                     <h2 id="title">My Forms</h2>
                     <div id="survey-table-holder">
                         {table}
