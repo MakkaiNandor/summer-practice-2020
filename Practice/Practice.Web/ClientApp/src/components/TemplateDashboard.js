@@ -208,7 +208,7 @@ export class TemplateDashboard extends Component {
                 return (
                     <div>
                         <div id="homepage_button_holder">
-                            <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                            <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                         </div>
                         <p> {this.state.error} </p>
                     </div>
@@ -218,7 +218,7 @@ export class TemplateDashboard extends Component {
                 return (
                     <div>
                         <div id="homepage_button_holder">
-                            <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                            <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                         </div>
                         <p> Loading ... </p>
                     </div>
@@ -236,7 +236,7 @@ export class TemplateDashboard extends Component {
                 return (
                     <div>
                         <div id="homepage_button_holder">
-                            <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                            <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                         </div>
                         <h2 id="survey-title">{this.title}</h2>
                         {overlay}

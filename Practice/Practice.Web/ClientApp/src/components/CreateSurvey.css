@@ -24,6 +24,20 @@
     margin-left: auto;
     margin-right: auto;
 }
+
+#search_button{
+    width: 130px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 1em 1em 1em 1em;
+    font-size: 16px;
+    background-size: 1em 1em;
+    background-image: url('searchicon.png');
+    background-position: 10px 15px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+}
+
 .template-button {
     display: inline-block;
     margin-left: 1rem;

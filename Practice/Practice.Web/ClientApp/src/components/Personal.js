@@ -139,22 +139,12 @@ export class Personal extends Component {
     render() {
         if(this.state.error){
             return (
-                <div>
-                    <div id="homepage_button_holder">
-                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
-                    </div>
                     <p>{this.state.error}</p>
-                </div>
             );
         }
         else if(this.state.loading){
             return (
-                <div>
-                    <div id="homepage_button_holder">
-                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
-                    </div>
                     <p>Loading...</p>
-                </div>
             );
         }
         else if(this.state.redirect){
@@ -165,9 +155,6 @@ export class Personal extends Component {
         else{
             return (
                 <div id="survey_page">
-                    <div id="homepage_button_holder">
-                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
-                    </div>
                     <h2 id="survey_title">{this.descriptions.title}</h2>
                     <p className="description"><b>What will happen with your data: </b>{this.descriptions.description}</p>
                     {this.generateQuestions()}

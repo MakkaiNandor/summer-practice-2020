@@ -242,30 +242,17 @@ export class Survey extends Component {
     render() {
         if(this.state.error){
             return (
-                <div>
-                    <div id="homepage_button_holder">
-                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
-                    </div>
                     <p>{this.state.error}</p>
-                </div>
             );
         }
         else if(this.state.loading){
             return (
-                <div>
-                    <div id="homepage_button_holder">
-                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
-                    </div>
                     <p>Loading...</p>
-                </div>
             );
         }
         else if(this.state.submitted){
             return (
                 <div id="survey-page">
-                    <div id="homepage_button_holder">
-                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
-                    </div>
                     <h2 id="survey-title">{this.survey.title}</h2>
                 <div id="progress-bar-holder">
                     <p>End of survey</p>
@@ -289,9 +276,6 @@ export class Survey extends Component {
 
             return (
                 <div id="survey-page">
-                    <div id="homepage_button_holder">
-                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
-                    </div>
                     <h2 id="survey-title">{this.survey.title}</h2>
                     <div id="progress-bar-holder">
                         <p>Page {this.state.currPage + 1} of {this.state.numberOfPages}</p>

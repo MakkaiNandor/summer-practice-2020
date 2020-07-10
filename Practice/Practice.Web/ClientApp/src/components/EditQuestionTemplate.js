@@ -178,11 +178,25 @@ export class EditQuestionTemplate extends Component{
     {
         if (this.state.error)
         {
-            return ( <p>{this.state.error}</p>);
+            return ( 
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>{this.state.error}</p>
+                </div>
+            );
         }
         else if (this.state.loading)
         {
-            return (<p>Loading ...</p>);
+            return (
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>Loading ...</p>
+                </div>
+            );
         }
         else
         {
@@ -195,6 +209,9 @@ export class EditQuestionTemplate extends Component{
             return(
                 <div>
                     <div>
+                        <div id="homepage_button_holder">
+                            <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        </div>
                         <h2 id="page_title">{this.title}</h2>
                     </div>
                     <div id="container">

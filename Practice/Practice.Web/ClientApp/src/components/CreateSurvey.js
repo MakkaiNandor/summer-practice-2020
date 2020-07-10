@@ -800,7 +800,7 @@ export class CreateSurvey extends Component {
             return (
                 <div>
                     <div id="homepage_button_holder">
-                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
                     <p>{this.state.error}</p>
                 </div>
@@ -810,7 +810,7 @@ export class CreateSurvey extends Component {
             return (
                 <div>
                     <div id="homepage_button_holder">
-                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
                     <p>Loading...</p>
                 </div>
@@ -847,7 +847,7 @@ export class CreateSurvey extends Component {
             return (
                 <div id="create-survey-page">
                     <div id="homepage_button_holder">
-                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
                     <h2 id="title">Create Form</h2>
                     <p className="message">{message}</p>
