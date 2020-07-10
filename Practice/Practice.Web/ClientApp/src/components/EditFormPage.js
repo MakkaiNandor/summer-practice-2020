@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import './EditFormPage.css';
+import { Link } from 'react-router-dom';
 
 export class EditForm extends Component {
     static displayName = EditForm.name;
@@ -45,7 +46,7 @@ export class EditForm extends Component {
         return (
             <form id="edit_part_form">
                 <div>
-                    <div className="label-holder holder"><label htmlFor="question_title"><b>Title: </b></label></div>
+                    <div className="page_label-holder holder"><label htmlFor="question_title"><b>Title: </b></label></div>
                     <div className="answer-holder holder"><input className="answer" type="text" name="question_title" defaultValue={this.survey.title} /></div>
                 </div>
 
@@ -58,12 +59,12 @@ export class EditForm extends Component {
                 </div>
             
                 <div>
-                    <div className="label-holder holder"><label htmlFor="question_description"><b>Description: </b></label></div>
+                    <div className="page_label-holder holder"><label htmlFor="question_description"><b>Description: </b></label></div>
                     <div className="answer-holder holder"><textarea className="answer" name="question_description" defaultValue={this.survey.description} maxLength="32000" /></div>
                 </div>
 
                 <div>
-                    <div className="label-holder holder"><label htmlFor="question_ending"><b>Footer description:</b> </label></div>
+                    <div className="page_label-holder holder"><label htmlFor="question_ending"><b>Footer description:</b> </label></div>
                     <div className="answer-holder holder"><textarea className="answer" name="question_ending" defaultValue={this.survey.ending} /></div>
                 </div>
             </form>
@@ -103,12 +104,22 @@ export class EditForm extends Component {
     render() {
         if(this.state.error){
             return (
-                <p>{this.state.error}</p>
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>{this.state.error}</p>
+                </div>
             );
         }
         else if(this.state.loading){
             return (
-                <p>Loading...</p>
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>Loading...</p>
+                </div>
             );
         }
         else if(this.state.redirect){
@@ -120,8 +131,9 @@ export class EditForm extends Component {
             if(this.survey.status === "active"){
                 return (
                     <div id="edit_survey_page">
-                        {/*<a href="#" className="previous round">&#8249;</a>*/}
-                        {/*<input type="button" value="Go back!" onclick="history.back()"></input> */}
+                        <div id="homepage_button_holder">
+                            <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        </div>
                         <h2 id="edit_survey_title">{this.descriptions.page_title}</h2>
                         <p className="description"><b>{this.descriptions.active}</b></p>
                         {this.generateMain()}
@@ -132,11 +144,13 @@ export class EditForm extends Component {
             else if(this.survey.status === "created"){
                 return (
                     <div id="edit_survey_page">
+                        <div id="homepage_button_holder">
+                            <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        </div>
                         <h2 id="edit_survey_title">{this.descriptions.page_title}</h2>
                         <p className="description"><b>{this.descriptions.created}</b></p>
                         {this.generateMain()}
                         <button className="edit_survey-button" onClick={this.submitMain}>Edit the questions</button>
-
                     </div>
                 );
             }
@@ -152,7 +166,7 @@ export class EditForm extends Component {
                 },
                 body: JSON.stringify(this.survey)
             });
-            console.log(response);
+            //console.log(response);
             if(response.ok){
                 this.setState({ redirect: true, target: "/SurveyDashboard" });
             }
@@ -165,7 +179,7 @@ export class EditForm extends Component {
                 },
                 body: JSON.stringify(this.survey)
             });
-            console.log(response);
+            //console.log(response);
             if(response.ok){
                 this.setState({ redirect: true, target: "/editformquestion/" + this.survey.surveyId });
             }

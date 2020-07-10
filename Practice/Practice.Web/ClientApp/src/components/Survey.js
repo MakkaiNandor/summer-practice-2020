@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Survey.css';
+import { Link } from 'react-router-dom';
 
 export class Survey extends Component {
     static displayName = Survey.name;
@@ -71,7 +72,7 @@ export class Survey extends Component {
             })
         });
         if(!response.ok) this.setState({ error: "Submittion went wrong!" });
-        console.log(response);
+        //console.log(response);
     }
 
     async getCounters(){
@@ -150,7 +151,7 @@ export class Survey extends Component {
         ++this.counters.completedCounter;
         this.setCounters();
         this.setState({ submitted: true });
-        console.log(this.userAnswers);
+        //console.log(this.userAnswers);
     }
 
     // generate questions of page
@@ -241,18 +242,18 @@ export class Survey extends Component {
     render() {
         if(this.state.error){
             return (
-                <p>{this.state.error}</p>
+                    <p>{this.state.error}</p>
             );
         }
         else if(this.state.loading){
             return (
-                <p>Loading...</p>
+                    <p>Loading...</p>
             );
         }
         else if(this.state.submitted){
             return (
                 <div id="survey-page">
-                <h2 id="survey-title">{this.survey.title}</h2>
+                    <h2 id="survey-title">{this.survey.title}</h2>
                 <div id="progress-bar-holder">
                     <p>End of survey</p>
                     <div id="progress-bar-frame">

@@ -206,12 +206,22 @@ export class TemplateDashboard extends Component {
         render(){
             if (this.state.error) {
                 return (
-                    <p> {this.state.error} </p>
+                    <div>
+                        <div id="homepage_button_holder">
+                            <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        </div>
+                        <p> {this.state.error} </p>
+                    </div>
                 );
             }
             else if (this.state.loading) {
                 return (
-                    <p> Loading ... </p>
+                    <div>
+                        <div id="homepage_button_holder">
+                            <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        </div>
+                        <p> Loading ... </p>
+                    </div>
                 );
             }
             else {
@@ -225,6 +235,9 @@ export class TemplateDashboard extends Component {
                 
                 return (
                     <div>
+                        <div id="homepage_button_holder">
+                            <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        </div>
                         <h2 id="survey-title">{this.title}</h2>
                         {overlay}
                         <div>
