@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './CreateSurvey.css';
+import { Link } from 'react-router-dom';
 
 export class CreateSurvey extends Component {
     static displayName = CreateSurvey.name;
@@ -13,11 +14,11 @@ export class CreateSurvey extends Component {
             pageStatus: "templates",
             baseTemplate: null,
             currPageNumber: null,
-            data: []
+            data: [],
+            surveyTemplates: null
         };
 
         this.survey = null;
-        this.surveyTemplates = null;
         this.personalData = {
             name: {
                 type: "input",
@@ -64,27 +65,9 @@ export class CreateSurvey extends Component {
         this.addNewQuestion = this.addNewQuestion.bind(this);
         this.saveQuestionText = this.saveQuestionText.bind(this);
         this.saveAnswerLabel = this.saveAnswerLabel.bind(this);
+        this.searchTemplate = this.searchTemplate.bind(this);
     }
-    
-    /*
-    questionsAndAnswers = [{
-        pageNumber: 1,
-        questions: [{
-            questionId: 1,
-            type: "radio",
-            questionOptions: [{
-                type: "radio",
-                answers: [{
-                    answerId: 1,
-                    value: "Yes"
-                },{
-                    anserId: 2,
-                    value: "No"
-                }]
-            }]
-        }]
-    }];
-    */
+
 
     componentDidMount(){
         this.getAllSurveyTemplates();
@@ -101,7 +84,7 @@ export class CreateSurvey extends Component {
         const response = await fetch('https://localhost:44309/SurveyTemplate/getAllSurveyTemplates');
         if(!response.ok) this.setState({ error: "There are no form templates!" });
         else{
-            this.surveyTemplates = await response.json();
+            this.state.surveyTemplates = await response.json();
             this.setState({ loading: false });
         }
     }
@@ -143,7 +126,7 @@ export class CreateSurvey extends Component {
     // get selected template by id
     getTemplateById(templateId){
         let result = null;
-        this.surveyTemplates.forEach(template => {
+        this.state.surveyTemplates.forEach(template => {
             if(template.surveyTemplateId === templateId){
                 result = template;
                 return;
@@ -516,6 +499,22 @@ export class CreateSurvey extends Component {
         this.setState({ data: data });
     }
 
+    searchTemplate(){
+        let input = document.getElementById("search_button");
+        let filter = input.value.toUpperCase();
+        let holder = document.getElementById("survey-template-holder");
+        let button = holder.getElementsByTagName("button");
+        for (let i = 0; i < button.length; ++i) {
+            let a = button[i];
+            let txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                button[i].style.display = "";
+            } else {
+                button[i].style.display = "none";
+            }
+        }
+    }
+
     /*
         ----------------
         Render functions
@@ -525,10 +524,15 @@ export class CreateSurvey extends Component {
     // rendering survey templates
     renderSurveyTemplates(){
         return (
-            <div id="survey-template-holder">
-                {this.surveyTemplates.map(template => 
-                    <button id={"template-"+template.surveyTemplateId} className="template-button" key={template.surveyTemplateId} onClick={this.onTemplateClicked}>{template.name}</button>
-                )}
+            <div>
+                <div id="search_button_holder">
+                    <input id="search_button" type="text" name="search" placeholder="Search.." onKeyUp={this.searchTemplate} title="Type in a template name"></input>
+                </div>
+                <div id="survey-template-holder">
+                    {this.state.surveyTemplates.map(template => 
+                        <button id={"template-"+template.surveyTemplateId} className="template-button" key={template.surveyTemplateId} onClick={this.onTemplateClicked}>{template.name}</button>
+                    )}
+                </div>
             </div>
         );
     }
@@ -656,12 +660,22 @@ export class CreateSurvey extends Component {
     render(){
         if(this.state.error){
             return (
-                <p>{this.state.error}</p>
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>{this.state.error}</p>
+                </div>
             );
         }
         else if(this.state.loading){
             return (
-                <p>Loading...</p>
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>Loading...</p>
+                </div>
             );
         }
         else{
@@ -683,6 +697,9 @@ export class CreateSurvey extends Component {
             }
             return (
                 <div id="create-survey-page">
+                    <div id="homepage_button_holder">
+                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
                     <h2 id="title">Create Form</h2>
                     <p className="message">{message}</p>
                     {content}

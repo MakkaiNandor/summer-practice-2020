@@ -18,6 +18,12 @@
     overflow-y: hidden;
     white-space: nowrap;
 }
+
+#search_button_holder{
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
 .template-button {
     display: inline-block;
     margin-left: 1rem;
@@ -159,4 +165,33 @@ textarea {
     position: relative;
     left: 80%;
     font-size: small;
+}
+
+#search_button{
+    border-radius: 1em 1em 1em 1em;
+    width: 130px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    font-size: 16px;
+    background-size: 1em 1em;
+    background-image: url('searchicon.png');
+    background-position: 10px 15px; 
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 40px;
+}
+
+#homepage_button{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 125px;
+    border-radius: 1em 1em 1em 1em;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    font-size: 14px;
+    background-size: 1em 1em;
+    background-image: url('homepage.png');
+    background-position: 10px 16px; 
+    background-repeat: no-repeat;
+    padding: 12px 0px 12px 5px;
 }

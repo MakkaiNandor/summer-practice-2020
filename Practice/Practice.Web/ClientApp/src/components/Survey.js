@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Survey.css';
+import { Link } from 'react-router-dom';
 
 export class Survey extends Component {
     static displayName = Survey.name;
@@ -71,7 +72,7 @@ export class Survey extends Component {
             })
         });
         if(!response.ok) this.setState({ error: "Submittion went wrong!" });
-        console.log(response);
+        //console.log(response);
     }
 
     async getCounters(){
@@ -150,7 +151,7 @@ export class Survey extends Component {
         ++this.counters.completedCounter;
         this.setCounters();
         this.setState({ submitted: true });
-        console.log(this.userAnswers);
+        //console.log(this.userAnswers);
     }
 
     // generate questions of page
@@ -241,18 +242,31 @@ export class Survey extends Component {
     render() {
         if(this.state.error){
             return (
-                <p>{this.state.error}</p>
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>{this.state.error}</p>
+                </div>
             );
         }
         else if(this.state.loading){
             return (
-                <p>Loading...</p>
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>Loading...</p>
+                </div>
             );
         }
         else if(this.state.submitted){
             return (
                 <div id="survey-page">
-                <h2 id="survey-title">{this.survey.title}</h2>
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <h2 id="survey-title">{this.survey.title}</h2>
                 <div id="progress-bar-holder">
                     <p>End of survey</p>
                     <div id="progress-bar-frame">
@@ -275,6 +289,9 @@ export class Survey extends Component {
 
             return (
                 <div id="survey-page">
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
                     <h2 id="survey-title">{this.survey.title}</h2>
                     <div id="progress-bar-holder">
                         <p>Page {this.state.currPage + 1} of {this.state.numberOfPages}</p>

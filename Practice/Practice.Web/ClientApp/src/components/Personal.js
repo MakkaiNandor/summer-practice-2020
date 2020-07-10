@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Personal.css';
+import { Link } from 'react-router-dom';
 
 export class Personal extends Component {
     static displayName = Personal.name;
@@ -45,7 +46,7 @@ export class Personal extends Component {
             alert("Personal datas are not completed correctly!");
             return;
         }
-        console.log(this.personalData);
+        //console.log(this.personalData);
         this.submitPersonalData();
     }
 
@@ -135,17 +136,30 @@ export class Personal extends Component {
     render() {
         if(this.state.error){
             return (
-                <p>{this.state.error}</p>
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>{this.state.error}</p>
+                </div>
             );
         }
         else if(this.state.loading){
             return (
-                <p>Loading...</p>
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>Loading...</p>
+                </div>
             );
         }
         else{
             return (
                 <div id="survey_page">
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
                     <h2 id="survey_title">{this.descriptions.title}</h2>
                     <p className="description"><b>What will happen with your data: </b>{this.descriptions.description}</p>
                     {this.generateQuestions()}
@@ -164,7 +178,7 @@ export class Personal extends Component {
             },
             body: JSON.stringify(this.personalData)
         });
-        console.log(response);
+        //console.log(response);
         if(response.ok){
             window.location.href = window.location.href.replace("personal", "survey") + "?name=" + this.personalData.name + "&age=" + this.personalData.age + "&email=" + this.personalData.email + "&gender=" + this.personalData.gender;
         } 

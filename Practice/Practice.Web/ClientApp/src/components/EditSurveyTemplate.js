@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './EditSurveyTemplate.css';
+import { Link } from 'react-router-dom';
 
 export class EditSurveyTemplate extends Component{
     static displayName=EditSurveyTemplate.name;
@@ -86,7 +87,7 @@ export class EditSurveyTemplate extends Component{
     SwitchPage(event)
     {
         this.setState({currentPage:event.target.id});
-        console.log(event.target.id);
+        //console.log(event.target.id);
     }
 
     //Generate other pages
@@ -123,21 +124,38 @@ export class EditSurveyTemplate extends Component{
 
         if (this.state.error)
         {
-            return ( <p>{this.state.error}</p>);
+            return (
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>{this.state.error}</p>
+                </div>
+            );
         }
         else if (this.state.loading)
         {
-            return (<p>Loading ...</p>);
+            return (
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>Loading ...</p>
+                </div>
+            );
         }
         else
         {
             let Generatedpage=null;
-            if (this.state.currentPage==0) Generatedpage=this.GeneratePage0();
+            if (this.state.currentPage===0) Generatedpage=this.GeneratePage0();
             else Generatedpage=this.GeneratePage();
 
             return(
                 <div>
                     <div>
+                        <div id="homepage_button_holder">
+                            <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        </div>
                         <h2 id="page_title">{this.title}</h2>
                     </div>
                     <div id="container">
