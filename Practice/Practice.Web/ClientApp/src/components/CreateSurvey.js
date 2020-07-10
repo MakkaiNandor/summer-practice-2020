@@ -276,8 +276,29 @@ export class CreateSurvey extends Component {
 
     // template selection
     onTemplateClicked(event){
-        let templateId = parseInt(event.target.id.split("-")[1]);
-        let template = this.getTemplateById(templateId);
+        let template = null;
+        if(event.target.id === "template-default"){
+            template = {
+                surveyTemplateId: 0,
+                name: "Default",
+                title: "",
+                description: "",
+                ending: "",
+                pages: [{
+                    pageNumber: 1,
+                    questions: [{
+                        questionId: 1,
+                        type: "input",
+                        label: "",
+                        answers: []
+                    }]
+                }]
+            };
+        }
+        else{
+            let templateId = parseInt(event.target.id.split("-")[1]);
+            template = this.getTemplateById(templateId);
+        }
         this.setState({ pageStatus: "creation_1", baseTemplate: template, data: template.pages.reduce((acc1, page) => {
             return acc1.concat({
                 pageNumber: page.pageNumber,
@@ -662,6 +683,7 @@ export class CreateSurvey extends Component {
     renderSurveyTemplates(){
         return (
             <div id="survey-template-holder">
+                <button id="template-default" className="template-button" onClick={this.onTemplateClicked}>Default</button>
                 {this.surveyTemplates.map(template => 
                     <button id={"template-"+template.surveyTemplateId} className="template-button" key={template.surveyTemplateId} onClick={this.onTemplateClicked}>{template.name}</button>
                 )}
