@@ -31,6 +31,7 @@ export default class App extends Component {
         <Route path='/EditSurveyTemplate/:id' component={EditSurveyTemplate}/>
         <Route path='/SurveyDashboard' component={SurveyDashboard} />
         <Route path='/CreateSurvey' component={CreateSurvey} />
+        <Route path='/EditTemplate/:id' component={CreateSurvey} />
         <Route path='/editform/:id' component={EditForm} />
         <Route path='/editformquestion/:id' component={EditFormQuestion} />
       </Layout>

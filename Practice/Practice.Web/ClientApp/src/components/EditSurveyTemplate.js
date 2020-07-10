@@ -132,7 +132,7 @@ export class EditSurveyTemplate extends Component{
         else
         {
             let Generatedpage=null;
-            if (this.state.currentPage==0) Generatedpage=this.GeneratePage0();
+            if (this.state.currentPage===0) Generatedpage=this.GeneratePage0();
             else Generatedpage=this.GeneratePage();
 
             return(
