@@ -12,11 +12,14 @@ export class SurveyDashboard extends Component {
             error: null,
             survey: null,
             option: null,
-            surveys: null
+            surveys: null,
+            redirect: false,
+            target: ""
         };
         this.respondents = [];
         this.onClickHandler = this.onClickHandler.bind(this);
         this.publishSurvey = this.publishSurvey.bind(this);
+        this.sortSurveys = this.sortSurveys.bind(this);
     }
 
     componentDidMount(){
@@ -36,15 +39,8 @@ export class SurveyDashboard extends Component {
         else{
             let data = await response.json();
             this.setState({ surveys: data });
+            this.sortSurveys();
             await this.getRespondentsOfAllSurveys();
-            data.sort((a, b) => {
-                if(a.status === b.status){
-                    return this.getRespondents(b.surveyId) - this.getRespondents(a.surveyId);
-                }
-                let statusA = a.status === "active" ? 1 : a.status === "created" ? 2 : 3;
-                let statusB = b.status === "active" ? 1 : b.status === "created" ? 2 : 3;
-                return statusA - statusB;
-            });
             this.setState({ loading: false });
         }
     }
@@ -77,7 +73,10 @@ export class SurveyDashboard extends Component {
             body: JSON.stringify(this.state.survey)
         });
         if(!response.ok) alert("Survey activation failed!");
-        else alert("Survey is activated!");
+        else {
+            alert("Survey is activated!");
+            this.sortSurveys();
+        }
     }
 
     // delete survey
@@ -98,6 +97,17 @@ export class SurveyDashboard extends Component {
         -------------------
     */
 
+    sortSurveys(){
+        this.setState({ surveys: this.state.surveys.sort((a, b) => {
+            if(a.status === b.status){
+                return this.getRespondents(b.surveyId) - this.getRespondents(a.surveyId);
+            }
+            let statusA = a.status === "active" ? 1 : a.status === "created" ? 2 : 3;
+            let statusB = b.status === "active" ? 1 : b.status === "created" ? 2 : 3;
+            return statusA - statusB;
+        }) });
+    }
+
     // get respondents of one survey by id
     getRespondents(surveyId){
         let respondents = 0;
@@ -113,7 +123,6 @@ export class SurveyDashboard extends Component {
     getSurvey(surveyId){
         let result = this.state.surveys.filter(survey => {return survey.surveyId === surveyId});
         if(result.length === 1) {
-            console.log(result[0].personalData);
             return result[0];
         }
         else return null;
@@ -228,7 +237,7 @@ export class SurveyDashboard extends Component {
         }
         else if(this.state.option === "link" || this.state.option === "publish"){
             let publishButton = this.state.option === "publish" ? <button className="button" onClick={this.publishSurvey}>Publish</button> : null;
-            let link = window.location.href.replace("SurveyDashboard", "personal/"+this.state.survey.surveyId);
+            let link = window.location.href.replace("SurveyDashboard", "personal/" + this.state.survey.surveyId);
             return (
                 <div id="link-page">
                     <h2 id="title">Share Form</h2>
@@ -250,7 +259,7 @@ export class SurveyDashboard extends Component {
                     <h2 id="title">My Forms</h2>
                     <div id="survey-table-holder">
                         {table}
-                        <Link to="./CreateSurvey"><button id="new-survey-button" className="button" /*onClick={this.addNewSurvey}*/>Add new form</button></Link>
+                        <Link to="./CreateSurvey"><button id="new-survey-button" className="button">Add new form</button></Link>
                     </div>
                 </div>
             );

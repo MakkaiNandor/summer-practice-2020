@@ -97,7 +97,7 @@ export class TemplateDashboard extends Component {
                                 <td>{template.name}</td>
                                 <td>{template.createDate}</td>
                                 <td>{template.used}</td>
-                                <td><button >Edit</button></td>
+                                <td><Link to={"/EditTemplate/"+parseInt(template.surveyTemplateId)}><button >Edit</button></Link></td>
                                 <td><button id ={template.surveyTemplateId} onClick={this.OverlayON}>Delete</button></td>
                             </tr>
                             
@@ -137,7 +137,7 @@ export class TemplateDashboard extends Component {
     async DeleteSurveyTemplate()
     {
         
-        await fetch('https://localhost:44309/SurveyTemplate/deleteSurveyTemplate/'+this.state.templateId,{
+        await fetch('https://localhost:44309/SurveyTemplate/deleteSurveyTemplate/'+parseInt(this.state.templateId),{
         method: "DELETE"
        });
         this.getSurveyTemplates();
@@ -145,7 +145,7 @@ export class TemplateDashboard extends Component {
     }
     async DeleteQuestionTemplate(event)
     {
-        await fetch('https://localhost:44309/QuestionTemplate/deleteQuestionTemplate/'+this.state.templateId,{
+        await fetch('https://localhost:44309/QuestionTemplate/deleteQuestionTemplate/'+parseInt(this.state.templateId),{
         method: "DELETE"
         });
         this.getQuestionTemplates();

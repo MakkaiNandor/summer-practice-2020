@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import './EditFormPage.css';
 
 export class EditForm extends Component {
@@ -8,7 +9,9 @@ export class EditForm extends Component {
         super(props);
         this.state = {
             loading: true,
-            error: null
+            error: null,
+            redirect: false,
+            target: ""
         };
         this.survey=null;
         this.submitMain = this.submitMain.bind(this);
@@ -36,6 +39,9 @@ export class EditForm extends Component {
     }
 
     generateMain(){
+        let expirationDate = this.survey.expirationDate.slice(0, 16).split("T");
+        let date = expirationDate[0];
+        let time = expirationDate[1];
         return (
             <form id="edit_part_form">
                 <div>
@@ -44,8 +50,11 @@ export class EditForm extends Component {
                 </div>
 
                 <div>
-                    <div className="label-holder holder"><label htmlFor="question_date"><b>Expiration date: </b></label></div>
-                    <div className="answer-holder holder"><input className="answer" type="datetime-local" name="question_expirationDate" /> </div>
+                    <div className="label-holder holder"><label htmlFor="question_expirationDate"><b>Expiration date: </b></label></div>
+                    <div className="answer-holder holder">
+                        <input className="answer" type="date" name="question_expirationDate" defaultValue={date} style={{display: 'block'}}/>
+                        <input className="answer" type="time" name="question_expirationDate" defaultValue={time} style={{marginTop: '1em'}}/>
+                    </div>
                 </div>
             
                 <div>
@@ -74,16 +83,19 @@ export class EditForm extends Component {
 
     saveModified(){
         let correct = true;
-        let answerInputs1 = Array.from(document.getElementsByClassName("answer"));
-        answerInputs1.forEach(answerInput => {
-                //console.log(answerInput.id);
-                let key = answerInput.name.split("_")[1];
-                if(answerInput.value === ""){
-                    correct = false;
-                }
-                else{
-                    this.survey[key] = answerInput.value;
-                }
+        let answerHolders = Array.from(document.getElementsByClassName("answer-holder"));
+        answerHolders.forEach(answerHolder => {
+            //console.log(answerInput.id);
+            let answerInputs = answerHolder.children;
+            let key = answerInputs[0].name.split("_")[1];
+            if(answerInputs.length === 2){
+                if(answerInputs[0].value === "" || answerInputs[1].value === "") correct = false;
+                else this.survey[key] = answerInputs[0].value + "T" + answerInputs[1].value + ":00.000+00:00";
+            }
+            else{
+                if(answerInputs[0].value === "") correct = false;
+                else this.survey[key] = answerInputs[0].value;
+            }
         });
         return correct;
     }
@@ -99,11 +111,16 @@ export class EditForm extends Component {
                 <p>Loading...</p>
             );
         }
+        else if(this.state.redirect){
+            return (
+                <Redirect to={this.state.target}/>
+            );
+        }
         else{
             if(this.survey.status === "active"){
                 return (
                     <div id="edit_survey_page">
-                        {/*<a href="#" className="previous round">&#8249;</a> */}
+                        {/*<a href="#" className="previous round">&#8249;</a>*/}
                         {/*<input type="button" value="Go back!" onclick="history.back()"></input> */}
                         <h2 id="edit_survey_title">{this.descriptions.page_title}</h2>
                         <p className="description"><b>{this.descriptions.active}</b></p>
@@ -137,7 +154,7 @@ export class EditForm extends Component {
             });
             console.log(response);
             if(response.ok){
-                window.location.href = window.location.href.replace("editform/" + this.survey.surveyId,"SurveyDashboard");
+                this.setState({ redirect: true, target: "/SurveyDashboard" });
             }
         }
         else{
@@ -150,7 +167,7 @@ export class EditForm extends Component {
             });
             console.log(response);
             if(response.ok){
-                window.location.href = window.location.href.replace("editform","editformquestion");
+                this.setState({ redirect: true, target: "/editformquestion/" + this.survey.surveyId });
             }
         }
     }
