@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import './Personal.css';
 import { Link } from 'react-router-dom';
 
@@ -9,7 +10,9 @@ export class Personal extends Component {
         super(props);
         this.state = {
             loading: true,
-            error: null
+            error: null,
+            redirect: false,
+            target: ""
         };
 
         this.submitData = this.submitData.bind(this);
@@ -154,6 +157,11 @@ export class Personal extends Component {
                 </div>
             );
         }
+        else if(this.state.redirect){
+            return (
+                <Redirect to={this.state.target} />
+            );
+        }
         else{
             return (
                 <div id="survey_page">
@@ -180,7 +188,10 @@ export class Personal extends Component {
         });
         //console.log(response);
         if(response.ok){
-            window.location.href = window.location.href.replace("personal", "survey") + "?name=" + this.personalData.name + "&age=" + this.personalData.age + "&email=" + this.personalData.email + "&gender=" + this.personalData.gender;
+            this.setState({ redirect: true, target: {
+                pathname: "/survey/" + this.survey.surveyId,
+                search: "?name=" + this.personalData.name + "&age=" + this.personalData.age + "&email=" + this.personalData.email + "&gender=" + this.personalData.gender
+            } });
         } 
     }
 

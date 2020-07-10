@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 export class Home extends Component {
   static displayName = Home.name;
-
+  
   render () {
     return (
       <div >
@@ -16,10 +16,10 @@ export class Home extends Component {
 
         <h3 href="" className="boxed_medium" id="login_button"><Link to="/login">Login</Link></h3>
 
-       
+        
 
       </div>
     );
   }
-  
+
 }

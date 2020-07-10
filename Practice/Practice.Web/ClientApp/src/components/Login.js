@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Login.css';
+import { Redirect } from 'react-router-dom';
 
 //import './Home.css';
 
@@ -10,7 +11,9 @@ export class Login extends Component {
     this.state ={
       UserName:'',
       Email:'asd',
-      Password:''
+      Password:'',
+      redirect: false,
+      target: ""
     }
     this.login = this.login.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -34,13 +37,17 @@ export class Login extends Component {
       headers: {
         'Content-Type' : 'application/json'
       },
-      body: JSON.stringify(this.state)
+      body: JSON.stringify({
+        UserName: this.state.UserName,
+        Email: this.state.Email,
+        Password: this.state.Password
+      })
       //body:(this.state)
     });
     
     console.log(await response.json()  );
     if(response.ok){
-      window.location.href = window.location.href.replace("login","MainMenu");
+      this.setState({ redirect: true, target: "/MainMenu" });
     }
     
     /*
@@ -63,34 +70,41 @@ export class Login extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <h1 className="boxed" id="title">Login</h1>
+    if(this.state.redirect){
+      return (
+        <Redirect to={this.state.target} />
+      );
+    }
+    else{
+      return (
+        <div>
+          <h1 className="boxed" id="title">Login</h1>
 
-{/*}
-        <form class="boxed" id="loginform">
-            <label><b>Username</b></label><br></br>
-            <input type="text" name="username" placeholder="Enter Username" onChange={this.onChange} required></input><br></br>
-
-            <label><b>Password</b></label><br></br>
-            <input type = "password" name="password" placeholder="Enter Password" onChange={this.onChange} required></input><br></br>
-
-            <button type="submit" value="login" class="button" onClick={this.login} >Login</button><br></br>
-        </form>
-*/}
-
-
-            <div className="boxed" id="loginform">
+  {/*}
+          <form class="boxed" id="loginform">
               <label><b>Username</b></label><br></br>
-              <input type="text" name="UserName" placeholder="Enter Username" onChange={this.onChange} required></input><br></br>
+              <input type="text" name="username" placeholder="Enter Username" onChange={this.onChange} required></input><br></br>
 
               <label><b>Password</b></label><br></br>
-              <input type = "password" name="Password" placeholder="Enter Password" onChange={this.onChange} required></input><br></br>
+              <input type = "password" name="password" placeholder="Enter Password" onChange={this.onChange} required></input><br></br>
 
-              <button type="submit" value="login" className="button" onClick={this.login} >Login</button><br></br>
-            </div>
-      </div>
-      
-    );
+              <button type="submit" value="login" class="button" onClick={this.login} >Login</button><br></br>
+          </form>
+  */}
+
+
+              <div className="boxed" id="loginform">
+                <label><b>Username</b></label><br></br>
+                <input type="text" name="UserName" placeholder="Enter Username" onChange={this.onChange} required></input><br></br>
+
+                <label><b>Password</b></label><br></br>
+                <input type = "password" name="Password" placeholder="Enter Password" onChange={this.onChange} required></input><br></br>
+
+                <button type="submit" value="login" className="button" onClick={this.login} >Login</button><br></br>
+              </div>
+        </div>
+        
+      );
+    }
   }
 }

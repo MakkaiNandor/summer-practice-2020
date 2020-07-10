@@ -66,7 +66,7 @@
 }
 .button {
     padding: 0.5em;
-    border-radius: 0.5em;
+    border-radius: 1em;
 }
 .button:hover {
     background-color: blue;
@@ -163,35 +163,58 @@ textarea {
 }
 .remove-question-button {
     position: relative;
-    left: 80%;
+    left: 55%;
     font-size: small;
 }
-
-#search_button{
-    border-radius: 1em 1em 1em 1em;
-    width: 130px;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    font-size: 16px;
-    background-size: 1em 1em;
-    background-image: url('searchicon.png');
-    background-position: 10px 15px; 
-    background-repeat: no-repeat;
-    padding: 12px 20px 12px 40px;
+.add-to-templates-button {
+    position: relative;
+    left: 50%;
+    font-size: small;
 }
-
-#homepage_button{
+#overlay {
+    position: fixed;
+    width:100%;
+    height: 100%;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color: rgba(0,0,0,0.5);
+}
+#template-questions {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 125px;
-    border-radius: 1em 1em 1em 1em;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    font-size: 14px;
-    background-size: 1em 1em;
-    background-image: url('homepage.png');
-    background-position: 10px 16px; 
-    background-repeat: no-repeat;
-    padding: 12px 0px 12px 5px;
+    top: 10%;
+    left: 30%;
+    width: 40%;
+    max-height: 80%;
+    overflow: auto;
+    background-color: white;
+    padding: 2em;
+    border: 2px solid black;
+    border-radius: 2em;
+}
+#overlay-title {
+    text-align: center;
+}
+#templates {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+.question-template {
+    margin-bottom: 1em;
+    border: 1px solid black;
+    border-radius: 1em;
+    padding: 1em;
+    cursor: pointer;
+}
+.question-template:hover {
+    border: 2px solid red;
+    background-color: rgba(0,0,0,0.1);
+}
+.question-label {
+    font-size: large;
+    font-weight: bold;
+}
+.question-answer {
+    margin-left: 1em;
 }
