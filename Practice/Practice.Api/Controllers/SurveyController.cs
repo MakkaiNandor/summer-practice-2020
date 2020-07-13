@@ -80,7 +80,6 @@ namespace Practice.Api.Controllers
             _surveys.Insert(newSurvey);
         }
 
-        
 
         // PRIVATE FUNCTIONS -- NOT ENDPOINTS
         private List<SurveyView> ToViews(List<Survey> surveys)

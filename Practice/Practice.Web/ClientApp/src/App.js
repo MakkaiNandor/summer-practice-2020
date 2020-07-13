@@ -12,6 +12,7 @@ import { MainMenu } from './components/MainMenu';
 import { EditQuestionTemplate } from './components/EditQuestionTemplate';
 import { SurveyDashboard } from './components/SurveyDashboard';
 import { CreateSurvey } from './components/CreateSurvey';
+import { GeneralPie } from './components/Reporting/GeneralPieChart';
 
 import './custom.css'
 
@@ -34,6 +35,7 @@ export default class App extends Component {
         <Route path='/EditTemplate/:id' component={CreateSurvey} />
         <Route path='/editform/:id' component={EditForm} />
         <Route path='/editformquestion/:id' component={EditFormQuestion} />
+        <Route path='/GeneralPie/:id' component={GeneralPie} />
       </Layout>
     );
   }
