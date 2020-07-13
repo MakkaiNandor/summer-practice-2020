@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router-dom';
 import './Personal.css';
+import { Link } from 'react-router-dom';
 
 export class Personal extends Component {
     static displayName = Personal.name;
@@ -8,7 +10,9 @@ export class Personal extends Component {
         super(props);
         this.state = {
             loading: true,
-            error: null
+            error: null,
+            redirect: false,
+            target: ""
         };
 
         this.submitData = this.submitData.bind(this);
@@ -45,7 +49,7 @@ export class Personal extends Component {
             alert("Personal datas are not completed correctly!");
             return;
         }
-        console.log(this.personalData);
+        //console.log(this.personalData);
         this.submitPersonalData();
     }
 
@@ -135,12 +139,17 @@ export class Personal extends Component {
     render() {
         if(this.state.error){
             return (
-                <p>{this.state.error}</p>
+                    <p>{this.state.error}</p>
             );
         }
         else if(this.state.loading){
             return (
-                <p>Loading...</p>
+                    <p>Loading...</p>
+            );
+        }
+        else if(this.state.redirect){
+            return (
+                <Redirect to={this.state.target} />
             );
         }
         else{
@@ -164,9 +173,12 @@ export class Personal extends Component {
             },
             body: JSON.stringify(this.personalData)
         });
-        console.log(response);
+        //console.log(response);
         if(response.ok){
-            window.location.href = window.location.href.replace("personal", "survey") + "?name=" + this.personalData.name + "&age=" + this.personalData.age + "&email=" + this.personalData.email + "&gender=" + this.personalData.gender;
+            this.setState({ redirect: true, target: {
+                pathname: "/survey/" + this.survey.surveyId,
+                search: "?name=" + this.personalData.name + "&age=" + this.personalData.age + "&email=" + this.personalData.email + "&gender=" + this.personalData.gender
+            } });
         } 
     }
 

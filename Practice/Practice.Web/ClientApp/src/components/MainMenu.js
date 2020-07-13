@@ -22,6 +22,9 @@ export class MainMenu extends Component{
     {
         return(
             <div>
+                <div id="homepage_button_holder">
+                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                </div>
                 <h2 id="survey_title">{this.title}</h2>
                 <div id="button_container">
                     <Link to="./CreateSurvey" className="Link"><button id="survey-title" className="button">Create Form</button></Link>

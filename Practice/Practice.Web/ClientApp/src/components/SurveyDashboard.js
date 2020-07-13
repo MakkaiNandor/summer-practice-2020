@@ -13,11 +13,14 @@ export class SurveyDashboard extends Component {
             error: null,
             survey: null,
             option: null,
-            surveys: null
+            surveys: null,
+            redirect: false,
+            target: ""
         };
         this.respondents = [];
         this.onClickHandler = this.onClickHandler.bind(this);
         this.publishSurvey = this.publishSurvey.bind(this);
+        this.sortSurveys = this.sortSurveys.bind(this);
     }
 
     componentDidMount(){
@@ -51,15 +54,8 @@ export class SurveyDashboard extends Component {
         else{
             let data = await response.json();
             this.setState({ surveys: data });
+            this.sortSurveys();
             await this.getRespondentsOfAllSurveys();
-            data.sort((a, b) => {
-                if(a.status === b.status){
-                    return this.getRespondents(b.surveyId) - this.getRespondents(a.surveyId);
-                }
-                let statusA = a.status === "active" ? 1 : a.status === "created" ? 2 : 3;
-                let statusB = b.status === "active" ? 1 : b.status === "created" ? 2 : 3;
-                return statusA - statusB;
-            });
             this.setState({ loading: false });
         }
     }
@@ -108,7 +104,10 @@ export class SurveyDashboard extends Component {
             body: JSON.stringify(this.state.survey)
         });
         if(!response.ok) alert("Survey activation failed!");
-        else alert("Survey is activated!");
+        else {
+            alert("Survey is activated!");
+            this.sortSurveys();
+        }
     }
 
     // delete survey
@@ -137,6 +136,17 @@ export class SurveyDashboard extends Component {
         -------------------
     */
 
+    sortSurveys(){
+        this.setState({ surveys: this.state.surveys.sort((a, b) => {
+            if(a.status === b.status){
+                return this.getRespondents(b.surveyId) - this.getRespondents(a.surveyId);
+            }
+            let statusA = a.status === "active" ? 1 : a.status === "created" ? 2 : 3;
+            let statusB = b.status === "active" ? 1 : b.status === "created" ? 2 : 3;
+            return statusA - statusB;
+        }) });
+    }
+
     // get respondents of one survey by id
     getRespondents(surveyId){
         
@@ -153,7 +163,6 @@ export class SurveyDashboard extends Component {
     getSurvey(surveyId){
         let result = this.state.surveys.filter(survey => {return survey.surveyId === surveyId});
         if(result.length === 1) {
-            console.log(result[0].personalData);
             return result[0];
         }
         else return null;
@@ -244,7 +253,7 @@ export class SurveyDashboard extends Component {
                         <td>{survey.createDate.slice(0, 16).replace("T", " ")}</td>
                         <td>{survey.expirationDate.slice(0, 16).replace("T", " ")}</td>
                         <td>{survey.status === "active" ? <button id={"link-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Get Link</button> : survey.status === "created" ? <button id={"publish-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Publish</button> : null} </td>
-                        <td>{survey.status !== "closed" ? <Link to={"./editForm/"+survey.surveyId}><button id={"view-button-"+survey.surveyId} className="button">Edit</button></Link> : null}</td>
+                        <td>{survey.status !== "closed" ? <Link to={"./editform/"+survey.surveyId}><button id={"view-button-"+survey.surveyId} className="button">Edit</button></Link> : null}</td>
                         <td>{survey.status !== "created" ? <button id={"report-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Results</button> : null}</td>
                         <td><button id={"delete-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Delete</button></td>
                         
@@ -258,17 +267,27 @@ export class SurveyDashboard extends Component {
     render() {
         if(this.state.error){
             return (
-                <p>{this.state.error}</p>
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>{this.state.error}</p>
+                </div>
             );
         }
         else if(this.state.loading){
             return (
-                <p>Loading...</p>
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>Loading...</p>
+                </div>
             );
         }
         else if(this.state.option === "link" || this.state.option === "publish"){
             let publishButton = this.state.option === "publish" ? <button className="button" onClick={this.publishSurvey}>Publish</button> : null;
-            let link = window.location.href.replace("SurveyDashboard", "personal/"+this.state.survey.surveyId);
+            let link = window.location.href.replace("SurveyDashboard", "personal/" + this.state.survey.surveyId);
             return (
                 <div id="link-page">
                     <h2 id="title">Share Form</h2>
@@ -287,10 +306,13 @@ export class SurveyDashboard extends Component {
             let table = this.renderTable();
             return (
                 <div id="dashboard-page">
+                    <div id="homepage_button_holder">
+                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
                     <h2 id="title">My Forms</h2>
                     <div id="survey-table-holder">
                         {table}
-                        <Link to="./CreateSurvey"><button id="new-survey-button" className="button" /*onClick={this.addNewSurvey}*/>Add new form</button></Link>
+                        <Link to="./CreateSurvey"><button id="new-survey-button" className="button">Add new form</button></Link>
                     </div>
                 </div>
             );
