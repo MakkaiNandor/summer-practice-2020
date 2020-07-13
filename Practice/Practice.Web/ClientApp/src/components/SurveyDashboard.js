@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import './SurveyDashboard.css';
+import surveyDashboardStyle from './SurveyDashboard.module.css';
 
 export class SurveyDashboard extends Component {
     static displayName = SurveyDashboard.name;
@@ -190,33 +190,32 @@ export class SurveyDashboard extends Component {
     // generate table of surveys
     renderTable(){
         return (
-            <table id="survey-table">
-                <thead>
-                    <tr>
-                        <th>Survey title</th>
-                        <th>Status</th>
-                        <th>Respondents</th>
-                        <th>Creation date</th>
-                        <th>Expiration date</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+            <table className={surveyDashboardStyle.survey_table}>
+                <thead className={surveyDashboardStyle.survey_table_header}>
+                    <tr className={surveyDashboardStyle.survey_table_header_row}>
+                        <th className={surveyDashboardStyle.survey_table_data}>Survey title</th>
+                        <th className={surveyDashboardStyle.survey_table_data}>Status</th>
+                        <th className={surveyDashboardStyle.survey_table_data}>Respondents</th>
+                        <th className={surveyDashboardStyle.survey_table_data}>Creation date</th>
+                        <th className={surveyDashboardStyle.survey_table_data}>Expiration date</th>
+                        <th className={surveyDashboardStyle.survey_table_data}></th>
+                        <th className={surveyDashboardStyle.survey_table_data}></th>
+                        <th className={surveyDashboardStyle.survey_table_data}></th>
+                        <th className={surveyDashboardStyle.survey_table_data}></th>
                     </tr>
                 </thead>
                 <tbody>
                 {this.state.surveys.map(survey => 
                     <tr key={survey.surveyId}>
-                        <td>{survey.title}</td>
-                        <td>{survey.status}</td>
-                        <td>{this.getRespondents(survey.surveyId)}</td>
-                        <td>{survey.createDate.slice(0, 16).replace("T", " ")}</td>
-                        <td>{survey.expirationDate.slice(0, 16).replace("T", " ")}</td>
-                        <td>{survey.status === "active" ? <button id={"link-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Get Link</button> : survey.status === "created" ? <button id={"publish-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Publish</button> : null} </td>
-                        <td>{survey.status !== "closed" ? <Link to={"./editform/"+survey.surveyId}><button id={"view-button-"+survey.surveyId} className="button">Edit</button></Link> : null}</td>
-                        <td>{survey.status !== "created" ? <button id={"report-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Results</button> : null}</td>
-                        <td><button id={"delete-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Delete</button></td>
-                        
+                        <td className={surveyDashboardStyle.survey_table_data}>{survey.title}</td>
+                        <td className={surveyDashboardStyle.survey_table_data}>{survey.status}</td>
+                        <td className={surveyDashboardStyle.survey_table_data}>{this.getRespondents(survey.surveyId)}</td>
+                        <td className={surveyDashboardStyle.survey_table_data}>{survey.createDate.slice(0, 16).replace("T", " ")}</td>
+                        <td className={surveyDashboardStyle.survey_table_data}>{survey.expirationDate.slice(0, 16).replace("T", " ")}</td>
+                        <td className={surveyDashboardStyle.survey_table_data}>{survey.status === "active" ? <button id={"link-button-"+survey.surveyId} className={surveyDashboardStyle.button} onClick={this.onClickHandler}>Get Link</button> : survey.status === "created" ? <button id={"publish-button-"+survey.surveyId} className={surveyDashboardStyle.button} onClick={this.onClickHandler}>Publish</button> : null} </td>
+                        <td className={surveyDashboardStyle.survey_table_data}>{survey.status !== "closed" ? <Link to={"./editform/"+survey.surveyId}><button id={"view-button-"+survey.surveyId} className={surveyDashboardStyle.button}>Edit</button></Link> : null}</td>
+                        <td className={surveyDashboardStyle.survey_table_data}>{survey.status !== "created" ? <button id={"report-button-"+survey.surveyId} className={surveyDashboardStyle.button} onClick={this.onClickHandler}>Results</button> : null}</td>
+                        <td className={surveyDashboardStyle.survey_table_data}><button id={"delete-button-"+survey.surveyId} className={surveyDashboardStyle.button} onClick={this.onClickHandler}>Delete</button></td>
                     </tr>
                 )}
                 </tbody>
@@ -229,7 +228,7 @@ export class SurveyDashboard extends Component {
             return (
                 <div>
                     <div id="homepage_button_holder">
-                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        <Link to="./MainMenu" className={surveyDashboardStyle.Link}><button className={surveyDashboardStyle.homepage_button}>Home page</button></Link>
                     </div>
                     <p>{this.state.error}</p>
                 </div>
@@ -239,26 +238,26 @@ export class SurveyDashboard extends Component {
             return (
                 <div>
                     <div id="homepage_button_holder">
-                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        <Link to="./MainMenu" className={surveyDashboardStyle.Link}><button className={surveyDashboardStyle.homepage_button}>Home page</button></Link>
                     </div>
                     <p>Loading...</p>
                 </div>
             );
         }
         else if(this.state.option === "link" || this.state.option === "publish"){
-            let publishButton = this.state.option === "publish" ? <button className="button" onClick={this.publishSurvey}>Publish</button> : null;
+            let publishButton = this.state.option === "publish" ? <button className={surveyDashboardStyle.button} onClick={this.publishSurvey}>Publish</button> : null;
             let link = window.location.href.replace("SurveyDashboard", "personal/" + this.state.survey.surveyId);
             return (
-                <div id="link-page">
-                    <h2 id="title">Share Form</h2>
+                <div className={surveyDashboardStyle.link_page}>
+                    <h2 className={surveyDashboardStyle.title}>Share Form</h2>
                     <div>
-                        <label>Link for "{this.state.survey.title}": </label>
+                        <label className={surveyDashboardStyle.link_page_label}>Link for "{this.state.survey.title}": </label>
                         <input id="link" type="text" defaultValue={link} size={link.length} disabled></input>
-                        <button className="button" onClick={this.copyLink}>Copy Link</button>
+                        <button className={`${surveyDashboardStyle.button} ${surveyDashboardStyle.link_page_button}`} onClick={this.copyLink}>Copy Link</button>
                     </div>
                     {publishButton}
                     <br/>
-                    <button className="button" onClick={event => this.setState({ survey: null, option: null })}>Ok</button>
+                    <button className={`${surveyDashboardStyle.button} ${surveyDashboardStyle.link_page_button}`} onClick={event => this.setState({ survey: null, option: null })}>Ok</button>
                 </div>
             );
         }
@@ -267,12 +266,12 @@ export class SurveyDashboard extends Component {
             return (
                 <div id="dashboard-page">
                     <div id="homepage_button_holder">
-                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        <Link to="./MainMenu" className={surveyDashboardStyle.Link}><button className={surveyDashboardStyle.homepage_button}>Home page</button></Link>
                     </div>
-                    <h2 id="title">My Forms</h2>
-                    <div id="survey-table-holder">
+                    <h2 className={surveyDashboardStyle.title}>My Forms</h2>
+                    <div className={surveyDashboardStyle.survey_table_holder}>
                         {table}
-                        <Link to="./CreateSurvey"><button id="new-survey-button" className="button">Add new form</button></Link>
+                        <Link to="./CreateSurvey"><button className={`${surveyDashboardStyle.new_survey_button} ${surveyDashboardStyle.button}`}>Add new form</button></Link>
                     </div>
                 </div>
             );

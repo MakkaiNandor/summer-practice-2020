@@ -686,6 +686,7 @@ export class CreateSurvey extends Component {
                     <input id="search_button" type="text" name="search" placeholder="Search.." onKeyUp={this.searchTemplate} title="Type in a template name"></input>
                 </div>
                 <div id="survey-template-holder">
+                <button id="template-default" className="template-button" onClick={this.onTemplateClicked}>Default</button>
                     {this.state.surveyTemplates.map(template => 
                         <button id={"template-"+template.surveyTemplateId} className="template-button" key={template.surveyTemplateId} onClick={this.onTemplateClicked}>{template.name}</button>
                     )}
