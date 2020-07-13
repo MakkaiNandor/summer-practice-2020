@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Login.css';
 import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 //import './Home.css';
 
@@ -26,7 +27,10 @@ export class Login extends Component {
     console.log("login fuggveny hivas");
     console.log(this.state);
     console.log( JSON.stringify(this.state) );
+    //--
 
+
+    const cookies = new Cookies();
 
     
 
@@ -39,9 +43,17 @@ export class Login extends Component {
       //body:(this.state)
     });
     
-    console.log(await response.json()  );
+    //console.log(await response.json()  );
+
+
     if(response.ok){
+      var response_ = await response.json();
+      //console.log( response_ );
+      console.log( response_.token );
+
+      cookies.set('token', response_.token);
       window.location.href = window.location.href.replace("login","MainMenu");
+      
     }
     
     /*

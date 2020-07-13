@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Practice.Api.Controllers
 {
+    [Authorize]
     [Route("Survey")]
     [ApiController]
     public class SurveyController : ControllerBase

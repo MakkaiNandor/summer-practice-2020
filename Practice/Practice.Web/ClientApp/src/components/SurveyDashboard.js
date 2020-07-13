@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './SurveyDashboard.css';
+import Cookies from 'universal-cookie';
 
 export class SurveyDashboard extends Component {
     static displayName = SurveyDashboard.name;
@@ -28,10 +29,24 @@ export class SurveyDashboard extends Component {
         Asynchronous database functions
         -------------------------------
     */
-
+   
+    //body:(this.state)
+  
+   
     // get all surveys
     async getAllSurvey(){
-        const response = await fetch('https://localhost:44309/Survey/getAllSurvey');
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+
+        //console.log(token);
+
+
+        const response = await fetch('https://localhost:44309/Survey/getAllSurvey', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+            
+        });
         if(!response.ok) this.setState({ error: "Surveys not found!" });
         else{
             let data = await response.json();
@@ -51,8 +66,17 @@ export class SurveyDashboard extends Component {
 
     // get respondents of every surveys
     async getRespondentsOfAllSurveys(){
+
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+
         for(let i = 0 ; i < this.state.surveys.length ; ++i){
-            const response = await fetch('https://localhost:44309/Answer/getReport/' + this.state.surveys[i].surveyId);
+            const response = await fetch('https://localhost:44309/Answer/getReport/' + this.state.surveys[i].surveyId, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+                
+            });
             if(!response.ok) this.respondents.push({
                 surveyId: this.state.surveys[i].surveyId,
                 completedCounter: 0
@@ -69,10 +93,17 @@ export class SurveyDashboard extends Component {
 
     // update survey
     async editSurvey(){
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+
+
+
         const response = await fetch('https://localhost:44309/Survey/editSurvey/' + this.state.survey.surveyId, {
             method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+                
             },
             body: JSON.stringify(this.state.survey)
         });
@@ -82,8 +113,16 @@ export class SurveyDashboard extends Component {
 
     // delete survey
     async deleteSurvey(surveyId){
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+
+
         const response = await fetch('https://localhost:44309/Survey/deleteSurvey/' + surveyId, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+                
+            },
         });
         if(!response.ok) alert('Survey deleting failed!');
         else{
@@ -100,6 +139,7 @@ export class SurveyDashboard extends Component {
 
     // get respondents of one survey by id
     getRespondents(surveyId){
+        
         let respondents = 0;
         this.respondents.forEach(element => {
             if(element.surveyId === surveyId){
