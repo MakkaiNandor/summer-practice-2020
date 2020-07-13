@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Cors;
 using Practice.Api.Models.Views;
 using System.Runtime.InteropServices.ComTypes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Practice.Api.Controllers
 {
@@ -153,10 +154,46 @@ namespace Practice.Api.Controllers
             _answers.Insert(answer);
         }
 
-        
+        [EnableCors]
+        [HttpGet("getAllAnswers")]
+        public ActionResult<IEnumerable<SentAnswerView>> GetAllAnswers()
+        {
+            return ToViews(_answers.GetAll());
+        }
+
+        [EnableCors]
+        [HttpGet("getAnswerById/{id}")]
+        public ActionResult<SentAnswerView> GetAnswerById(int id)
+        {
+            var answer = _answers.FindOne(ans => ans.SurveyId == id);
+            if (answer == null) return null;
+            return ToView(answer);
+        }
 
 
+        //PRIVATE FUNCTIONS
 
+        private SentAnswerView ToView(SentAnswer answer)
+        {
+            var view = new SentAnswerView()
+            {
+                SurveyId = answer.SurveyId,
+                CompletedCounter=answer.CompletedCounter,
+                LeftCounter=answer.LeftCounter,
+                Answers=answer.Answers
+            };
 
+            return view;
+        }
+
+        private List<SentAnswerView> ToViews(List<SentAnswer> answers)
+        {
+            var list = new List<SentAnswerView>();
+            foreach(var answer in answers)
+            {
+                list.Add(ToView(answer));
+            }
+            return list;
+        }
     }
 }
