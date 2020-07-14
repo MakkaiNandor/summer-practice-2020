@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Practice.Api.Controllers
 {
+    [Authorize]
     [Route("SurveyTemplate")]
     [ApiController]
     public class SurveyTemplateController : ControllerBase

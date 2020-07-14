@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import './Personal.css';
 import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 export class Personal extends Component {
     static displayName = Personal.name;
@@ -26,7 +27,13 @@ export class Personal extends Component {
 
     // get survey by id
     async getSurvey(){
-        const response = await fetch('https://localhost:44309/Survey/getSurvey/' + this.props.match.params.id);
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response = await fetch('https://localhost:44309/Survey/getSurvey/' + this.props.match.params.id,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if(!response.ok) this.setState({ error: "Survey not found!" });
         else{
             this.survey = await response.json();
@@ -166,10 +173,13 @@ export class Personal extends Component {
     }
 
     async submitPersonalData(){
+        const cookies = new Cookies();
+        var token = cookies.get('token');
         const response = await fetch('https://localhost:44309/Answer/sendPersonalData/' + this.survey.surveyId, {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(this.personalData)
         });
