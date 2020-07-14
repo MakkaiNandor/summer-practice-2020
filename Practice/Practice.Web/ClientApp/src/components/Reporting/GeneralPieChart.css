@@ -38,3 +38,14 @@
 }
 
 .PieQuestionLabel:hover {background-color:#dddada;}
+
+#GeneralPieError
+{
+    margin-top: 30%;
+}
+
+#GeneralPieErrorContainer
+{
+    width:100%;
+    text-align: center;
+}

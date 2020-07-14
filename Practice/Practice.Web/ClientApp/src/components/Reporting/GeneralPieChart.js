@@ -17,7 +17,6 @@ export class GeneralPie extends Component
             SurveyTitle:null,
             CurrentQuestion:null,
             QuestionList:null,
-            data:null
         };
 
         this.title="GeneralPie"
@@ -27,6 +26,8 @@ export class GeneralPie extends Component
         this.GenerateOptions=this.GenerateOptions.bind(this);
         this.DisplayQuestions=this.DisplayQuestions.bind(this);
         this.ChangeCurrentQuestion=this.ChangeCurrentQuestion.bind(this);
+        this.GenerateData=this.GenerateData.bind(this);
+        this.ModifyList=this.ModifyList.bind(this);
     }
 
     componentDidMount()
@@ -46,6 +47,8 @@ export class GeneralPie extends Component
             var survey = await response2.json();
 
             var List=this.GenerateQuestions(temp);
+            if (List.length===0) this.setState({loading:false,error:"There is no question with type of 'Rating' in this survey"});
+            else
             this.setState({loading:false,answers:temp,SurveyTitle:survey.title,QuestionList:List,CurrentQuestion:List[0]});
         } 
        
@@ -61,7 +64,7 @@ export class GeneralPie extends Component
         {
             for (var j=0; j<pages[i].questions.length; j++)
             {
-                QList.push(pages[i].questions[j].label)
+                if (pages[i].questions[j].type==="rating") QList.push(pages[i].questions[j].label)
             }
         }
         return QList;
@@ -81,24 +84,56 @@ export class GeneralPie extends Component
     //Change Current Question
     ChangeCurrentQuestion(event)
     {
-        var List=[];
+        if (event.target.name===undefined || this.state.CurrentQuestion===event.target.name) return;
+        this.setState({CurrentQuestion:event.target.name});
+    }
+
+    //Generate Data
+    GenerateData()
+    {
+        var data=[];
+
         for (var i =0; i<this.state.answers.answers.length; i++)
         {
             for (var j=0; j<this.state.answers.answers[i].pages.length;j++)
             {
                 for (var k=0; k<this.state.answers.answers[i].pages[j].questions.length;k++)
                 {
-
+                    if (this.state.answers.answers[i].pages[j].questions[k].label===this.state.CurrentQuestion)
+                    {
+                        for (var l=0;l<this.state.answers.answers[i].pages[j].questions[k].answers.length;l++)
+                        {
+                            data=this.ModifyList(this.state.answers.answers[i].pages[j].questions[k].answers[l].value,data);
+                        }
+                    }
                 }
             }
         }
-        this.setState({CurrentQuestion:event.target.name});
-
-
+        
+        return data;
     }
 
+    ModifyList(answer,list)
+    {
+        var logical=false;
+        for (var i=0;i<list.length;i++)
+        {
+            if(list[i].name===answer)
+            {
+                logical=true;
+                list[i].y=list[i].y+1;
+            }
+        }
+        if (logical===false)
+        {
+            list.push({name:answer,y:1});
+        }
+        return list;
+    }
+
+
     //Generate options
-    GenerateOptions()
+    GenerateOptions(data)
     {
         return {
             chart:{
@@ -109,32 +144,21 @@ export class GeneralPie extends Component
             },
             series:[
                 {
-                    data:[
-                        {
-                            name:'Chrome',
-                            y:61.41,
-                        },
-                        {
-                            name:"Explorer",
-                            y:11.84
-                        },
-                        {
-                            name:"Other",
-                            y:30
-                        }
-                    ]
+                   data:data
                 }
             ]
         };
     }
 
     render()
-    {
-        const options = this.GenerateOptions();        
+    {      
         if (this.state.error)
         {
             return(
-                <p>{this.state.error}</p>
+                <div id="GeneralPieErrorContainer">
+                    <h3 id="GeneralPieError">{this.state.error}</h3>
+                </div>
+                
             );
         }
         else 
@@ -148,6 +172,8 @@ export class GeneralPie extends Component
             else
             {
                 var questions=this.DisplayQuestions();
+                console.log(this.state.CurrentQuestion);
+                const options = this.GenerateOptions(this.GenerateData());  
                 return (
                     <div>
                         <div id="homepage_button_holder">

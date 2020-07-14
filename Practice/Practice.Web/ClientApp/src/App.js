@@ -22,7 +22,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <Layout>
+        <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/survey/:id' component={Survey} />
         <Route path='/login' component={Login} />
