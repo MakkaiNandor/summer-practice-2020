@@ -62,3 +62,8 @@ label {
     border-radius: 1em;
     height: 1em;
 }
+.rating_answer {
+    display: inline-block;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}

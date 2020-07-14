@@ -95,9 +95,10 @@ namespace Practice.Api
 
             app.UseCors();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseAuthentication();
+            
 
             app.UseEndpoints(endpoints =>
             {
