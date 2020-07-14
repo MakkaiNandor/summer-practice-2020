@@ -150,18 +150,7 @@ export class EditQuestionTemplate extends Component{
         );
     }
 
-    //Generate id for new answer option
-    /*GetMaxId()
-    {
-        var temp=this.state.template.answers;
-        var keys=Object.keys(temp);
-        var max=this.state.template.answers[keys[0]];
-        for (var i=1; i<keys.length;i++)
-        {
-            if (max < temp[keys[i]].answerId) max=temp[keys[i]].answerId;
-        }
-        return max+1;
-    }*/
+    
 
     //Delete Answer
     DeleteAnswer(event)
@@ -169,7 +158,6 @@ export class EditQuestionTemplate extends Component{
         var id=event.target.name;
         var temp=this.state.template;
         temp.answers.splice(event.target.name-1,1);
-        console.log(temp);
         this.setState({template:temp});
     }
 
@@ -227,7 +215,7 @@ export class EditQuestionTemplate extends Component{
                     </div>
                     <div id="container">
                         <div id="Question_container" >
-                        <select id="EditSelect" onChange={this.ChangeType}>
+                        <select id="EditSelect" onChange={this.ChangeType} defaultValue={this.state.template.type}>
                             <option>radio</option>
                             <option>input</option>
                             <option>checkbox</option>
