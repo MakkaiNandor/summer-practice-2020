@@ -259,6 +259,44 @@ export class CreateSurvey extends Component {
 
     // template selection
     onTemplateClicked(event){
+        if(event.target.id === "template-default"){
+            let template = {
+                surveyTemplateId: 0,
+                used: 0,
+                createdSurveys: [],
+                name: "Default",
+                title: "",
+                description: "",
+                createDate: null,
+                ending: "",
+                pages: [{
+                    pageNumber: 1,
+                    questions: [{
+                        questionId: 1,
+                        label: "",
+                        type: "input",
+                        answers: []
+                    }]
+                }]
+            }; 
+            this.setState({ pageStatus: "creation_1", baseTemplate: template, data: template.pages.reduce((acc1, page) => {
+                return acc1.concat({
+                    pageNumber: page.pageNumber,
+                    questions: page.questions.reduce((acc2, question) => {
+                        return acc2.concat({
+                            questionId: question.questionId,
+                            type: question.type,
+                            questionOptions: [{
+                                type: question.type,
+                                label: question.label,
+                                answers: question.answers
+                            }]
+                        })
+                    }, [])
+                })
+            }, []) })
+            return;
+        }
         let templateId = parseInt(event.target.id.split("-")[1]);
         let template = this.getTemplateById(templateId);
         this.setState({ pageStatus: "creation_1", baseTemplate: template, data: template.pages.reduce((acc1, page) => {
@@ -422,6 +460,29 @@ export class CreateSurvey extends Component {
                                     };
                                     question.questionOptions.push(option);
                                     break;
+                                case "rating":
+                                    option = {
+                                        type: newType,
+                                        label: "",
+                                        answers: [{
+                                            answerId: 1,
+                                            value: "1"
+                                        },{
+                                            answerId: 2,
+                                            value: "2"
+                                        },{
+                                            answerId: 3,
+                                            value: "3"
+                                        },{
+                                            answerId: 4,
+                                            value: "4"
+                                        },{
+                                            answerId: 5,
+                                            value: "5"
+                                        }]
+                                    };
+                                    question.questionOptions.push(option);
+                                    break;
                                 default:
                             }
                         }
@@ -446,7 +507,7 @@ export class CreateSurvey extends Component {
                     if(question.questionId === questionId){
                         for(let option of question.questionOptions){
                             if(option.type === question.type){
-                                option.answers = this.setUpAnswerIds(option.answers.filter(answer => {return answer.answerId !== answerId}));
+                                option.answers = /*this.setUpAnswerIds(*/option.answers.filter(answer => {return answer.answerId !== answerId})/*)*/;
                                 break;
                             }
                         }
@@ -544,30 +605,40 @@ export class CreateSurvey extends Component {
     }
 
     saveAnswerLabel(event){
-        let newValue = event.target.value;
-        let array = event.target.id.split("-");
-        let questionId = parseInt(array[1]);
-        let answerId = parseInt(array[3]);
         let data = this.state.data;
-        for(let page of data){
-            if(page.pageNumber === this.state.currPageNumber){
-                for(let question of page.questions){
-                    if(question.questionId === questionId){
-                        for(let option of question.questionOptions){
-                            if(option.type === question.type){
-                                for(let answer of option.answers){
-                                    if(answer.answerId === answerId){
-                                        answer.value = newValue;
-                                        break;
+        if(event.target.id.split("_")[2] === "from"){
+            let questionId = parseInt(event.target.id.split("_")[3]);
+            data.filter(page => page.pageNumber === this.state.currPageNumber)[0].questions.filter(question => question.questionId === questionId)[0].questionOptions.filter(option => option.type === "rating")[0].answers[0].value = event.target.value;
+        }
+        else if(event.target.id.split("_")[2] === "to"){
+            let questionId = parseInt(event.target.id.split("_")[3]);
+            data.filter(page => page.pageNumber === this.state.currPageNumber)[0].questions.filter(question => question.questionId === questionId)[0].questionOptions.filter(option => option.type === "rating")[0].answers[4].value = event.target.value;
+        }
+        else{
+            let newValue = event.target.value;
+            let array = event.target.id.split("-");
+            let questionId = parseInt(array[1]);
+            let answerId = parseInt(array[3]);
+            for(let page of data){
+                if(page.pageNumber === this.state.currPageNumber){
+                    for(let question of page.questions){
+                        if(question.questionId === questionId){
+                            for(let option of question.questionOptions){
+                                if(option.type === question.type){
+                                    for(let answer of option.answers){
+                                        if(answer.answerId === answerId){
+                                            answer.value = newValue;
+                                            break;
+                                        }
                                     }
+                                    break;
                                 }
-                                break;
                             }
+                            break;
                         }
-                        break;
                     }
+                    break;
                 }
-                break;
             }
         }
         this.setState({ data: data });
@@ -643,7 +714,17 @@ export class CreateSurvey extends Component {
                 <div className="question-template" id={"question-template-"+template.questionTemplateId} key={template.questionTemplateId} onClick={this.addQuestionTemplate}>
                     <div className="question-label">{template.label}</div>
                     <div className="question-type">Question type: {template.type}</div>
-                    {template.type === "input" ? null : <div className="question-answers">
+                    {template.type === "input" ? null : template.type === "rating" ? 
+                    <div className="question-answers">
+                        <p>Answers:</p>
+                        <label>{template.answers[0].value}</label>
+                        {template.answers.map(answer => 
+                            <input type="radio" key={answer.answerId} id={"question_" + template.questionTemplateId + "_answer_" + answer.answerId} className="rating_answer" disabled/>
+                        )}
+                        <label>{template.answers[4].value}</label>
+                    </div>
+                    :
+                    <div className="question-answers">
                         <p>Answers:</p>
                         {template.answers.map(answer => 
                             <div id={"answer-"+answer.answerId} key={answer.answerId} className="question-answer">
@@ -665,6 +746,7 @@ export class CreateSurvey extends Component {
                     <input id="search_button" type="text" name="search" placeholder="Search.." onKeyUp={this.searchTemplate} title="Type in a template name"></input>
                 </div>
                 <div id="survey-template-holder">
+                <button id="template-default" className="template-button" key="0" onClick={this.onTemplateClicked}>Default</button>
                     {this.state.surveyTemplates.map(template => 
                         <button id={"template-"+template.surveyTemplateId} className="template-button" key={template.surveyTemplateId} onClick={this.onTemplateClicked}>{template.name}</button>
                     )}
@@ -768,13 +850,24 @@ export class CreateSurvey extends Component {
                                 <option value="input">Text input</option>
                                 <option value="radio">Radio buttons</option>
                                 <option value="checkbox">Checkboxes</option>
+                                <option value="rating">Rating</option>
                             </select>
                         </div>
                         <div className="question-text-holder">
                             <label htmlFor={"question-text-"+question.questionId}>Question text: </label>
                             <input className="question-text" id={"question-text-"+question.questionId} name={"question-text-"+question.questionId} defaultValue={question.questionOptions.filter(option => { return option.type === question.type })[0].label} onChange={this.saveQuestionText}></input>
                         </div>
-                        {question.type === "input" ? null : 
+                        {question.type === "input" ? null : question.type === "rating" ?
+                            <div className="answer-options-holder">
+                                <div className="answer-option">
+                                    <input type="text" id={"rating_label_from_"+question.questionId} className="rating_label" placeholder="from"  onChange={this.saveAnswerLabel}></input>
+                                    {question.questionOptions.filter(option => { return option.type === question.type })[0].answers.map(answer => 
+                                        <input type="radio" key={answer.answerId} disabled className="rating_answer"></input>
+                                    )}
+                                    <input type="text" id={"rating_label_to_"+question.questionId} className="rating_label" placeholder="to"  onChange={this.saveAnswerLabel}></input>
+                                </div>
+                            </div> 
+                            :
                             <div className="answer-options-holder">
                                 <label>Answer options:</label>
                                 {question.questionOptions.filter(option => { return option.type === question.type })[0].answers.map(answer => 
@@ -786,7 +879,7 @@ export class CreateSurvey extends Component {
                                 )}
                             </div>
                         }
-                        {question.type === "input" ? null : <button className="button add-answer-button" onClick={this.addNewAnswer}>Add answer</button>}
+                        {question.type === "input" || question.type === "rating" ? null : <button className="button add-answer-button" onClick={this.addNewAnswer}>Add answer</button>}
                         <button className="button add-to-templates-button" onClick={this.addToQuestionTemplates}>Add to question templates</button>
                         <button className="button remove-question-button" onClick={this.removeQuestion}>Remove question</button>
                     </div>
