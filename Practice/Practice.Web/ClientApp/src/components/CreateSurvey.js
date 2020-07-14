@@ -540,7 +540,7 @@ export class CreateSurvey extends Component {
                     if(question.questionId === questionId){
                         for(let option of question.questionOptions){
                             if(option.type === question.type){
-                                option.answers = /*this.setUpAnswerIds(*/option.answers.filter(answer => {return answer.answerId !== answerId})/*)*/;
+                                option.answers = /*this.setUpAnswerIds(*/option.answers.filter(answer => answer.answerId !== answerId)/*)*/;
                                 break;
                             }
                         }
@@ -591,7 +591,7 @@ export class CreateSurvey extends Component {
         let data = this.state.data;
         for(let page of data){
             if(page.pageNumber === this.state.currPageNumber){
-                page.questions = page.questions.filter(question => {return question.questionId !== questionId});
+                page.questions = page.questions.filter(question => question.questionId !== questionId);
                 break;
             }
         }
@@ -601,7 +601,7 @@ export class CreateSurvey extends Component {
 
     addNewQuestion(event){
         let data = this.state.data;
-        data.filter(page => {return page.pageNumber === this.state.currPageNumber})[0].questions.push({
+        data.filter(page => page.pageNumber === this.state.currPageNumber)[0].questions.push({
             questionId: 0,
             type: "input",
             questionOptions: [{
@@ -679,9 +679,9 @@ export class CreateSurvey extends Component {
 
     addQuestionTemplate(event){
         let questionId = parseInt(event.currentTarget.id.split("-")[2]);
-        let template = this.questionTemplates.filter(template => {return template.questionTemplateId === questionId})[0];
+        let template = this.questionTemplates.filter(template => template.questionTemplateId === questionId)[0];
         let data = this.state.data;
-        data.filter(page => {return page.pageNumber === this.state.currPageNumber})[0].questions.push({
+        data.filter(page => page.pageNumber === this.state.currPageNumber)[0].questions.push({
             questionId: 0,
             type: template.type,
             questionOptions: [{
@@ -696,12 +696,12 @@ export class CreateSurvey extends Component {
 
     addToQuestionTemplates(event){
         let questionId = parseInt(event.target.parentElement.id.split("-")[1]);
-        let question = this.state.data.filter(page => {return page.pageNumber === this.state.currPageNumber})[0].questions.filter(question => {return question.questionId === questionId})[0];
+        let question = this.state.data.filter(page => page.pageNumber === this.state.currPageNumber)[0].questions.filter(question => question.questionId === questionId)[0];
         this.createQuestionTemplate({
             questionId: 0,
-            label: question.questionOptions.filter(option => {return option.type === question.type})[0].label,
+            label: question.questionOptions.filter(option => option.type === question.type)[0].label,
             type: question.type,
-            answers: question.questionOptions.filter(option => {return option.type === question.type})[0].answers
+            answers: question.questionOptions.filter(option => option.type === question.type)[0].answers
         });
     }
 
@@ -888,22 +888,22 @@ export class CreateSurvey extends Component {
                         </div>
                         <div className="question-text-holder">
                             <label htmlFor={"question-text-"+question.questionId}>Question text: </label>
-                            <input className="question-text" id={"question-text-"+question.questionId} name={"question-text-"+question.questionId} defaultValue={question.questionOptions.filter(option => { return option.type === question.type })[0].label} onChange={this.saveQuestionText}></input>
+                            <input className="question-text" id={"question-text-"+question.questionId} name={"question-text-"+question.questionId} defaultValue={question.questionOptions.filter(option => option.type === question.type)[0].label} onChange={this.saveQuestionText}></input>
                         </div>
                         {question.type === "input" ? null : question.type === "rating" ?
                             <div className="answer-options-holder">
                                 <div className="answer-option">
-                                    <input type="text" id={"rating_label_from_"+question.questionId} className="rating_label" placeholder="from"  onChange={this.saveAnswerLabel}></input>
-                                    {question.questionOptions.filter(option => { return option.type === question.type })[0].answers.map(answer => 
+                                    <input type="text" id={"rating_label_from_"+question.questionId} className="rating_label" placeholder="from" defaultValue={question.questionOptions.filter(option => option.type === question.type)[0].answers[0].value} onChange={this.saveAnswerLabel}></input>
+                                    {question.questionOptions.filter(option => option.type === question.type)[0].answers.map(answer => 
                                         <input type="radio" key={answer.answerId} disabled className="rating_answer"></input>
                                     )}
-                                    <input type="text" id={"rating_label_to_"+question.questionId} className="rating_label" placeholder="to"  onChange={this.saveAnswerLabel}></input>
+                                    <input type="text" id={"rating_label_to_"+question.questionId} className="rating_label" placeholder="to" defaultValue={question.questionOptions.filter(option => option.type === question.type)[0].answers[4].value} onChange={this.saveAnswerLabel}></input>
                                 </div>
                             </div> 
                             :
                             <div className="answer-options-holder">
                                 <label>Answer options:</label>
-                                {question.questionOptions.filter(option => { return option.type === question.type })[0].answers.map(answer => 
+                                {question.questionOptions.filter(option => option.type === question.type)[0].answers.map(answer => 
                                     <div className="answer-option" key={answer.answerId}>
                                         <input type={question.type} id={"question-"+question.questionId+"-answer-"+answer.answerId} name={"question-answer-"+question.questionId} disabled></input>
                                         <label htmlFor={"question-"+question.questionId+"-answer-"+answer.answerId}><input type="text" id={"question-"+question.questionId+"-answer-"+answer.answerId+"-label"} name={"question-answer-label-"+question.questionId} defaultValue={answer.value} onChange={this.saveAnswerLabel}></input></label>
