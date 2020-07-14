@@ -13,10 +13,12 @@ export class EditFormQuestion extends Component {
             error: null,
             loading: true,
             currPageNumber: 1,
-            data: []
+            data: [],
+            overlay: false
         };
 
         this.survey = null;
+        this.questionTemplates = null;
     
         this.onPageButtonClicked = this.onPageButtonClicked.bind(this);
         this.addNewPage = this.addNewPage.bind(this);
@@ -31,11 +33,14 @@ export class EditFormQuestion extends Component {
         this.addNewQuestion = this.addNewQuestion.bind(this);
         this.saveQuestionText = this.saveQuestionText.bind(this);
         this.saveAnswerLabel = this.saveAnswerLabel.bind(this);
+        this.addQuestionTemplate = this.addQuestionTemplate.bind(this);
+        this.addToQuestionTemplates = this.addToQuestionTemplates.bind(this);
     }
 
 
     componentDidMount(){
         this.getSurvey();
+        this.getAllQuestionTemplates();
     }
 
     async getSurvey(){
@@ -107,6 +112,35 @@ export class EditFormQuestion extends Component {
         window.location.href = window.location.href.replace("editformquestion/" + this.props.match.params.id, "SurveyDashboard");
     }
 
+    async getAllQuestionTemplates(){
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response = await fetch('https://localhost:44309/QuestionTemplate/getAllQuestionTemplates',{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if(response.ok) this.questionTemplates = await response.json();
+    }
+
+    async createQuestionTemplate(question){
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response = await fetch('https://localhost:44309/QuestionTemplate/createQuestionTemplate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(question)
+        });
+        if(!response.ok) alert("Something went wrong!");
+        else {
+            await this.getAllQuestionTemplates();
+            alert("Question is added to question templates!");
+        }
+    }
+
     /*
         -------------------
         Auxiliary functions
@@ -175,9 +209,7 @@ export class EditFormQuestion extends Component {
             return false;
         }
 
-        let data = this.setUpQuestionIds(this.state.data.filter(page => {
-            return page.pageNumber !== this.state.currPageNumber;
-        }));
+        let data = this.setUpQuestionIds(this.state.data.filter(page => page.pageNumber !== this.state.currPageNumber));
         
         let pageCounter = 0;
         data.map(page => {
@@ -236,6 +268,29 @@ export class EditFormQuestion extends Component {
                                     };
                                     question.questionOptions.push(option);
                                     break;
+                                case "rating":
+                                    option = {
+                                        type: newType,
+                                        label: "",
+                                        answers: [{
+                                            answerId: 1,
+                                            value: "1"
+                                        },{
+                                            answerId: 2,
+                                            value: "2"
+                                        },{
+                                            answerId: 3,
+                                            value: "3"
+                                        },{
+                                            answerId: 4,
+                                            value: "4"
+                                        },{
+                                            answerId: 5,
+                                            value: "5"
+                                        }]
+                                    };
+                                    question.questionOptions.push(option);
+                                    break;
                                 default:
                             }
                         }
@@ -260,7 +315,7 @@ export class EditFormQuestion extends Component {
                     if(question.questionId === questionId){
                         for(let option of question.questionOptions){
                             if(option.type === question.type){
-                                option.answers = this.setUpAnswerIds(option.answers.filter(answer => {return answer.answerId !== answerId}));
+                                option.answers = this.setUpAnswerIds(option.answers.filter(answer => answer.answerId !== answerId));
                                 break;
                             }
                         }
@@ -311,7 +366,7 @@ export class EditFormQuestion extends Component {
         let data = this.state.data;
         for(let page of data){
             if(page.pageNumber === this.state.currPageNumber){
-                page.questions = page.questions.filter(question => {return question.questionId !== questionId});
+                page.questions = page.questions.filter(question => question.questionId !== questionId);
                 break;
             }
         }
@@ -321,7 +376,7 @@ export class EditFormQuestion extends Component {
 
     addNewQuestion(event){
         let data = this.state.data;
-        data.filter(page => {return page.pageNumber === this.state.currPageNumber})[0].questions.push({
+        data.filter(page => page.pageNumber === this.state.currPageNumber)[0].questions.push({
             questionId: 0,
             type: "input",
             questionOptions: [{
@@ -359,32 +414,70 @@ export class EditFormQuestion extends Component {
 
     saveAnswerLabel(event){
         let newValue = event.target.value;
-        let array = event.target.id.split("-");
-        let questionId = parseInt(array[1]);
-        let answerId = parseInt(array[3]);
         let data = this.state.data;
-        for(let page of data){
-            if(page.pageNumber === this.state.currPageNumber){
-                for(let question of page.questions){
-                    if(question.questionId === questionId){
-                        for(let option of question.questionOptions){
-                            if(option.type === question.type){
-                                for(let answer of option.answers){
-                                    if(answer.answerId === answerId){
-                                        answer.value = newValue;
-                                        break;
+        if(event.target.id.split("_")[2] === "from"){
+            let questionId = parseInt(event.target.id.split("_")[3]);
+            data.filter(page => page.pageNumber === this.state.currPageNumber)[0].questions.filter(question => question.questionId === questionId)[0].questionOptions.filter(option => option.type === "rating")[0].answers[0].value = event.target.value;
+        }
+        else if(event.target.id.split("_")[2] === "to"){
+            let questionId = parseInt(event.target.id.split("_")[3]);
+            data.filter(page => page.pageNumber === this.state.currPageNumber)[0].questions.filter(question => question.questionId === questionId)[0].questionOptions.filter(option => option.type === "rating")[0].answers[4].value = event.target.value;
+        }
+        else{
+            let array = event.target.id.split("-");
+            let questionId = parseInt(array[1]);
+            let answerId = parseInt(array[3]);
+            for(let page of data){
+                if(page.pageNumber === this.state.currPageNumber){
+                    for(let question of page.questions){
+                        if(question.questionId === questionId){
+                            for(let option of question.questionOptions){
+                                if(option.type === question.type){
+                                    for(let answer of option.answers){
+                                        if(answer.answerId === answerId){
+                                            answer.value = newValue;
+                                            break;
+                                        }
                                     }
+                                    break;
                                 }
-                                break;
                             }
+                            break;
                         }
-                        break;
                     }
+                    break;
                 }
-                break;
             }
         }
         this.setState({ data: data });
+    }
+
+    addQuestionTemplate(event){
+        let questionId = parseInt(event.currentTarget.id.split("-")[2]);
+        let template = this.questionTemplates.filter(template => template.questionTemplateId === questionId)[0];
+        let data = this.state.data;
+        data.filter(page => page.pageNumber === this.state.currPageNumber)[0].questions.push({
+            questionId: 0,
+            type: template.type,
+            questionOptions: [{
+                type: template.type,
+                label: template.label,
+                answers: template.answers
+            }]
+        });
+        data = this.setUpQuestionIds(data);
+        this.setState({ overlay: false, data: data });
+    }
+
+    addToQuestionTemplates(event){
+        let questionId = parseInt(event.target.parentElement.id.split("-")[1]);
+        let question = this.state.data.filter(page => page.pageNumber === this.state.currPageNumber)[0].questions.filter(question => question.questionId === questionId)[0];
+        this.createQuestionTemplate({
+            questionId: 0,
+            label: question.questionOptions.filter(option => option.type === question.type)[0].label,
+            type: question.type,
+            answers: question.questionOptions.filter(option => option.type === question.type)[0].answers
+        });
     }
 
     /*
@@ -392,6 +485,50 @@ export class EditFormQuestion extends Component {
         Render functions
         ----------------
     */
+
+    renderOverlay(){
+        return (
+            <div id="overlay">
+                <div id="template-questions">
+                    <h2 id="overlay-title">Question templates</h2>
+                    <div id="templates">
+                        {this.questionTemplates ? this.renderQuestionTemplates() : "There are no question templates!"}
+                    </div>
+                    <button id="overlay-back" className="button" onClick={() => this.setState({ overlay: false })}>Back</button>
+                </div>
+            </div>
+        );
+    }
+
+    renderQuestionTemplates(){
+        return (
+            this.questionTemplates.map(template => 
+                <div className="question-template" id={"question-template-"+template.questionTemplateId} key={template.questionTemplateId} onClick={this.addQuestionTemplate}>
+                    <div className="question-label">{template.label}</div>
+                    <div className="question-type">Question type: {template.type}</div>
+                    {template.type === "input" ? null : template.type === "rating" ? 
+                    <div className="question-answers">
+                        <p>Answers:</p>
+                        <label>{template.answers[0].value}</label>
+                        {template.answers.map(answer => 
+                            <input type="radio" key={answer.answerId} id={"question_" + template.questionTemplateId + "_answer_" + answer.answerId} className="rating_answer" disabled/>
+                        )}
+                        <label>{template.answers[4].value}</label>
+                    </div>
+                    :
+                    <div className="question-answers">
+                        <p>Answers:</p>
+                        {template.answers.map(answer => 
+                            <div id={"answer-"+answer.answerId} key={answer.answerId} className="question-answer">
+                                <input type={template.type} name={"answer-"+answer.answerId} disabled></input>
+                                <label htmlFor={"answer-"+answer.answerId}>{answer.value}</label>
+                            </div>
+                        )}
+                    </div>}
+                </div>
+            )
+        );
+    }
 
     // rendering current page
     renderQuestionForm(){
@@ -408,7 +545,7 @@ export class EditFormQuestion extends Component {
                 <div id="buttons-holder">
                     <div id="question-buttons">
                         <button className="button button-left" onClick={this.addNewQuestion}>Add new question</button>
-                        <button className="button button-right">Add template question</button>
+                        <button className="button button-right" onClick={() => this.setState({ overlay: true })}>Add template question</button>
                     </div>
                     <div id="save-buttons">
                         <button className="button button-left" id="save-survey" onClick={this.saveSurvey}>Save survey</button>
@@ -439,16 +576,27 @@ export class EditFormQuestion extends Component {
                                 <option value="input">Text input</option>
                                 <option value="radio">Radio buttons</option>
                                 <option value="checkbox">Checkboxes</option>
+                                <option value="rating">Rating</option>
                             </select>
                         </div>
                         <div className="question-text-holder">
                             <label htmlFor={"question-text-"+question.questionId}>Question text: </label>
-                            <input className="question-text" id={"question-text-"+question.questionId} name={"question-text-"+question.questionId} defaultValue={question.questionOptions.filter(option => { return option.type === question.type })[0].label} onChange={this.saveQuestionText}></input>
+                            <input className="question-text" id={"question-text-"+question.questionId} name={"question-text-"+question.questionId} defaultValue={question.questionOptions.filter(option => option.type === question.type)[0].label} onChange={this.saveQuestionText}></input>
                         </div>
-                        {question.type === "input" ? null : 
+                        {question.type === "input" ? null : question.type === "rating" ?
+                            <div className="answer-options-holder">
+                                <div className="answer-option">
+                                    <input type="text" id={"rating_label_from_"+question.questionId} className="rating_label" placeholder="from" defaultValue={question.questionOptions.filter(option => option.type === question.type)[0].answers[0].value} onChange={this.saveAnswerLabel}></input>
+                                    {question.questionOptions.filter(option => option.type === question.type)[0].answers.map(answer => 
+                                        <input type="radio" key={answer.answerId} disabled className="rating_answer"></input>
+                                    )}
+                                    <input type="text" id={"rating_label_to_"+question.questionId} className="rating_label" placeholder="to" defaultValue={question.questionOptions.filter(option => option.type === question.type)[0].answers[4].value} onChange={this.saveAnswerLabel}></input>
+                                </div>
+                            </div> 
+                            :
                             <div className="answer-options-holder">
                                 <label>Answer options:</label>
-                                {question.questionOptions.filter(option => { return option.type === question.type })[0].answers.map(answer => 
+                                {question.questionOptions.filter(option => option.type === question.type)[0].answers.map(answer => 
                                     <div className="answer-option" key={answer.answerId}>
                                         <input type={question.type} id={"question-"+question.questionId+"-answer-"+answer.answerId} name={"question-answer-"+question.questionId} disabled></input>
                                         <label htmlFor={"question-"+question.questionId+"-answer-"+answer.answerId}><input type="text" id={"question-"+question.questionId+"-answer-"+answer.answerId+"-label"} name={"question-answer-label-"+question.questionId} defaultValue={answer.value} onChange={this.saveAnswerLabel}></input></label>
@@ -457,7 +605,8 @@ export class EditFormQuestion extends Component {
                                 )}
                             </div>
                         }
-                        {question.type === "input" ? null : <button className="button add-answer-button" onClick={this.addNewAnswer}>Add answer</button>}
+                        {question.type === "input" || question.type === "rating" ? null : <button className="button add-answer-button" onClick={this.addNewAnswer}>Add answer</button>}
+                        <button className="button add-to-templates-button" onClick={this.addToQuestionTemplates}>Add to question templates</button>
                         <button className="button remove-question-button" onClick={this.removeQuestion}>Remove question</button>
                     </div>
                 )}
@@ -494,6 +643,7 @@ export class EditFormQuestion extends Component {
                     </div>
                     <h2 id="edit_question_title">Edit Form's Questions</h2>
                     {this.renderQuestionForm()}
+                    {this.state.overlay ? this.renderOverlay() : null}
                 </div>
             );
         }

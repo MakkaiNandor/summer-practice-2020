@@ -232,3 +232,6 @@ textarea {
 .question-answer {
     margin-left: 1em;
 }
+.rating_label {
+    width: 5em;
+}
