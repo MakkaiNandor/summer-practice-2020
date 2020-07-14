@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import './Personal.css';
-import { Link } from 'react-router-dom';
 
 export class Personal extends Component {
     static displayName = Personal.name;

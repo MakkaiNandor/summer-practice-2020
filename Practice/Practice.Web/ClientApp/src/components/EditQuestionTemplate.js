@@ -79,7 +79,7 @@ export class EditQuestionTemplate extends Component{
         var keys=Object.keys(this.state.template.answers);
         for (var i=0; i<keys.length; i++)
         {
-            if (temp.answers[keys[i]].answerId==event.target.name)
+            if (temp.answers[keys[i]].answerId===event.target.name)
             {
                 temp.answers[keys[i]].value=event.target.value;
             }

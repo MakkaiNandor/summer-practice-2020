@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './Survey.css';
-import { Link } from 'react-router-dom';
 
 export class Survey extends Component {
     static displayName = Survey.name;
