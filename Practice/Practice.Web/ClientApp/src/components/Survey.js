@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Survey.css';
 import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 export class Survey extends Component {
     static displayName = Survey.name;
@@ -32,7 +33,13 @@ export class Survey extends Component {
 
     // get survey by id
     async getSurvey(){
-        const response = await fetch('https://localhost:44309/Survey/getSurvey/' + this.props.match.params.id);
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response = await fetch('https://localhost:44309/Survey/getSurvey/' + this.props.match.params.id,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if(!response.ok) this.setState({ error: "Survey not found!" });
         else{
             this.survey = await response.json();
@@ -61,10 +68,14 @@ export class Survey extends Component {
 
     // save survey's one page
     async savePageOfSurvey(){
+        const cookies = new Cookies();
+        var token = cookies.get('token');
         const response = await fetch('https://localhost:44309/Answer/sendAnswer/' + this.survey.surveyId, {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+
             },
             body: JSON.stringify({
                 personalData: this.personalData,
@@ -76,7 +87,13 @@ export class Survey extends Component {
     }
 
     async getCounters(){
-        const response = await fetch('https://localhost:44309/Answer/getReport/' + this.props.match.params.id);
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response = await fetch('https://localhost:44309/Answer/getReport/' + this.props.match.params.id,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if(!response.ok) this.setState({ error: "Survey not found!" });
         else{
             this.counters = await response.json();
@@ -86,10 +103,13 @@ export class Survey extends Component {
     }
 
     async setCounters(){
+        const cookies = new Cookies();
+        var token = cookies.get('token');
         const response = await fetch('https://localhost:44309/Answer/setCounters/' + this.props.match.params.id, {
             method: 'PATCH',
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(this.counters)
         });
@@ -160,9 +180,7 @@ export class Survey extends Component {
             this.survey.pages[this.state.currPage].questions.map(question => 
                 <div className="question" id={"question_" + question.questionId} key={question.questionId}>
                     <p className="question-label"><b>{question.questionId + ": "}</b>{question.label}</p>
-                    <div className="answer-holder">
-                        {this.generateAnswers(question)}
-                    </div>
+                    {this.generateAnswers(question)}
                 </div>
             )
         );
@@ -173,27 +191,43 @@ export class Survey extends Component {
         switch(question.type){
             case "input":
                 return (
-                    <div className="answer">
-                        <input type="text" id={"question_" + question.questionId + "_answer_1"} name={"question_" + question.questionId} defaultValue={this.getOldValue(question.questionId, 1)}/>
+                    <div className="answer-holder">
+                        <div className="answer">
+                            <input type="text" id={"question_" + question.questionId + "_answer_1"} name={"question_" + question.questionId} defaultValue={this.getOldValue(question.questionId, 1)}/>
+                        </div>
                     </div>
                 );
             case "radio":
                 return (
-                    question.answers.map(answer =>
-                        <div className="answer" key={answer.answerId}>
-                            <input type="radio" id={"question_" + question.questionId + "_answer_" + answer.answerId} name={"question_" + question.questionId} value={answer.value} defaultChecked={this.getOldValue(question.questionId, answer.answerId)}/>
-                            <label htmlFor={"question_" + question.questionId + "_answer_" + answer.answerId}>{answer.value}</label>
-                        </div>
-                    )
+                    <div className="answer-holder">
+                        {question.answers.map(answer =>
+                            <div className="answer" key={answer.answerId}>
+                                <input type="radio" id={"question_" + question.questionId + "_answer_" + answer.answerId} name={"question_" + question.questionId} value={answer.value} defaultChecked={this.getOldValue(question.questionId, answer.answerId)}/>
+                                <label htmlFor={"question_" + question.questionId + "_answer_" + answer.answerId}>{answer.value}</label>
+                            </div>
+                        )}
+                    </div>
                 );
             case "checkbox":
                 return (
-                    question.answers.map(answer => 
-                        <div className="answer" key={answer.answerId}>
-                            <input type="checkbox" id={"question_" + question.questionId + "_answer_" + answer.answerId} name={"question_" + question.questionId} value={answer.value} defaultChecked={this.getOldValue(question.questionId, answer.answerId)}/>
-                            <label htmlFor={"question_" + question.questionId + "_answer_" + answer.answerId}>{answer.value}</label>
-                        </div>
-                    )
+                    <div className="answer-holder">
+                        {question.answers.map(answer => 
+                            <div className="answer" key={answer.answerId}>
+                                <input type="checkbox" id={"question_" + question.questionId + "_answer_" + answer.answerId} name={"question_" + question.questionId} value={answer.value} defaultChecked={this.getOldValue(question.questionId, answer.answerId)}/>
+                                <label htmlFor={"question_" + question.questionId + "_answer_" + answer.answerId}>{answer.value}</label>
+                            </div>
+                        )}
+                    </div>
+                );
+            case "rating":
+                return (
+                    <div className="answer-holder">
+                        <label>{question.answers[0].value}</label>
+                        {question.answers.map(answer => 
+                            <input type="radio" key={answer.answerId} id={"question_" + question.questionId + "_answer_" + answer.answerId} className="rating_answer" name={"question_" + question.questionId} value={answer.value} defaultChecked={this.getOldValue(question.questionId, answer.answerId)}/>
+                        )}
+                        <label>{question.answers[4].value}</label>
+                    </div>
                 );
             default: return null;
         }
