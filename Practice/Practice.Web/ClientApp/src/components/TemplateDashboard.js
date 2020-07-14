@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import "./Template.css"
 import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 export class TemplateDashboard extends Component {
     static displayName = TemplateDashboard.name;
@@ -38,7 +39,13 @@ export class TemplateDashboard extends Component {
 
     //Get SurveyTemplates
     async getSurveyTemplates() {
-        const response = await fetch('https://localhost:44309/SurveyTemplate/getAllSurveyTemplates');
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response = await fetch('https://localhost:44309/SurveyTemplate/getAllSurveyTemplates',{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if (!response.ok) this.setState({ error: "There are no templates!" });
         else {
             let temp = await response.json();
@@ -55,7 +62,13 @@ export class TemplateDashboard extends Component {
     }
     //Get QuestionTemplates
     async getQuestionTemplates() {
-        const response = await fetch('https://localhost:44309/QuestionTemplate/getAllQuestionTemplates');
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response = await fetch('https://localhost:44309/QuestionTemplate/getAllQuestionTemplates',{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if (!response.ok) this.setState({ error: "There are no templates!" });
         else {
             let temp = await response.json();
@@ -71,7 +84,13 @@ export class TemplateDashboard extends Component {
     //Get Survey by id
     async getSurveyById(id)
     {
-        const response= await fetch('https://localhost:44309/Survey/getSurvey/'+this.surveyId);
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response= await fetch('https://localhost:44309/Survey/getSurvey/'+this.surveyId,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if (!response.ok) this.setState({error:"Cant get a survey by id!"});
         else
         {
@@ -136,17 +155,27 @@ export class TemplateDashboard extends Component {
     //Delete Template
     async DeleteSurveyTemplate()
     {
+        const cookies = new Cookies();
+        var token = cookies.get('token');
         
         await fetch('https://localhost:44309/SurveyTemplate/deleteSurveyTemplate/'+parseInt(this.state.templateId),{
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
        });
         this.getSurveyTemplates();
         
     }
     async DeleteQuestionTemplate(event)
     {
+        const cookies = new Cookies();
+        var token = cookies.get('token');
         await fetch('https://localhost:44309/QuestionTemplate/deleteQuestionTemplate/'+parseInt(this.state.templateId),{
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
         });
         this.getQuestionTemplates();
     }

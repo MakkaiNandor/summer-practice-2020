@@ -9,9 +9,12 @@ using Practice.Api.Data;
 using Practice.Api.Data.Repositories;
 using Microsoft.Data.SqlClient.DataClassification;
 using Practice.Api.Models.Views;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Practice.Api.Controllers
 {
+    [Authorize]
     [Route("QuestionTemplate")]
     [ApiController]
     public class QuestionTemplateController : ControllerBase

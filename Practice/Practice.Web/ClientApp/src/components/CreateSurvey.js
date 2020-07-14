@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import './CreateSurvey.css';
 import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 export class CreateSurvey extends Component {
     static displayName = CreateSurvey.name;
@@ -90,7 +91,14 @@ export class CreateSurvey extends Component {
 
     // get all survey templates
     async getAllSurveyTemplates(){
-        const response = await fetch('https://localhost:44309/SurveyTemplate/getAllSurveyTemplates');
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response = await fetch('https://localhost:44309/SurveyTemplate/getAllSurveyTemplates',{
+            headers: {
+                'Authorization': `Bearer ${token}`
+                
+            }
+        });
         if(!response.ok) this.setState({ error: "There are no form templates!" });
         else{
             this.state.surveyTemplates = await response.json();
@@ -99,7 +107,14 @@ export class CreateSurvey extends Component {
     }
 
     async getTemplate(){
-        const response = await fetch('https://localhost:44309/SurveyTemplate/getSurveyTemplateById/' + this.props.match.params.id);
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response = await fetch('https://localhost:44309/SurveyTemplate/getSurveyTemplateById/' + this.props.match.params.id,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+                
+            }
+        });
         if(!response.ok) this.setState({ error: "Survey template not found!" });
         else {
             let template = await response.json();
@@ -124,10 +139,13 @@ export class CreateSurvey extends Component {
 
     // save data as survey
     async saveAsSurvey(){
+        const cookies = new Cookies();
+        var token = cookies.get('token');
         const response = await fetch('https://localhost:44309/Survey/createSurvey', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(this.survey)
         });
@@ -140,10 +158,13 @@ export class CreateSurvey extends Component {
 
     // save data as template
     async saveAsTemplate(){
+        const cookies = new Cookies();
+        var token = cookies.get('token');
         const response = await fetch('https://localhost:44309/SurveyTemplate/createSurveyTemplate', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(this.survey)
         });
@@ -155,10 +176,13 @@ export class CreateSurvey extends Component {
     }
 
     async editSurveyTemplate(){
+        const cookies = new Cookies();
+        var token = cookies.get('token');
         const response = await fetch('https://localhost:44309/SurveyTemplate/editSurveyTemplate/' + this.props.match.params.id, {
             method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(this.state.baseTemplate)
         });
@@ -170,15 +194,24 @@ export class CreateSurvey extends Component {
     }
 
     async getAllQuestionTemplates(){
-        const response = await fetch('https://localhost:44309/QuestionTemplate/getAllQuestionTemplates');
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response = await fetch('https://localhost:44309/QuestionTemplate/getAllQuestionTemplates',{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if(response.ok) this.questionTemplates = await response.json();
     }
 
     async createQuestionTemplate(question){
+        const cookies = new Cookies();
+        var token = cookies.get('token');
         const response = await fetch('https://localhost:44309/QuestionTemplate/createQuestionTemplate', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(question)
         });

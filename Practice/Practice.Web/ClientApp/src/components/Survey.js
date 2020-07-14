@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import './Survey.css';
+import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 export class Survey extends Component {
     static displayName = Survey.name;
@@ -31,7 +33,13 @@ export class Survey extends Component {
 
     // get survey by id
     async getSurvey(){
-        const response = await fetch('https://localhost:44309/Survey/getSurvey/' + this.props.match.params.id);
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response = await fetch('https://localhost:44309/Survey/getSurvey/' + this.props.match.params.id,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if(!response.ok) this.setState({ error: "Survey not found!" });
         else{
             this.survey = await response.json();
@@ -60,10 +68,14 @@ export class Survey extends Component {
 
     // save survey's one page
     async savePageOfSurvey(){
+        const cookies = new Cookies();
+        var token = cookies.get('token');
         const response = await fetch('https://localhost:44309/Answer/sendAnswer/' + this.survey.surveyId, {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+
             },
             body: JSON.stringify({
                 personalData: this.personalData,
@@ -75,7 +87,13 @@ export class Survey extends Component {
     }
 
     async getCounters(){
-        const response = await fetch('https://localhost:44309/Answer/getReport/' + this.props.match.params.id);
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response = await fetch('https://localhost:44309/Answer/getReport/' + this.props.match.params.id,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if(!response.ok) this.setState({ error: "Survey not found!" });
         else{
             this.counters = await response.json();
@@ -85,10 +103,13 @@ export class Survey extends Component {
     }
 
     async setCounters(){
+        const cookies = new Cookies();
+        var token = cookies.get('token');
         const response = await fetch('https://localhost:44309/Answer/setCounters/' + this.props.match.params.id, {
             method: 'PATCH',
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(this.counters)
         });
