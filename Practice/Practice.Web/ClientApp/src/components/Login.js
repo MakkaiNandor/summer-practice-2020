@@ -15,7 +15,8 @@ export class Login extends Component {
       Email:'asd',
       Password:'',
       redirect: false,
-      target: ""
+      target: "",
+      text: ""
     }
     this.login = this.login.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -27,10 +28,11 @@ export class Login extends Component {
 
   async login(){
     //debugger;
-    console.log("login fuggveny hivas");
-    console.log(this.state);
-    console.log( JSON.stringify(this.state) );
+    //console.log("login fuggveny hivas");
+    //console.log(this.state);
+    //console.log( JSON.stringify(this.state) );
     //--
+    this.setState({ text:"Waiting for answer . . ."});
 
 
     const cookies = new Cookies();
@@ -53,21 +55,28 @@ export class Login extends Component {
     //console.log(await response.json()  );
 
 
+    
+
     if(response.ok){
+      this.setState({ text:"Successfully logged in!"});
+
       var response_ = await response.json();
+
       //console.log( response_ );
-      console.log( response_.token );
+      //console.log( response_.token );
 
       cookies.set('token', response_.token);
       window.location.href = window.location.href.replace("login","MainMenu");
       
       this.setState({ redirect: true, target: "/MainMenu" });
     }
+    else
+    {
+      this.setState({ text:"Password or username incorrect!"});
+
+    }
     
-    /*
-    const asd = await authService.getAccessToken();
-    console.log(asd);
-*/
+
    // console.log(  response);
 
 
@@ -79,9 +88,12 @@ export class Login extends Component {
   onChange(e){
     //console.log("onchange fuggveny hivas");
     this.setState({[e.target.name]: e.target.value});
-    console.log(this.state);
+    //console.log(this.state);
 
   }
+
+  
+
 
   render() {
     if(this.state.redirect){
@@ -115,6 +127,7 @@ export class Login extends Component {
                 <input type = "password" name="Password" placeholder="Enter Password" onChange={this.onChange} required></input><br></br>
 
                 <button type="submit" value="login" className="button" onClick={this.login} >Login</button><br></br>
+                <label >{this.state.text}</label>
               </div>
         </div>
         

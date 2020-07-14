@@ -20,10 +20,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using Practice.Api.Helpers;
 using Microsoft.AspNetCore.Authorization;
-
+using System.Security.Cryptography;
+using System.Security.Policy;
 
 namespace Practice.Api.Controllers
 {
+    [Authorize]
     [Route("Authentification")]
     [ApiController]
     public class AuthentificationController : ControllerBase
@@ -47,14 +49,21 @@ namespace Practice.Api.Controllers
 
         }
 
+        [AllowAnonymous]
         [EnableCors]
         [HttpPost("UserLogin")]
         public ActionResult<AuthenticateResponse> UserLogin(User login_user)
-        //public void UserLogin(User login_user)
         {
-            //return new BadRequestResult();
+            var hashed_password = hashPassword(login_user.Password);
+            login_user.Password = hashed_password;
+
+            /*
+             //debug
+            login_user.Password = hashed_password;
+            return login_user;
+            */
             
-            
+
             if ((users.FindOne(variable => variable.UserName == login_user.UserName)) == null)
             {
                 //return "Username not found";
@@ -80,10 +89,34 @@ namespace Practice.Api.Controllers
 
                 }
             }
+
+            
+            
             
         }
 
-        
+        [AllowAnonymous]
+        [EnableCors]
+        [HttpPost("PasswordHasher/{pass}")]
+        public string PasswordHasher(string pass)
+        {
+            return hashPassword(pass);
+            
+        }
+
+            public static string hashPassword(string password)
+        {
+            SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider();
+
+            byte[] password_bytes = Encoding.ASCII.GetBytes(password);
+            byte[] encrypted_byte = sha1.ComputeHash(password_bytes);
+
+            return Convert.ToBase64String(encrypted_byte);
+        }
+
+
+
+
 
         private string generateJwtToken(User user)
         {

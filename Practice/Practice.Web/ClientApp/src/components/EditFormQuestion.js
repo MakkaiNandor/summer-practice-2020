@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './EditFormQuestion.css';
 import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 export class EditFormQuestion extends Component {
     static displayName = EditFormQuestion.name;
@@ -38,7 +39,14 @@ export class EditFormQuestion extends Component {
     }
 
     async getSurvey(){
-        const response = await fetch('https://localhost:44309/Survey/getSurvey/' + this.props.match.params.id);
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response = await fetch('https://localhost:44309/Survey/getSurvey/' + this.props.match.params.id,
+        {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if(!response.ok) this.setState({ error: "Survey not found!" });
         else{
             this.survey = await response.json();
@@ -69,6 +77,7 @@ export class EditFormQuestion extends Component {
 
     // save data as survey
     async saveSurvey(){
+        
         this.survey.pages = this.state.data.map(page => {return {
             pageNumber: page.pageNumber,
             questions: page.questions.map(question => {
@@ -82,11 +91,14 @@ export class EditFormQuestion extends Component {
         }});
 
 
-
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        
         const response = await fetch('https://localhost:44309/Survey/editSurvey/' + this.props.match.params.id, {
             method: 'PATCH',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(this.survey)
         });

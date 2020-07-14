@@ -10,9 +10,11 @@ using Microsoft.AspNetCore.Cors;
 using Practice.Api.Models.Views;
 using System.Runtime.InteropServices.ComTypes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Practice.Api.Controllers
 {
+    [Authorize]
     [Route("Answer")]
     [ApiController]
     public class AnswerController : ControllerBase

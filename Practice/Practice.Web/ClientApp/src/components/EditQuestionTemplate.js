@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './EditQuestionTemplate.css';
 import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 export class EditQuestionTemplate extends Component{
     static displayName=EditQuestionTemplate.name;
@@ -41,7 +42,13 @@ export class EditQuestionTemplate extends Component{
     //getTemplate
     async GetTemplate()
     {
-        const response = await fetch ('https://localhost:44309/QuestionTemplate/getQuestionTemplateById/'+this.state.templateId);
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response = await fetch ('https://localhost:44309/QuestionTemplate/getQuestionTemplateById/'+this.state.templateId,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
         if (!response.ok) this.setState({error:"Request failed!"});
         else
         {
@@ -53,11 +60,15 @@ export class EditQuestionTemplate extends Component{
 
     async SaveTemplate()
     {
+        const cookies = new Cookies();
+        var token = cookies.get('token');
         const response = await fetch ('https://localhost:44309/QuestionTemplate/editQuestionTemplate/'+this.state.templateId,
         {
             method:"PATCH",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
+
             },
             body: JSON.stringify(this.state.template)
         });
