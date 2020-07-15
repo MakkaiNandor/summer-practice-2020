@@ -125,13 +125,17 @@ export class EditQuestionTemplate extends Component{
     //Generate page
     GeneratePage()
     {
+        var templateType;
+        if (this.state.template.type==="rating") templateType="radio";
+        else templateType=this.state.template.type;
+
         return(
             <div id="QuestionLabelDiv">
                 <input onChange={this.changeValueLabel} type="text" id="QuestionLabelText" defaultValue={this.state.template.label}></input>
                 <div id="AnswerContainerEdit">
                 {this.state.template.answers.map(answer=>
                     <div>
-                        <input type={this.state.template.type} disabled></input>
+                        <input type={templateType} disabled></input>
                         <input name={answer.answerId} onChange={this.changeValueAnswer} type="text" className="QuestionValueText" defaultValue={answer.value}></input>
                         <button id="EditDeleteButton" onClick={this.DeleteAnswer} name={answer.answerId}>x</button>
                     </div>
@@ -219,6 +223,7 @@ export class EditQuestionTemplate extends Component{
                             <option>radio</option>
                             <option>input</option>
                             <option>checkbox</option>
+                            <option>rating</option>
                         </select>
                             {Generatedpage}
                             <button id="editTemplate_saveButton" onClick={this.AddAnswer}> Add </button>

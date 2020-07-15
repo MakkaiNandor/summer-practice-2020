@@ -11,7 +11,6 @@ using Practice.Api.Models;
 using System.Security.Claims;
 using System.Text;
 using System.Collections.Generic;
-//using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -32,14 +31,6 @@ namespace Practice.Api.Controllers
     {
         
         private readonly AppSettings _appSettings;
-
-        /*
-        public AuthentificationController(IOptions<AppSettings> appSettings)
-        {
-            _appSettings = appSettings.Value;
-        }
-        */
-
         private readonly IRepository<User> users;
 
         public AuthentificationController(IRepository<User> temp_users, IOptions<AppSettings> appSettings)
@@ -57,37 +48,18 @@ namespace Practice.Api.Controllers
             var hashed_password = hashPassword(login_user.Password);
             login_user.Password = hashed_password;
 
-            /*
-             //debug
-            login_user.Password = hashed_password;
-            return login_user;
-            */
             
 
-            if ((users.FindOne(variable => variable.UserName == login_user.UserName)) == null)
+            if ((users.FindOne(variable => variable.UserName == login_user.UserName && variable.Password==login_user.Password)) == null)
             {
-                //return "Username not found";
-                //return null;
                 return new BadRequestResult();
             }
             else
             {
-                if ((users.FindOne(variable => variable.Password == login_user.Password)) == null)
-                {
-                    //return "Password incorrect";
-                    //return null;
-                    return new BadRequestResult();
-                }
-                else
-                {
                     //return "Succesfully logged in";
                     var token = generateJwtToken(login_user);
 
                     return new AuthenticateResponse(login_user, token);
-                    //return new OkObjectResult(token);
-                    //return 1;
-
-                }
             }
 
             
