@@ -63,3 +63,14 @@
     background-repeat: no-repeat;
     padding: 12px 0px 12px 5px;
 }
+
+#personal_report_button{
+    position: absolute;
+    top: 70px;
+    left: 10px;
+    width: 125px;
+    border-radius: 1em;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    font-size: 14px;
+}
