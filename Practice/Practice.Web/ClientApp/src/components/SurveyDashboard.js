@@ -296,7 +296,8 @@ export class SurveyDashboard extends Component {
             return (
                 <div id="dashboard-page">
                     <div id="homepage_button_holder">
-                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        <Link to="./generalReport" className="Link"><button id="personal_report_button">Personal data report</button></Link>
                     </div>
                     <h2 id="title">My Forms</h2>
                     <div id="survey-table-holder">
