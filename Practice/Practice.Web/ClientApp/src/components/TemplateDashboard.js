@@ -273,7 +273,7 @@ export class TemplateDashboard extends Component {
                             <button id="left_button" onClick={this.ChangeToSurveyTemplate}>Surveys</button>
                             <button id="right_button" onClick={this.ChangeToQuestionTemplate}>Questions</button>
                         </div>
-                        <div id='create_button_container'><Link to="CreateSurvey"><button id="create_survey">Create survey</button></Link></div>
+                        <div id='create_button_container'><Link to="/CreateSurvey"><button id="create_survey">Create survey</button></Link></div>
                         <br></br>
                         {table}
                         
