@@ -15,6 +15,7 @@ import { CreateSurvey } from './components/CreateSurvey';
 import { GeneralReport } from './components/GeneralReport';
 import { SurveyReport } from './components/SurveyReport';
 import { BarChart } from './components/BarChart';
+import { GeneralPie } from './components/Reporting/GeneralPieChart';
 
 import './custom.css'
 
@@ -24,7 +25,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <Layout>
+        <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/survey/:id' component={Survey} />
         <Route path='/login' component={Login} />
@@ -40,6 +41,7 @@ export default class App extends Component {
         <Route path='/generalReport' component={GeneralReport} />
         <Route path='/surveyReport/:id' component={SurveyReport} />
         <Route path='/BarChartReporting/:id' component={BarChart} />
+        <Route path='/GeneralPie/:id' component={GeneralPie} />
       </Layout>
     );
   }

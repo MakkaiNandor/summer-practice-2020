@@ -1,0 +1,59 @@
+#PageTitlePie
+{
+    text-align: center;
+    margin-top: 20px;
+}
+
+#PieQuestionContainer
+{
+    position:absolute;
+    left:5%;
+    top:13%;
+    border:1px solid black;
+    width:20%;
+    background-color: white;
+    border-radius: 20px;
+    max-height: 70%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-align: center;
+}
+
+
+
+#PieQuestionContainer::-webkit-scrollbar {
+    display: none;
+}
+
+#PieQuestionContainer{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+
+.PieQuestionLabel
+{
+    margin-top: 5px;
+    border:none;
+    background: none;
+    width:90%;
+    border-radius: 20px;
+    margin-bottom: 5px;
+    height: 50px;
+}
+.PieQuestionLabel:focus{outline:none}
+
+button:focus{outline:none}
+input:focus{outline:none}
+
+.PieQuestionLabel:hover {background-color:#dddada;}
+
+#GeneralPieError
+{
+    margin-top: 30%;
+}
+
+#GeneralPieErrorContainer
+{
+    width:100%;
+    text-align: center;
+}
