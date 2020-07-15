@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './Login.css';
-import { Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { Redirect } from 'react-router-dom';
 
@@ -66,7 +65,6 @@ export class Login extends Component {
       //console.log( response_.token );
 
       cookies.set('token', response_.token);
-      window.location.href = window.location.href.replace("login","MainMenu");
       
       this.setState({ redirect: true, target: "/MainMenu" });
     }
