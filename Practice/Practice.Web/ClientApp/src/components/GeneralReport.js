@@ -3,6 +3,7 @@ import './GeneralReport.css';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 export class GeneralReport extends Component {
     static displayName = GeneralReport.name;
@@ -33,8 +34,15 @@ export class GeneralReport extends Component {
     }
 
     async getAnswers(){
-        const response = await fetch('https://localhost:44309/Answer/getAllAnswers');
-        if(!response.ok) this.setState({ error: "Cannot reach the answers" });
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response = await fetch('https://localhost:44309/Answer/getAllAnswers',{
+            headers: {
+                'Authorization': `Bearer ${token}`
+                
+            }
+        });
+        if(!response.ok || response.status !== 200) this.setState({ error: "Cannot reach the answers" });
         else{
             this.survey = await response.json();
             this.setState({loading: false});
@@ -254,12 +262,22 @@ export class GeneralReport extends Component {
     render(){
         if(this.state.error){
             return (
-                    <p>{this.state.error}</p>
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                        <p>{this.state.error}</p>
+                </div>
             );
         }
         else if(this.state.loading){
             return (
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
                     <p>Loading...</p>
+                </div>
             );
         }        
         else{
@@ -279,30 +297,29 @@ export class GeneralReport extends Component {
                         <div id="age_buttons">
                             <button id="select_age_button" onClick={this.showAgeGroups}>Select groups</button>
                             <button id="hide_age_button" onClick={this.hideAgeGroups} style={{display: "none"}}>Hide groups</button>
-                            <button id="select_age_button" onClick={this.showReport}>Show report</button>
                         </div>
                         <div style={{ display: "none"}} id="agegroup_div">
-                            <input type="checkbox" id="agegroup0" className="agegroup0" value="0-10" />
+                            <input type="checkbox" id="agegroup0" className="agegroup0" value="0-10" onClick={this.showReport}/>
                             <label htmlFor="agegroup0"> 0-10 </label><br/>
-                            <input type="checkbox" id="agegroup1" className="agegroup1" value="11-20" />
+                            <input type="checkbox" id="agegroup1" className="agegroup1" value="11-20" onClick={this.showReport}/>
                             <label htmlFor="agegroup1"> 11-20 </label><br/>
-                            <input type="checkbox" id="agegroup2" className="agegroup2" value="21-30" />
+                            <input type="checkbox" id="agegroup2" className="agegroup2" value="21-30" onClick={this.showReport}/>
                             <label htmlFor="agegroup2"> 21-30 </label><br/>
-                            <input type="checkbox" id="agegroup3" className="agegroup3" value="31-40" />
+                            <input type="checkbox" id="agegroup3" className="agegroup3" value="31-40" onClick={this.showReport}/>
                             <label htmlFor="agegroup3"> 31-40 </label><br/>
-                            <input type="checkbox" id="agegroup4" className="agegroup4" value="41-50" />
+                            <input type="checkbox" id="agegroup4" className="agegroup4" value="41-50" onClick={this.showReport}/>
                             <label htmlFor="agegroup4"> 41-50 </label><br/>
-                            <input type="checkbox" id="agegroup5" className="agegroup5" value="51-60" />
+                            <input type="checkbox" id="agegroup5" className="agegroup5" value="51-60" onClick={this.showReport}/>
                             <label htmlFor="agegroup5"> 51-60 </label><br/>
-                            <input type="checkbox" id="agegroup6" className="agegroup6" value="61-70" />
+                            <input type="checkbox" id="agegroup6" className="agegroup6" value="61-70" onClick={this.showReport}/>
                             <label htmlFor="agegroup6"> 61-70 </label><br/>
-                            <input type="checkbox" id="agegroup7" className="agegroup7" value="71-80" />
+                            <input type="checkbox" id="agegroup7" className="agegroup7" value="71-80" onClick={this.showReport}/>
                             <label htmlFor="agegroup7"> 71-80 </label><br/>
-                            <input type="checkbox" id="agegroup8" className="agegroup8" value="81-90" />
+                            <input type="checkbox" id="agegroup8" className="agegroup8" value="81-90" onClick={this.showReport}/>
                             <label htmlFor="agegroup8"> 81-90 </label><br/>
-                            <input type="checkbox" id="agegroup9" className="agegroup9" value="91-100" />
+                            <input type="checkbox" id="agegroup9" className="agegroup9" value="91-100" onClick={this.showReport} />
                             <label htmlFor="agegroup9"> 91-100 </label><br/>
-                            <input type="checkbox" id="agegroup10" className="agegroup10" value="100+" />
+                            <input type="checkbox" id="agegroup10" className="agegroup10" value="100+" onClick={this.showReport}/>
                             <label htmlFor="agegroup10"> 100+ </label><br/>
                         </div>
                         <div id="age_buttons">
