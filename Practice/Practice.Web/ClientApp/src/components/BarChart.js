@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock'
+import Cookies from 'universal-cookie';
 import './BarChart.css';
 
 export class BarChart extends Component {
@@ -11,13 +12,12 @@ export class BarChart extends Component {
         this.state = {
             error: null,
             loading: true,
-            survey: null,
-            answers: null,
-            selectedPage: null,
+            surveyTitle: null,
+            answersOfSurvey: null,
+            questionsOfSurvey: null,
             selectedQuestion: null
         };
-
-        this.onSelectChanged = this.onSelectChanged.bind(this);
+        this.questionClicked = this.questionClicked.bind(this);
     }
 
     componentDidMount(){
@@ -25,103 +25,102 @@ export class BarChart extends Component {
     }
 
     async getData(){
-        const response_1 = await fetch('https://localhost:44309/Survey/getSurvey/' + this.props.match.params.id);
-        const response_2 = await fetch('https://localhost:44309/Answer/getAnswerById/' + this.props.match.params.id);
-        if(response_1.ok && response_1.status === 200 && response_2.ok && response_2.status === 200){
-            let survey = await response_1.json();
-            let answers = await response_2.json();
-            let pages = survey.pages.filter(page => {return page.questions.filter(question => {return question.type !== "input"}).length !== 0});
-            let firstPage = pages.length === 0 ? null : pages[0];
-            let questionsOfPage = firstPage ? firstPage.questions.filter(question => {return question.type !== "input"}) : [];
-            let firstQuestion = questionsOfPage.length === 0 ? null : questionsOfPage[0];
-            if(!firstPage || !firstQuestion) this.setState({ error: "Something went wrong!" });
-            else this.setState({ loading: false, survey: survey, answers: answers, selectedPage: firstPage, selectedQuestion: firstQuestion });
-        }
-        else if(!response_1.ok){
-            this.setState({ error: "Survey not found!" });
-        }
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+        const response_survey = await fetch('https://localhost:44309/Survey/getSurvey/' + this.props.match.params.id, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const response_answers = await fetch('https://localhost:44309/Answer/getAnswerById/' + this.props.match.params.id, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if(!response_survey.ok || response_survey.status !== 200) this.setState({ error: "Survey not found!" });
+        else if(!response_answers.ok || response_answers.status !== 200) this.setState({ error: "Answers not found!" });
         else{
-            this.setState({ error: "Answers not found!" });
+            let survey = await response_survey.json();
+            let answersOfSurvey = await response_answers.json();
+            let questionsOfSurvey = survey.pages.reduce((acc, page) => {
+                return acc.concat(page.questions.filter(question => question.type !== "input"));
+            }, []);
+            this.setState({ loading: false, surveyTitle: survey.title, questionsOfSurvey: questionsOfSurvey, answersOfSurvey: answersOfSurvey.answers, selectedQuestion: questionsOfSurvey[0] });
         }
     }
 
-    onSelectChanged(event){
-        if(event.target.id === "select_page"){
-            let page = this.state.survey.pages.filter(page => {return page.pageNumber === parseInt(event.target.value)})[0];
-            let question = page.questions.filter(question => {return question.type !== "input"})[0];
-            this.setState({ selectedPage: page, selectedQuestion: question });
-        }
-        else{
-            this.setState({ selectedQuestion: this.state.selectedPage.questions.filter(question => {return question.questionId === parseInt(event.target.value)})[0] });
-        }
-    }
-
-    generatePageSelect(){
-        let pages = this.state.survey.pages;
-        return (
-            <select id="select_page" defaultValue={this.state.selectedPage.pageNumber} onChange={this.onSelectChanged}>
-                {pages.filter(page => {return page.questions.filter(question => {return question.type !== "input"}).length !== 0}).map(page => 
-                    <option key={page.pageNumber} value={page.pageNumber}>{"Page " + page.pageNumber}</option>
-                )}
-            </select>
-        );
-    }
-
-    generateQuestionSelect(){
-        let questions = this.state.selectedPage.questions;
-        return (
-            <select id="select_question" defaultValue={this.state.selectedQuestion.questionId} onChange={this.onSelectChanged}>
-                {questions.filter(question => {return question.type !== "input"}).map(question =>
-                    <option key={question.questionId} value={question.questionId}>{question.label}</option>
-                )}
-            </select>
-        );
+    questionClicked(event){
+        let questionId = parseInt(event.currentTarget.id.split("_")[1]);
+        this.setState({ selectedQuestion: this.state.questionsOfSurvey.filter(question => question.questionId === questionId)[0] });
     }
 
     generateOptions(){
-        let respondentsOfAnswers = this.state.selectedQuestion.answers.map(answer => {return {...answer, count: 0}});
-        /*let temp = this.state.answers.answers.map(answer => answer.personalData.gender);
-        console.log(temp);*/
-        for(let answer of this.state.answers.answers){
-            let answersOfQuestion = answer.pages.filter(page => {return page.pageNumber === this.state.selectedPage.pageNumber})[0].questions.filter(question => {return question.questionId === this.state.selectedQuestion.questionId})[0].answers;
-            answersOfQuestion.forEach(answer => {
-                ++respondentsOfAnswers.filter(resp => {return resp.answerId === answer.answerId})[0].count;
-            });
+        let respondentsOfAnswers = this.state.selectedQuestion.answers.map(answer => {return {...answer, male: 0, female: 0}});
+        for(let answer of this.state.answersOfSurvey){
+            let gender = answer.personalData.gender.toLowerCase();
+            answer.pages.forEach(page => 
+                {
+                    let goodPage = page.questions.filter(question => question.questionId === this.state.selectedQuestion.questionId)[0];
+                    if(goodPage){
+                        goodPage.answers.forEach(answer => {
+                            ++respondentsOfAnswers.filter(resp => resp.answerId === answer.answerId)[0][gender];
+                        })
+                    }
+                }
+            );
         }
+        let isRating = this.state.selectedQuestion.type === "rating";
+        let subtitle = isRating ? `From ${this.state.selectedQuestion.answers[0].value} to ${this.state.selectedQuestion.answers[4].value}`  : null;
+        let categories = isRating ? ["1", "2", "3", "4", "5"] : this.state.selectedQuestion.answers.map(answer => answer.value);
         return {
             chart: {
                 type: 'bar'
             },
             title: {
-                text: this.state.selectedQuestion.label
+                text: this.state.selectedQuestion.questionId + ": " + this.state.selectedQuestion.label
+            },
+            subtitle: {
+                text: subtitle
             },
             xAxis: {
-                categories: this.state.selectedQuestion.answers.map(answer => answer.value),
+                categories: categories,
                 title: {
                     text: 'Answer options'
                 }
             },
             yAxis: {
-                min: 0,
                 title: {
                     text: 'Number of respondents'
                 },
-                pointInterval: 10
+                allowDecimals: false
             },
             legend: {
                 reversed: false
             },
             plotOptions: {
                 series: {
-                    stacking: 'normal',
-                    borderColor: '#303030'
+                    stacking: 'normal'
                 }
             },
             series: [{
-                name: 'All',
-                data: respondentsOfAnswers.map(resp => resp.count)
+                name: "Male",
+                data: respondentsOfAnswers.map(answer => answer.male)
+            },{
+                name: "Female",
+                data: respondentsOfAnswers.map(answer => answer.female)
             }]
         };
+    }
+
+    renderQuestions(){
+        return (
+            this.state.questionsOfSurvey.map(question => 
+                <div key={question.questionId} id={"question_"+question.questionId} className="question" onClick={this.questionClicked} style={question.questionId === this.state.selectedQuestion.questionId ? {backgroundColor: "green", color: "white"} : null}>
+                    <p className="question_label">{question.questionId}: {question.label}</p>
+                    <p className="question_type">type: {question.type}</p>
+                </div>
+            )
+        );
     }
 
     render(){
@@ -139,15 +138,15 @@ export class BarChart extends Component {
             let options = this.generateOptions();
             return (
                 <div id="content_holder">
-                    <h2 id="title">Bar Chart Reporting</h2>
-                    <label>Select page:</label>
-                    {this.generatePageSelect()}
-                    <br />
-                    <label>Select question:</label>
-                    {this.generateQuestionSelect()}
-                    <p>{"Page number = " + this.state.selectedPage.pageNumber}</p>
-                    <p>{"Question id = " + this.state.selectedQuestion.questionId}</p>
-                    <HighchartsReact id="barchart" highcharts={Highcharts} options={options} />
+                    <h2 id="title">{this.state.surveyTitle}</h2>
+                    <div id="content">
+                        <div id="question_holder">
+                            {this.renderQuestions()}
+                        </div>
+                        <div id="chart">
+                            <HighchartsReact id="barchart" highcharts={Highcharts} options={options} />
+                        </div>
+                    </div>
                 </div>
             );
         }

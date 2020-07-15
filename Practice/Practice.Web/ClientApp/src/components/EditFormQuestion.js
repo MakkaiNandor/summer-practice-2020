@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './EditFormQuestion.css';
 import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 
 export class EditFormQuestion extends Component {
@@ -14,7 +15,9 @@ export class EditFormQuestion extends Component {
             loading: true,
             currPageNumber: 1,
             data: [],
-            overlay: false
+            overlay: false,
+            redirect: false,
+            target: ""
         };
 
         this.survey = null;
@@ -109,7 +112,7 @@ export class EditFormQuestion extends Component {
         });
         if(!response.ok) alert("Survey saving failed!");
         else alert("Survey saved!");
-        window.location.href = window.location.href.replace("editformquestion/" + this.props.match.params.id, "SurveyDashboard");
+        this.setState({ redirect: true, target: "/SurveyDashboard" });
     }
 
     async getAllQuestionTemplates(){
@@ -633,6 +636,11 @@ export class EditFormQuestion extends Component {
                     </div>
                     <p>Loading...</p>
                 </div>
+            );
+        }
+        else if(this.state.redirect){
+            return (
+                <Redirect to={this.state.target} />
             );
         }
         else{
