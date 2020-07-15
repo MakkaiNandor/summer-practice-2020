@@ -21,9 +21,11 @@ namespace Practice.Api.Controllers
     public class SurveyController : ControllerBase
     {
         private readonly IRepository<Survey> _surveys;
-        public SurveyController(IRepository<Survey> surveys)
+        private readonly IRepository<SentAnswer> _answers;
+        public SurveyController(IRepository<Survey> surveys, IRepository<SentAnswer> answers)
         {
             _surveys = surveys;
+            _answers = answers;
         }
 
         [EnableCors]
@@ -68,6 +70,7 @@ namespace Practice.Api.Controllers
         public void DeleteSurvey(int id)
         {
             _surveys.Delete(s => s.SurveyId == id);
+            _answers.Delete(ans => ans.SurveyId == id);
         }
 
         [EnableCors]

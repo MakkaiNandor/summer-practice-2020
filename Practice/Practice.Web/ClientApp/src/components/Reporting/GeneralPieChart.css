@@ -16,7 +16,10 @@
     max-height: 70%;
     overflow-y: auto;
     overflow-x: hidden;
+    text-align: center;
 }
+
+
 
 #PieQuestionContainer::-webkit-scrollbar {
     display: none;
@@ -29,13 +32,18 @@
 
 .PieQuestionLabel
 {
-    margin-left: 7px;
-    margin-right: 7px;
     margin-top: 5px;
     border:none;
     background: none;
-    width:100%;
+    width:90%;
+    border-radius: 20px;
+    margin-bottom: 5px;
+    height: 50px;
 }
+.PieQuestionLabel:focus{outline:none}
+
+button:focus{outline:none}
+input:focus{outline:none}
 
 .PieQuestionLabel:hover {background-color:#dddada;}
 

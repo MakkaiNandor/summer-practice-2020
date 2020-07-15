@@ -3,6 +3,7 @@ import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import "./GeneralPieChart.css"
 import {Link} from 'react-router-dom'
+import Cookies from 'universal-cookie';
 
 export class GeneralPie extends Component
 {
@@ -15,8 +16,8 @@ export class GeneralPie extends Component
             SurveyId:this.props.match.params.id,
             answers:null,
             SurveyTitle:null,
-            CurrentQuestion:null,
             QuestionList:null,
+            EnabledQuestions:null
         };
 
         this.title="GeneralPie"
@@ -25,9 +26,10 @@ export class GeneralPie extends Component
         this.GenerateQuestions=this.GenerateQuestions.bind(this);
         this.GenerateOptions=this.GenerateOptions.bind(this);
         this.DisplayQuestions=this.DisplayQuestions.bind(this);
-        this.ChangeCurrentQuestion=this.ChangeCurrentQuestion.bind(this);
         this.GenerateData=this.GenerateData.bind(this);
         this.ModifyList=this.ModifyList.bind(this);
+        this.AddOrRemove=this.AddOrRemove.bind(this);
+        this.IsEnabled=this.IsEnabled.bind(this);
     }
 
     componentDidMount()
@@ -38,18 +40,43 @@ export class GeneralPie extends Component
     //Get Answers
     async GetAnswer()
     {
-        const response = await fetch ('https://localhost:44309/Answer/getAnswerById/'+this.state.SurveyId);
-        const response2= await fetch ('https://localhost:44309/Survey/getSurvey/'+this.state.SurveyId);
-        if (!response.ok || !response2.ok) this.setState({error:"Request failed!"});
+        const cookies = new Cookies();
+        var token = cookies.get('token');
+
+        const response = await fetch ('https://localhost:44309/Answer/getAnswerById/'+this.state.SurveyId,
+        {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }});
+
+        const response2= await fetch ('https://localhost:44309/Survey/getSurvey/'+this.state.SurveyId,{
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }});
+
+
+        if (!response.ok || !response2.ok) this.setState({error:"Error: Request failed or the survey doesn't exists"});
         else
         {
-            let temp= await response.json();
-            var survey = await response2.json();
+            var temp;
+            var survey ;
+            try
+            {
+               temp= await response.json();
+               survey = await response2.json();
+            }
+            catch(err)
+            {
+                this.setState({error:"There are no answers for this survey"});
+                return;
+            }
+           
 
             var List=this.GenerateQuestions(temp);
+            var List2=this.GenerateQuestions(temp);
             if (List.length===0) this.setState({loading:false,error:"There is no question with type of 'Rating' in this survey"});
             else
-            this.setState({loading:false,answers:temp,SurveyTitle:survey.title,QuestionList:List,CurrentQuestion:List[0]});
+            this.setState({loading:false,answers:temp,SurveyTitle:survey.title,QuestionList:List,EnabledQuestions:List2});
         } 
        
     }
@@ -76,22 +103,87 @@ export class GeneralPie extends Component
     {
         return(
             this.state.QuestionList.map(question =>
-            <button className="PieQuestionLabel" onClick={this.ChangeCurrentQuestion} name={question}>{question}<hr></hr></button>
+            {   
+                if(this.IsEnabled(question))
+                {
+                    return <button className="PieQuestionLabel" onClick={this.AddOrRemove} style={{backgroundColor:"#0ec900",color:"white"}} name={question}>{question}</button>
+                }
+                else
+                {
+                    return <button className="PieQuestionLabel" onClick={this.AddOrRemove} style={{backgroundColor:"white"}} name={question}>{question}</button>
+                }
+            }
+            
                 )
         );
     }
 
-    //Change Current Question
-    ChangeCurrentQuestion(event)
+    //Add or remove question from list
+    AddOrRemove(event)
     {
-        if (event.target.name===undefined || this.state.CurrentQuestion===event.target.name) return;
-        this.setState({CurrentQuestion:event.target.name});
+        var list=this.state.EnabledQuestions;
+        var logical=false;
+
+        if (list.length===1)
+        {
+            for (var i=0 ; i<list.length;i++)
+            {
+                if (event.target.name===list[i])
+                {
+                    logical=true;
+                }
+            }
+            if (!logical)
+            {
+                list.push(event.target.name);
+            }
+            this.setState({EnabledQuestions:list});
+
+            return;
+        } 
+        
+        for (var i=0 ; i<list.length;i++)
+        {
+            if (event.target.name===list[i])
+            {
+                list.splice(i,1);
+                logical=true;
+            }
+        }
+        if (logical===false)
+        {
+            list.push(event.target.name);
+        }
+        console.log(list);
+        this.setState({EnabledQuestions:list});
     }
 
     //Generate Data
     GenerateData()
     {
-        var data=[];
+        var data=[
+            {
+                name:1,
+                y:0
+            },
+            {
+                name:2,
+                y:0
+            },
+            {
+                name:3,
+                y:0
+            },
+            {
+                name:4,
+                y:0
+            },
+            {
+                name:5,
+                y:0
+            }
+
+        ];
 
         for (var i =0; i<this.state.answers.answers.length; i++)
         {
@@ -99,18 +191,28 @@ export class GeneralPie extends Component
             {
                 for (var k=0; k<this.state.answers.answers[i].pages[j].questions.length;k++)
                 {
-                    if (this.state.answers.answers[i].pages[j].questions[k].label===this.state.CurrentQuestion)
+                    if (this.IsEnabled(this.state.answers.answers[i].pages[j].questions[k].label))
                     {
                         for (var l=0;l<this.state.answers.answers[i].pages[j].questions[k].answers.length;l++)
                         {
-                            data=this.ModifyList(this.state.answers.answers[i].pages[j].questions[k].answers[l].value,data);
+                            data=this.ModifyList(this.state.answers.answers[i].pages[j].questions[k].answers[l].answerId,data);
                         }
                     }
                 }
             }
         }
         
+
         return data;
+    }
+
+    IsEnabled(question)
+    {
+        for (var i=0;i<this.state.EnabledQuestions.length;i++)
+        {
+            if (this.state.EnabledQuestions[i]===question) return true;
+        }
+        return false;
     }
 
     ModifyList(answer,list)
@@ -140,10 +242,24 @@ export class GeneralPie extends Component
                 type:"pie"
             },
             title:{
-                text:"Results of:<br></br><b><p> "+this.state.CurrentQuestion+" </p></b>"
+                text:"Results:"
+            },
+            tooltip: {
+                pointFormat: '<b>{point.name}</b>: {point.percentage:.1f}%'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
             },
             series:[
                 {
+                   name:"Percentage",
                    data:data
                 }
             ]
@@ -166,13 +282,14 @@ export class GeneralPie extends Component
             if (this.state.loading)
             {
                 return (
-                    <p>Loading ...</p>
+                    <div id="GeneralPieErrorContainer">
+                    <h3 id="GeneralPieError">Loading ...</h3>
+                </div>
                 );
             }
             else
             {
                 var questions=this.DisplayQuestions();
-                console.log(this.state.CurrentQuestion);
                 const options = this.GenerateOptions(this.GenerateData());  
                 return (
                     <div>
