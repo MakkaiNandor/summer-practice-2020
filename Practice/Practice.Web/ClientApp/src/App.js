@@ -13,6 +13,7 @@ import { EditQuestionTemplate } from './components/EditQuestionTemplate';
 import { SurveyDashboard } from './components/SurveyDashboard';
 import { CreateSurvey } from './components/CreateSurvey';
 import { BarChart } from './components/BarChart';
+import { GeneralPie } from './components/Reporting/GeneralPieChart';
 
 import './custom.css'
 
@@ -22,7 +23,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <Layout>
+        <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/survey/:id' component={Survey} />
         <Route path='/login' component={Login} />
@@ -36,6 +37,7 @@ export default class App extends Component {
         <Route path='/editform/:id' component={EditForm} />
         <Route path='/editformquestion/:id' component={EditFormQuestion} />
         <Route path='/BarChartReporting/:id' component={BarChart} />
+        <Route path='/GeneralPie/:id' component={GeneralPie} />
       </Layout>
     );
   }
