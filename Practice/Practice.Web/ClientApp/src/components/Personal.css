@@ -1,7 +1,7 @@
-#survey_page {
+#personal_page {
     text-align: center;
 }
-#survey_title {
+#personal_page_title {
     border: 1px solid black;
     border-radius: 2em;
     padding: 1em;
@@ -10,12 +10,12 @@
     margin-right: auto;
     width: fit-content;
 }
-.description {
+.personal_page_description {
     width: 50%;
     margin-left: auto;
     margin-right: auto;
 }
-.question {
+.personal_page_question {
     border: 1px solid black;
     border-radius: 2em;
     margin: 1em;
@@ -24,23 +24,23 @@
     margin-left: auto;
     margin-right: auto;
 }
-label {
+#personal_page label {
     margin-left: 1em;
 }
-.answer-holder-personal {
+.answer_holder_personal {
     text-align: left;
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
 }
-.survey-button {
+.personal_page_button {
     margin: 1em;
     padding: 0.5em;
     border-radius: 0.5em;
     background-color: #0ec900;
     border: 1px solid black;
 }
-.survey-button:hover {
+.personal_page_button:hover {
     border: 1px solid black;
     background-color:rgb(255, 147, 58);
     color: white;

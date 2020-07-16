@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './Survey.css';
-import { Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 
 export class Survey extends Component {
@@ -178,7 +177,7 @@ export class Survey extends Component {
     generateQuestions(){
         return (
             this.survey.pages[this.state.currPage].questions.map(question => 
-                <div className="question" id={"question_" + question.questionId} key={question.questionId}>
+                <div className="survey_page_question" id={"question_" + question.questionId} key={question.questionId}>
                     <p className="question-label"><b>{question.questionId + ": "}</b>{question.label}</p>
                     {this.generateAnswers(question)}
                 </div>
@@ -191,7 +190,7 @@ export class Survey extends Component {
         switch(question.type){
             case "input":
                 return (
-                    <div className="answer-holder">
+                    <div className="survey_page_answer_holder">
                         <div className="answer">
                             <input type="text" id={"question_" + question.questionId + "_answer_1"} name={"question_" + question.questionId} defaultValue={this.getOldValue(question.questionId, 1)}/>
                         </div>
@@ -199,7 +198,7 @@ export class Survey extends Component {
                 );
             case "radio":
                 return (
-                    <div className="answer-holder">
+                    <div className="survey_page_answer_holder">
                         {question.answers.map(answer =>
                             <div className="answer" key={answer.answerId}>
                                 <input type="radio" id={"question_" + question.questionId + "_answer_" + answer.answerId} name={"question_" + question.questionId} value={answer.value} defaultChecked={this.getOldValue(question.questionId, answer.answerId)}/>
@@ -210,7 +209,7 @@ export class Survey extends Component {
                 );
             case "checkbox":
                 return (
-                    <div className="answer-holder">
+                    <div className="survey_page_answer_holder">
                         {question.answers.map(answer => 
                             <div className="answer" key={answer.answerId}>
                                 <input type="checkbox" id={"question_" + question.questionId + "_answer_" + answer.answerId} name={"question_" + question.questionId} value={answer.value} defaultChecked={this.getOldValue(question.questionId, answer.answerId)}/>
@@ -221,10 +220,10 @@ export class Survey extends Component {
                 );
             case "rating":
                 return (
-                    <div className="answer-holder">
+                    <div className="survey_page_answer_holder">
                         <label>{question.answers[0].value}</label>
                         {question.answers.map(answer => 
-                            <input type="radio" key={answer.answerId} id={"question_" + question.questionId + "_answer_" + answer.answerId} className="rating_answer" name={"question_" + question.questionId} value={answer.value} defaultChecked={this.getOldValue(question.questionId, answer.answerId)}/>
+                            <input type="radio" key={answer.answerId} id={"question_" + question.questionId + "_answer_" + answer.answerId} className="survey_page_rating_answer" name={"question_" + question.questionId} value={answer.value} defaultChecked={this.getOldValue(question.questionId, answer.answerId)}/>
                         )}
                         <label>{question.answers[4].value}</label>
                     </div>
@@ -286,12 +285,12 @@ export class Survey extends Component {
         }
         else if(this.state.submitted){
             return (
-                <div id="survey-page">
-                    <h2 id="survey-title">{this.survey.title}</h2>
-                <div id="progress-bar-holder">
+                <div id="survey_page">
+                    <h2 id="survey_page_title">{this.survey.title}</h2>
+                <div id="survey_page_progress_bar_holder">
                     <p>End of survey</p>
-                    <div id="progress-bar-frame">
-                        <div id="progress-bar" style={{width: 100 + '%'}}></div>
+                    <div id="survey_page_progress_bar_frame">
+                        <div id="survey_page_progress_bar" style={{width: 100 + '%'}}></div>
                     </div>
                 </div>
                 <p>Thank you for submitting!</p>
@@ -303,18 +302,18 @@ export class Survey extends Component {
             let nextPageButton = !this.state.lastPage ? <button className="survey-button" onClick={this.nextPage}>Next Page</button> : null;
             let submitSurveyButton = this.state.lastPage ? <button className="survey-button" onClick={this.submitSurvey}>Submit Survey</button> : null;
 
-            let description = this.state.firstPage ? <p className="description"><b>Description: </b>{this.survey.description}</p> : null; 
-            let ending = this.state.lastPage ? <p className="description">{this.survey.ending}</p> : null; 
+            let description = this.state.firstPage ? <p className="survey_page_description"><b>Description: </b>{this.survey.description}</p> : null; 
+            let ending = this.state.lastPage ? <p className="survey_page_description">{this.survey.ending}</p> : null; 
 
             let percentage = (100 * this.state.currPage) / this.state.numberOfPages;
 
             return (
-                <div id="survey-page">
-                    <h2 id="survey-title">{this.survey.title}</h2>
-                    <div id="progress-bar-holder">
+                <div id="survey_page">
+                    <h2 id="survey_page_title">{this.survey.title}</h2>
+                    <div id="survey_page_progress_bar_holder">
                         <p>Page {this.state.currPage + 1} of {this.state.numberOfPages}</p>
-                        <div id="progress-bar-frame">
-                            <div id="progress-bar" style={{width: percentage + '%'}}></div>
+                        <div id="survey_page_progress_bar_frame">
+                            <div id="survey_page_progress_bar" style={{width: percentage + '%'}}></div>
                         </div>
                     </div>
                     {description}

@@ -11,23 +11,21 @@ export class SurveyReport extends Component {
     constructor(props){
         super(props);
         this.state={
-            loading:true,
-            error:null,
+            error: null,
+            loading: true,
             maleShow :[], 
             femaleShow:[]
         };
 
         this.personalData = [];
-        this.survey=[];
+        this.answers = null;
         this.gender = [0,0];
         this.male_age = [0,0,0,0,0,0,0,0,0,0,0];
         this.female_age = [0,0,0,0,0,0,0,0,0,0,0];
         this.showGroups =[];
 
-        this.title = "Personal data report of survey " + this.props.match.params.id;
+        this.title = "Personal data report of survey " + this.props.surveyId;
         
-        this.showAgeGroups=this.showAgeGroups.bind(this);
-        this.hideAgeGroups=this.hideAgeGroups.bind(this);
         this.showReport=this.showReport.bind(this);
         this.selectAll=this.selectAll.bind(this);
         this.deleteAll=this.deleteAll.bind(this);
@@ -36,7 +34,7 @@ export class SurveyReport extends Component {
     async getAnswers(){
         const cookies = new Cookies();
         var token = cookies.get('token');
-        const response = await fetch('https://localhost:44309/Answer/getAnswerById/' + this.props.match.params.id,{
+        const response = await fetch('https://localhost:44309/Answer/getAnswerById/' + this.props.surveyId,{
             headers: {
                 'Authorization': `Bearer ${token}`
                 
@@ -44,8 +42,7 @@ export class SurveyReport extends Component {
         });
         if(!response.ok || response.status !== 200) this.setState({ error: "Cannot reach the answers" });
         else{
-            console.log(response);
-            this.survey = await response.json();
+            this.answers = await response.json();
             this.setState({loading: false});
         }
     }
@@ -56,10 +53,11 @@ export class SurveyReport extends Component {
 
     getPersonalData(){
         let i=0;
-        this.survey.answers.map(answer =>
+        this.answers.answers.map(answer =>
             {
                 this.personalData[i]=answer.personalData;
                 ++i;
+                return answer;
             }
         )
         this.getGenderInformation();
@@ -76,6 +74,7 @@ export class SurveyReport extends Component {
                 else if(gender_data.gender.toLowerCase() === "female"){
                     this.gender[1]++;
                 }
+                return gender_data;
             }
         )
     }
@@ -112,6 +111,7 @@ export class SurveyReport extends Component {
                     else if(parseInt(pdata.age) >=91 && parseInt(pdata.age) <=100 ) { this.female_age[9]++; }
                     else{ this.female_age[10]++; }
                 }
+                return pdata;
             }
         )
     }
@@ -219,19 +219,17 @@ export class SurveyReport extends Component {
         this.setState({maleShow:temp1,femaleShow:temp2});
     }
 
-    showAgeGroups(){
-        document.getElementById("agegroup_div").style.display="block";
-        document.getElementById("select_age_button").style.display="none";
-        document.getElementById("hide_age_button").style.display="block";
-    }
-
-    hideAgeGroups(){
-        document.getElementById("agegroup_div").style.display="none";
-        document.getElementById("select_age_button").style.display="block";
-        document.getElementById("hide_age_button").style.display="none";
-    }
-
-    showReport(){
+    showReport(event){
+        let checkBox = document.getElementById(event.target.parentElement.htmlFor);
+        checkBox.checked = !checkBox.checked;
+        if(checkBox.checked){
+            event.target.style.backgroundColor = "#0ec900";
+            event.target.style.color = "white";
+        }
+        else{
+            event.target.style.backgroundColor = "lightgrey";
+            event.target.style.color = "black";
+        }
         for(let x=0;x<11;++x){
             let group = "agegroup"+x;
             this.showGroups[x] = document.getElementById(group).checked;
@@ -240,6 +238,11 @@ export class SurveyReport extends Component {
     }
 
     selectAll(){
+        let buttons = Array.from(document.getElementsByClassName("select_age_group_button"));
+        buttons.forEach(button => {
+            button.style.backgroundColor = "#0ec900";
+            button.style.color = "white";
+        });
         for(let x=0;x<11;++x){
             let group = "agegroup"+x;
             this.showGroups[x] = "true";
@@ -250,6 +253,11 @@ export class SurveyReport extends Component {
     }
 
     deleteAll(){
+        let buttons = Array.from(document.getElementsByClassName("select_age_group_button"));
+        buttons.forEach(button => {
+            button.style.backgroundColor = "lightgrey";
+            button.style.color = "black";
+        });
         for(let x=0;x<11;++x){
             let group = "agegroup"+x;
             this.showGroups[x] = "false";
@@ -283,9 +291,9 @@ export class SurveyReport extends Component {
         else{
             return (
                 <div id="survey_page">
-                    <div id="homepage_button_holder">
+                    {/*<div id="homepage_button_holder">
                         <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
-                    </div>
+                    </div>*/}
                     <h2 id="survey_title">{this.title}</h2>
                     {this.getPersonalData()}
                     {this.makePieChart()}
@@ -294,37 +302,31 @@ export class SurveyReport extends Component {
                         {this.makeBarChart()}
                     </div>
                     <div id="filter_ages">
-                        <div id="age_buttons">
-                            <button id="select_age_button" onClick={this.showAgeGroups}>Select groups</button>
-                            <button id="hide_age_button" onClick={this.hideAgeGroups} style={{display: "none"}}>Hide groups</button>
-                        </div>
-                        <div style={{ display: "none"}} id="agegroup_div">
-                            <input type="checkbox" id="agegroup0" className="agegroup0" value="0-10" onClick={this.showReport}/>
-                            <label htmlFor="agegroup0"> 0-10 </label><br/>
-                            <input type="checkbox" id="agegroup1" className="agegroup1" value="11-20" onClick={this.showReport}/>
-                            <label htmlFor="agegroup1"> 11-20 </label><br/>
-                            <input type="checkbox" id="agegroup2" className="agegroup2" value="21-30" onClick={this.showReport}/>
-                            <label htmlFor="agegroup2"> 21-30 </label><br/>
-                            <input type="checkbox" id="agegroup3" className="agegroup3" value="31-40" onClick={this.showReport}/>
-                            <label htmlFor="agegroup3"> 31-40 </label><br/>
-                            <input type="checkbox" id="agegroup4" className="agegroup4" value="41-50" onClick={this.showReport}/>
-                            <label htmlFor="agegroup4"> 41-50 </label><br/>
-                            <input type="checkbox" id="agegroup5" className="agegroup5" value="51-60" onClick={this.showReport} />
-                            <label htmlFor="agegroup5"> 51-60 </label><br/>
-                            <input type="checkbox" id="agegroup6" className="agegroup6" value="61-70" onClick={this.showReport}/>
-                            <label htmlFor="agegroup6"> 61-70 </label><br/>
-                            <input type="checkbox" id="agegroup7" className="agegroup7" value="71-80" onClick={this.showReport}/>
-                            <label htmlFor="agegroup7"> 71-80 </label><br/>
-                            <input type="checkbox" id="agegroup8" className="agegroup8" value="81-90" onClick={this.showReport}/>
-                            <label htmlFor="agegroup8"> 81-90 </label><br/>
-                            <input type="checkbox" id="agegroup9" className="agegroup9" value="91-100" onClick={this.showReport}/>
-                            <label htmlFor="agegroup9"> 91-100 </label><br/>
-                            <input type="checkbox" id="agegroup10" className="agegroup10" value="100+" onClick={this.showReport}/>
-                            <label htmlFor="agegroup10"> 100+ </label><br/>
-                        </div>
-                        <div id="age_buttons">
+                        <div id="agegroup_div">
                             <button id="select_all" onClick={this.selectAll}>Select all</button>
-                            <button id="delect_all" onClick={this.deleteAll}>Delete all</button>
+                            <button id="delete_all" onClick={this.deleteAll}>Delete all</button>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup0" className="agegroup0" value="0-10"/>
+                            <label htmlFor="agegroup0"><button className="select_age_group_button" onClick={this.showReport}>0-10</button></label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup1" className="agegroup1" value="11-20"/>
+                            <label htmlFor="agegroup1"><button className="select_age_group_button" onClick={this.showReport}>11-20</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup2" className="agegroup2" value="21-30"/>
+                            <label htmlFor="agegroup2"> <button className="select_age_group_button" onClick={this.showReport}>21-30</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup3" className="agegroup3" value="31-40"/>
+                            <label htmlFor="agegroup3"> <button className="select_age_group_button" onClick={this.showReport}>31-40</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup4" className="agegroup4" value="41-50"/>
+                            <label htmlFor="agegroup4"> <button className="select_age_group_button" onClick={this.showReport}>41-50</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup5" className="agegroup5" value="51-60" />
+                            <label htmlFor="agegroup5"> <button className="select_age_group_button" onClick={this.showReport}>51-60</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup6" className="agegroup6" value="61-70"/>
+                            <label htmlFor="agegroup6"> <button className="select_age_group_button" onClick={this.showReport}>61-70</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup7" className="agegroup7" value="71-80"/>
+                            <label htmlFor="agegroup7"> <button className="select_age_group_button" onClick={this.showReport}>71-80</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup8" className="agegroup8" value="81-90" />
+                            <label htmlFor="agegroup8"> <button className="select_age_group_button" onClick={this.showReport}>81-90</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup9" className="agegroup9" value="91-100"/>
+                            <label htmlFor="agegroup9"> <button className="select_age_group_button" onClick={this.showReport}>91-100</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup10" className="agegroup10" value="100+"/>
+                            <label htmlFor="agegroup10"> <button className="select_age_group_button" onClick={this.showReport}>100+</button> </label>
                         </div>
                     </div>
                 </div>

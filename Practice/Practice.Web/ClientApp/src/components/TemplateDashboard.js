@@ -185,11 +185,11 @@ export class TemplateDashboard extends Component {
     renderOverlay()
     {
         return(
-                <div id ="overlay">
-                    <div id="container">
-                        <div id="warning">
-                            <p id="warning_message"> Delete template? </p>
-                            <button id="yes" onClick={this.Delete}>Yes</button><button id="no" onClick={this.OverlayOFF}>No</button>
+                <div id ="template_overlay">
+                    <div id="template_container">
+                        <div id="template_warning">
+                            <p id="template_warning_message"> Delete template? </p>
+                            <button id="template_yes" onClick={this.Delete}>Yes</button><button id="template_no" onClick={this.OverlayOFF}>No</button>
                             <br></br>
                             <br></br>
                         </div>
@@ -286,7 +286,7 @@ export class TemplateDashboard extends Component {
                             {button1}
                             {button2}
                         </div>
-                        <div id='create_button_container'><Link to="/CreateSurvey"><button id="create_survey">Create survey</button></Link></div>
+                        <div id='template_create_button_container'><Link to="/CreateSurvey"><button id="template_create_survey">Create survey</button></Link></div>
                         <br></br>
                         {table}
                         

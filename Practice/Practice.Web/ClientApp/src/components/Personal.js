@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import './Personal.css';
-import { Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 
 export class Personal extends Component {
@@ -64,24 +63,24 @@ export class Personal extends Component {
     generateQuestions(){
         return (
             <div className="question-holder">
-                <div className="question" id={"question_name"} >
+                <div className="personal_page_question" id={"question_name"} >
                     <p className="question_label"><b>1.</b>{this.survey.personalData.name.label}</p>
-                    <div className="answer-holder-personal">{this.generateAnswers(this.survey.personalData.name,"name")}</div>
+                    <div className="answer_holder_personal">{this.generateAnswers(this.survey.personalData.name,"name")}</div>
                 </div>
 
-                <div className="question" id={"question_" + this.survey.personalData.age} >
+                <div className="personal_page_question" id={"question_age"} >
                         <p className="question_label"><b>2.</b>{this.survey.personalData.age.label}</p>
-                        <div className="answer-holder-personal">{this.generateAnswers(this.survey.personalData.age,"age")}</div>
+                        <div className="answer_holder_personal">{this.generateAnswers(this.survey.personalData.age,"age")}</div>
                 </div>
 
-                <div className="question" id={"question_" + this.survey.personalData.email} >
+                <div className="personal_page_question" id={"question_email"} >
                     <p className="question_label"><b>3.</b>{this.survey.personalData.email.label}</p>
-                    <div className="answer-holder-personal">{this.generateAnswers(this.survey.personalData.email,"email")}</div>
+                    <div className="answer_holder_personal">{this.generateAnswers(this.survey.personalData.email,"email")}</div>
                 </div>
 
-                <div className="question" id={"question_" + this.survey.personalData.gender} >
+                <div className="personal_page_question" id={"question_gender"} >
                     <p className="question_label"><b>4.</b>{this.survey.personalData.gender.label}</p>
-                    <div className="answer-holder-personal">{this.generateAnswers(this.survey.personalData.gender,"gender")}</div>
+                    <div className="answer_holder_personal">{this.generateAnswers(this.survey.personalData.gender,"gender")}</div>
                 </div>
             </div>
         );
@@ -161,12 +160,12 @@ export class Personal extends Component {
         }
         else{
             return (
-                <div id="survey_page">
-                    <h2 id="survey_title">{this.descriptions.title}</h2>
-                    <p className="description"><b>What will happen with your data: </b>{this.descriptions.description}</p>
+                <div id="personal_page">
+                    <h2 id="personal_page_title">{this.descriptions.title}</h2>
+                    <p className="personal_page_description"><b>What will happen with your data: </b>{this.descriptions.description}</p>
                     {this.generateQuestions()}
-                    <p className="description"><b>{this.descriptions.footer_description}</b></p>
-                    <button className="survey-button" onClick={this.submitData}>Begin the questions</button>
+                    <p className="personal_page_description"><b>{this.descriptions.footer_description}</b></p>
+                    <button className="personal_page_button" onClick={this.submitData}>Begin the questions</button>
                 </div>
             );
         }

@@ -26,8 +26,6 @@ export class GeneralReport extends Component {
 
         this.title = "General personal data report";
 
-        this.showAgeGroups=this.showAgeGroups.bind(this);
-        this.hideAgeGroups=this.hideAgeGroups.bind(this);
         this.showReport=this.showReport.bind(this);
         this.selectAll=this.selectAll.bind(this);
         this.deleteAll=this.deleteAll.bind(this);
@@ -219,19 +217,17 @@ export class GeneralReport extends Component {
         this.setState({maleShow:temp1,femaleShow:temp2});
     }
 
-    showAgeGroups(){
-        document.getElementById("agegroup_div").style.display="block";
-        document.getElementById("select_age_button").style.display="none";
-        document.getElementById("hide_age_button").style.display="block";
-    }
-
-    hideAgeGroups(){
-        document.getElementById("agegroup_div").style.display="none";
-        document.getElementById("select_age_button").style.display="block";
-        document.getElementById("hide_age_button").style.display="none";
-    }
-
-    showReport(){
+    showReport(event){
+        let checkBox = document.getElementById(event.target.parentElement.htmlFor);
+        checkBox.checked = !checkBox.checked;
+        if(checkBox.checked){
+            event.target.style.backgroundColor = "#0ec900";
+            event.target.style.color = "white";
+        }
+        else{
+            event.target.style.backgroundColor = "lightgrey";
+            event.target.style.color = "black";
+        }
         for(let x=0;x<11;++x){
             let group = "agegroup"+x;
             this.showGroups[x] = document.getElementById(group).checked;
@@ -240,6 +236,11 @@ export class GeneralReport extends Component {
     }
 
     selectAll(){
+        let buttons = Array.from(document.getElementsByClassName("select_age_group_button"));
+        buttons.forEach(button => {
+            button.style.backgroundColor = "#0ec900";
+            button.style.color = "white";
+        });
         for(let x=0;x<11;++x){
             let group = "agegroup"+x;
             this.showGroups[x] = "true";
@@ -250,6 +251,11 @@ export class GeneralReport extends Component {
     }
 
     deleteAll(){
+        let buttons = Array.from(document.getElementsByClassName("select_age_group_button"));
+        buttons.forEach(button => {
+            button.style.backgroundColor = "lightgrey";
+            button.style.color = "black";
+        });
         for(let x=0;x<11;++x){
             let group = "agegroup"+x;
             this.showGroups[x] = "false";
@@ -294,37 +300,31 @@ export class GeneralReport extends Component {
                         {this.makeBarChart()}
                     </div>
                     <div id="filter_ages">
-                        <div id="age_buttons">
-                            <button id="select_age_button" onClick={this.showAgeGroups}>Select groups</button>
-                            <button id="hide_age_button" onClick={this.hideAgeGroups} style={{display: "none"}}>Hide groups</button>
-                        </div>
-                        <div style={{ display: "none"}} id="agegroup_div">
-                            <input type="checkbox" id="agegroup0" className="agegroup0" value="0-10" onClick={this.showReport}/>
-                            <label htmlFor="agegroup0"> 0-10 </label><br/>
-                            <input type="checkbox" id="agegroup1" className="agegroup1" value="11-20" onClick={this.showReport}/>
-                            <label htmlFor="agegroup1"> 11-20 </label><br/>
-                            <input type="checkbox" id="agegroup2" className="agegroup2" value="21-30" onClick={this.showReport}/>
-                            <label htmlFor="agegroup2"> 21-30 </label><br/>
-                            <input type="checkbox" id="agegroup3" className="agegroup3" value="31-40" onClick={this.showReport}/>
-                            <label htmlFor="agegroup3"> 31-40 </label><br/>
-                            <input type="checkbox" id="agegroup4" className="agegroup4" value="41-50" onClick={this.showReport}/>
-                            <label htmlFor="agegroup4"> 41-50 </label><br/>
-                            <input type="checkbox" id="agegroup5" className="agegroup5" value="51-60" onClick={this.showReport}/>
-                            <label htmlFor="agegroup5"> 51-60 </label><br/>
-                            <input type="checkbox" id="agegroup6" className="agegroup6" value="61-70" onClick={this.showReport}/>
-                            <label htmlFor="agegroup6"> 61-70 </label><br/>
-                            <input type="checkbox" id="agegroup7" className="agegroup7" value="71-80" onClick={this.showReport}/>
-                            <label htmlFor="agegroup7"> 71-80 </label><br/>
-                            <input type="checkbox" id="agegroup8" className="agegroup8" value="81-90" onClick={this.showReport}/>
-                            <label htmlFor="agegroup8"> 81-90 </label><br/>
-                            <input type="checkbox" id="agegroup9" className="agegroup9" value="91-100" onClick={this.showReport} />
-                            <label htmlFor="agegroup9"> 91-100 </label><br/>
-                            <input type="checkbox" id="agegroup10" className="agegroup10" value="100+" onClick={this.showReport}/>
-                            <label htmlFor="agegroup10"> 100+ </label><br/>
-                        </div>
-                        <div id="age_buttons">
+                        <div id="agegroup_div">
                             <button id="select_all" onClick={this.selectAll}>Select all</button>
-                            <button id="delect_all" onClick={this.deleteAll}>Delete all</button>
+                            <button id="delete_all" onClick={this.deleteAll}>Delete all</button>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup0" className="agegroup0" value="0-10"/>
+                            <label htmlFor="agegroup0"><button className="select_age_group_button" onClick={this.showReport}>0-10</button></label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup1" className="agegroup1" value="11-20"/>
+                            <label htmlFor="agegroup1"><button className="select_age_group_button" onClick={this.showReport}>11-20</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup2" className="agegroup2" value="21-30"/>
+                            <label htmlFor="agegroup2"> <button className="select_age_group_button" onClick={this.showReport}>21-30</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup3" className="agegroup3" value="31-40"/>
+                            <label htmlFor="agegroup3"> <button className="select_age_group_button" onClick={this.showReport}>31-40</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup4" className="agegroup4" value="41-50"/>
+                            <label htmlFor="agegroup4"> <button className="select_age_group_button" onClick={this.showReport}>41-50</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup5" className="agegroup5" value="51-60" />
+                            <label htmlFor="agegroup5"> <button className="select_age_group_button" onClick={this.showReport}>51-60</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup6" className="agegroup6" value="61-70"/>
+                            <label htmlFor="agegroup6"> <button className="select_age_group_button" onClick={this.showReport}>61-70</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup7" className="agegroup7" value="71-80"/>
+                            <label htmlFor="agegroup7"> <button className="select_age_group_button" onClick={this.showReport}>71-80</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup8" className="agegroup8" value="81-90" />
+                            <label htmlFor="agegroup8"> <button className="select_age_group_button" onClick={this.showReport}>81-90</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup9" className="agegroup9" value="91-100"/>
+                            <label htmlFor="agegroup9"> <button className="select_age_group_button" onClick={this.showReport}>91-100</button> </label>
+                            <input style={{display: "none"}} type="checkbox" id="agegroup10" className="agegroup10" value="100+"/>
+                            <label htmlFor="agegroup10"> <button className="select_age_group_button" onClick={this.showReport}>100+</button> </label>
                         </div>
                     </div>
                 </div>

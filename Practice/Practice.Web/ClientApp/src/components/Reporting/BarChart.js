@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts/highstock'
 import Cookies from 'universal-cookie';
+import { Link } from 'react-router-dom';
 import './BarChart.css';
 
 export class BarChart extends Component {
@@ -14,8 +15,8 @@ export class BarChart extends Component {
             loading: true,
             surveyTitle: null,
             answersOfSurvey: null,
-            questionsOfSurvey: null,
-            selectedQuestion: null
+            questionsOfSurvey: null,//this.getQuestions(),
+            selectedQuestion: null//this.getQuestions()[0]
         };
         this.questionClicked = this.questionClicked.bind(this);
     }
@@ -24,15 +25,23 @@ export class BarChart extends Component {
         this.getData();
     }
 
+    /*getQuestions(){
+        let questions = this.props.survey.pages.reduce((acc, page) => {
+            return acc.concat(page.questions.filter(question => question.type !== "input"));
+        }, []);
+        return questions;
+        //this.setState({ questionsOfSurvey: questions, selectedQuestion: questions[0] });
+    }*/
+
     async getData(){
         const cookies = new Cookies();
         var token = cookies.get('token');
-        const response_survey = await fetch('https://localhost:44309/Survey/getSurvey/' + this.props.match.params.id, {
+        const response_survey = await fetch('https://localhost:44309/Survey/getSurvey/' + this.props.surveyId, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
-        const response_answers = await fetch('https://localhost:44309/Answer/getAnswerById/' + this.props.match.params.id, {
+        const response_answers = await fetch('https://localhost:44309/Answer/getAnswerById/' + this.props.surveyId, {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -115,7 +124,7 @@ export class BarChart extends Component {
     renderQuestions(){
         return (
             this.state.questionsOfSurvey.map(question => 
-                <div key={question.questionId} id={"question_"+question.questionId} className="question" onClick={this.questionClicked} style={question.questionId === this.state.selectedQuestion.questionId ? {backgroundColor: "green", color: "white"} : null}>
+                <div key={question.questionId} id={"question_"+question.questionId} className="question" onClick={this.questionClicked} style={question.questionId === this.state.selectedQuestion.questionId ? {backgroundColor: "#0ec900", color: "white"} : null}>
                     <p className="question_label">{question.questionId}: {question.label}</p>
                     <p className="question_type">type: {question.type}</p>
                 </div>
@@ -126,18 +135,31 @@ export class BarChart extends Component {
     render(){
         if(this.state.error){
             return (
-                <p>{this.state.error}</p>
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>{this.state.error}</p>
+                </div>
             );
         }
         else if(this.state.loading){
             return (
-                <p>Loading...</p>
+                <div>
+                    <div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>
+                    <p>Loading...</p>
+                </div>
             );
         }
         else{
             let options = this.generateOptions();
             return (
                 <div id="content_holder">
+                    {/*<div id="homepage_button_holder">
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                    </div>*/}
                     <h2 id="title">{this.state.surveyTitle}</h2>
                     <div id="content">
                         <div id="question_holder">

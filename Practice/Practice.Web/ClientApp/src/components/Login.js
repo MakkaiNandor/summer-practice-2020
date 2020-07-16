@@ -102,7 +102,7 @@ export class Login extends Component {
     else{
       return (
         <div>
-          <h1 className="boxed" id="title">Login</h1>
+          <h1 className="login_boxed" id="title">Login</h1>
 
   {/*}
           <form class="boxed" id="loginform">
@@ -117,7 +117,7 @@ export class Login extends Component {
   */}
 
 
-              <div className="boxed" id="loginform">
+              <div className="login_boxed" id="loginform">
                 <label><b>Username</b></label><br></br>
                 <input type="text" name="UserName" placeholder="Enter Username" onChange={this.onChange} required></input><br></br>
 
