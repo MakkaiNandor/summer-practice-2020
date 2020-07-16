@@ -299,7 +299,7 @@ export class Survey extends Component {
             );
         }
         else{
-            let prevPageButton = !this.state.firstPage ? <button className="survey-button" onClick={this.prevPage}>Previous Page</button> : null;
+            let prevPageButton = !this.state.firstPage ? <button className="survey-button2" onClick={this.prevPage}>Previous Page</button> : null;
             let nextPageButton = !this.state.lastPage ? <button className="survey-button" onClick={this.nextPage}>Next Page</button> : null;
             let submitSurveyButton = this.state.lastPage ? <button className="survey-button" onClick={this.submitSurvey}>Submit Survey</button> : null;
 

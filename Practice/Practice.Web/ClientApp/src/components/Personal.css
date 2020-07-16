@@ -37,9 +37,11 @@ label {
     margin: 1em;
     padding: 0.5em;
     border-radius: 0.5em;
+    background-color: #0ec900;
+    border: 1px solid black;
 }
 .survey-button:hover {
     border: 1px solid black;
-    background-color: blue;
+    background-color:rgb(255, 147, 58);
     color: white;
 }

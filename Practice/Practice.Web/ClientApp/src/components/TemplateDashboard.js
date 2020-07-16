@@ -116,8 +116,8 @@ export class TemplateDashboard extends Component {
                                 <td>{template.name}</td>
                                 <td>{template.createDate}</td>
                                 <td>{template.used}</td>
-                                <td><Link to={"/EditTemplate/"+parseInt(template.surveyTemplateId)}><button >Edit</button></Link></td>
-                                <td><button id ={template.surveyTemplateId} onClick={this.OverlayON}>Delete</button></td>
+                                <td><Link to={"/EditTemplate/"+parseInt(template.surveyTemplateId)}><button className="BasicButton">Edit</button></Link></td>
+                                <td><button id ={template.surveyTemplateId} onClick={this.OverlayON} className="BasicButton">Delete</button></td>
                             </tr>
                             
                             )
@@ -142,8 +142,8 @@ export class TemplateDashboard extends Component {
                                 <td>{template.label}</td>
                                 <td>{template.createDate}</td>
                                 <td>{template.used}</td>
-                                <td><Link to={"./EditQuestionTemplate/"+parseInt(template.questionTemplateId)}><button id={template.questionTemplateId} >Edit</button></Link></td>
-                                <td><button id={template.questionTemplateId} onClick={this.OverlayON}>Delete</button></td>
+                                <td><Link to={"./EditQuestionTemplate/"+parseInt(template.questionTemplateId)}><button id={template.questionTemplateId} className="BasicButton">Edit</button></Link></td>
+                                <td><button id={template.questionTemplateId} onClick={this.OverlayON} className="BasicButton">Delete</button></td>
                             </tr>
                             )
                     }
@@ -257,8 +257,21 @@ export class TemplateDashboard extends Component {
                 
                 let overlay=null;
                 let table=null;
-                if (this.state.TemplateType===1) table = this.renderSurveyTemplateTable(this.state.templates);
-                else table=this.renderQuestionTemplateTable(this.state.templates);
+                var button1=null;
+                var button2=null;
+                if (this.state.TemplateType===1)
+                {
+                    table = this.renderSurveyTemplateTable(this.state.templates);   
+                    button1=<button id="left_button" onClick={this.ChangeToSurveyTemplate} style={{background:"#0ec900",color:"white"}}>Surveys</button>;
+                    button2=<button id="right_button" onClick={this.ChangeToQuestionTemplate}>Questions</button>
+                } 
+                else 
+                {
+                    table=this.renderQuestionTemplateTable(this.state.templates);
+                    button1=<button id="left_button" onClick={this.ChangeToSurveyTemplate} >Surveys</button>;
+                    button2=<button id="right_button" onClick={this.ChangeToQuestionTemplate} style={{background:"#0ec900",color:"white"}}>Questions</button>
+                }
+
                 if (this.state.overlay===1) overlay=this.renderOverlay();
 
                 
@@ -270,8 +283,8 @@ export class TemplateDashboard extends Component {
                         <h2 id="survey-title">{this.title}</h2>
                         {overlay}
                         <div>
-                            <button id="left_button" onClick={this.ChangeToSurveyTemplate}>Surveys</button>
-                            <button id="right_button" onClick={this.ChangeToQuestionTemplate}>Questions</button>
+                            {button1}
+                            {button2}
                         </div>
                         <div id='create_button_container'><Link to="/CreateSurvey"><button id="create_survey">Create survey</button></Link></div>
                         <br></br>

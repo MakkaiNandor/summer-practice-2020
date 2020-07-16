@@ -27,10 +27,10 @@ export class MainMenu extends Component{
                 </div>
                 <h2 id="survey_title">{this.title}</h2>
                 <div id="button_container">
-                    <Link to="/CreateSurvey" className="Link"><button id="survey-title" className="button">Create Form</button></Link>
-                    <Link to="/SurveyDashboard" className="Link"><button id="survey-title" className="button">My Forms</button></Link>
-                    <Link to="/TemplateDashboard" className="Link"><button id="survey-title" className="button">Templates</button></Link>
-                    <Link to="" className="Link"><button id="survey-title" className="button">Logout</button></Link>
+                    <Link to="/CreateSurvey" className="Link"><button id="survey-title" className="CreateSurveyButton">Create Survey</button></Link>
+                    <Link to="/SurveyDashboard" className="Link"><button id="survey-title" className="MyFormsButton">My Forms</button></Link>
+                    <Link to="/TemplateDashboard" className="Link"><button id="survey-title" className="TemplatesButton">Templates</button></Link>
+                    <Link to="" className="Link"><button id="survey-title" className="LogoutButton">Logout</button></Link>
                 </div>
             </div>
         );

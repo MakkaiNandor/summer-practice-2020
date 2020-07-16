@@ -25,7 +25,6 @@
     border-radius: 0.5em;
 }
 .button:hover {
-    background-color: blue;
     color: white;
 }
 
