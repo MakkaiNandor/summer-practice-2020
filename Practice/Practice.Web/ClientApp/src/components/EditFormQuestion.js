@@ -187,10 +187,8 @@ export class EditFormQuestion extends Component {
     onPageButtonClicked(event){
         let pageNumber = parseInt(event.target.id.split("-")[1]);
         let prevPage = document.getElementById("page-"+this.state.currPageNumber);
-        prevPage.style.backgroundColor = "white";
-        prevPage.style.color = "black";
-        event.target.style.backgroundColor = "blue";
-        event.target.style.color = "white";
+        prevPage.style.backgroundColor = "#4e4376";
+        event.target.style.backgroundColor = "#FF3CAC";
         this.setState({ currPageNumber: pageNumber});
     }
 
@@ -225,10 +223,8 @@ export class EditFormQuestion extends Component {
         let pageNumber = this.state.currPageNumber;
         if(prevPage){
             pageNumber = parseInt(prevPage.id.split("-")[1]);
-            currPage.style.backgroundColor = "white";
-            currPage.style.color = "black";
-            prevPage.style.backgroundColor = "blue";
-            prevPage.style.color = "white";
+            currPage.style.backgroundColor = "#4e4376";
+            prevPage.style.backgroundColor = "#FF3CAC";
         }
 
         this.setState({ data: data, currPageNumber: pageNumber });
@@ -497,7 +493,7 @@ export class EditFormQuestion extends Component {
                     <div id="templates">
                         {this.questionTemplates ? this.renderQuestionTemplates() : "There are no question templates!"}
                     </div>
-                    <button id="overlay-back" className="button" onClick={() => this.setState({ overlay: false })}>Back</button>
+                    <button id="overlay-back" className="nav_button" onClick={() => this.setState({ overlay: false })}>Back</button>
                 </div>
             </div>
         );
@@ -547,11 +543,11 @@ export class EditFormQuestion extends Component {
                 {this.renderQuestions()}
                 <div id="buttons-holder">
                     <div id="question-buttons">
-                        <button className="button button-left" onClick={this.addNewQuestion}>Add new question</button>
-                        <button className="button button-right" onClick={() => this.setState({ overlay: true })}>Add template question</button>
+                        <button className="nav_button button_left" onClick={this.addNewQuestion}>Add new question</button>
+                        <button className="nav_button button_right" onClick={() => this.setState({ overlay: true })}>Add template question</button>
                     </div>
                     <div id="save-buttons">
-                        <button className="button button-left" id="save-survey" onClick={this.saveSurvey}>Save survey</button>
+                        <button className="nav_button" id="save-survey" onClick={this.saveSurvey}>Save survey</button>
                     </div>
                 </div>
             </div>
@@ -608,9 +604,9 @@ export class EditFormQuestion extends Component {
                                 )}
                             </div>
                         }
-                        {question.type === "input" || question.type === "rating" ? null : <button className="button add-answer-button" onClick={this.addNewAnswer}>Add answer</button>}
-                        <button className="button add-to-templates-button" onClick={this.addToQuestionTemplates}>Add to question templates</button>
-                        <button className="button remove-question-button" onClick={this.removeQuestion}>Remove question</button>
+                        {question.type === "input" || question.type === "rating" ? null : <button className="nav_button add-answer-button" onClick={this.addNewAnswer}>Add answer</button>}
+                        <button className="nav_button add-to-templates-button" onClick={this.addToQuestionTemplates}>Add to question templates</button>
+                        <button className="nav_button remove-question-button" onClick={this.removeQuestion}>Remove question</button>
                     </div>
                 )}
             </div>
@@ -620,21 +616,21 @@ export class EditFormQuestion extends Component {
     render(){
         if(this.state.error){
             return (
-                <div>
+                <div id="GeneralPieErrorContainer">
                     <div id="homepage_button_holder">
                         <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
-                    <p>{this.state.error}</p>
+                    <h3 id="GeneralPieError">{this.state.error}</h3>
                 </div>
             );
         }
         else if(this.state.loading){
             return (
-                <div>
+                <div id="GeneralPieErrorContainer">
                     <div id="homepage_button_holder">
                         <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
-                    <p>Loading...</p>
+                    <h3 id="GeneralPieError">Loading...</h3>
                 </div>
             );
         }
@@ -649,7 +645,7 @@ export class EditFormQuestion extends Component {
                     <div id="homepage_button_holder">
                         <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
-                    <h2 id="edit_question_title">Edit Form's Questions</h2>
+                    <h2 id="title">Edit Form's Questions</h2>
                     {this.renderQuestionForm()}
                     {this.state.overlay ? this.renderOverlay() : null}
                 </div>

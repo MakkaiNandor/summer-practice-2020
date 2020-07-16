@@ -3,9 +3,24 @@
 }
 
 .login_boxed{
-    border: 3px solid black ;
+    border: 2px solid black ;
     padding: 40px;
     margin: 60px;
     border-radius: 25px;
     text-align: center;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
 }
+
+.login_page_button{
+    font-size: large;
+    margin-top: 1em;
+    color: white;
+    padding: 0.5em;
+    border: 1px solid black;
+    border-radius: 1em;
+    background-color: #4e4376;
+}
+
+.login_page_button:hover {background-color: #FF3CAC;}

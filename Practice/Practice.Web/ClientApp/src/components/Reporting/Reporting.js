@@ -27,9 +27,9 @@ export class Reporting extends Component {
                     <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                 </div>
                 <div id="buttons">
-                    <button onClick={this.buttonClicked} value="0">Personal</button>
-                    <button onClick={this.buttonClicked} value="1">Pie Chart</button>
-                    <button onClick={this.buttonClicked} value="2">Bar Chart</button>
+                    <button className="nav_button" onClick={this.buttonClicked} value="0">Personal</button>
+                    <button className="nav_button" onClick={this.buttonClicked} value="1">Pie Chart</button>
+                    <button className="nav_button" onClick={this.buttonClicked} value="2">Bar Chart</button>
                 </div>
                 <div id="content">
                     {content}

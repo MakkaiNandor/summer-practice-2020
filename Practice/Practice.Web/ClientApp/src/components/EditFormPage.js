@@ -54,26 +54,27 @@ export class EditForm extends Component {
         return (
             <form id="edit_part_form">
                 <div>
-                    <div className="page_label-holder holder"><label htmlFor="question_title"><b>Title: </b></label></div>
-                    <div className="answer-holder holder"><input className="answer" type="text" name="question_title" defaultValue={this.survey.title} /></div>
+                    <div className="edit-label-holder holder"><label htmlFor="question_title"><b>Title: </b></label></div>
+                    <div className="edit-answer-holder holder"><input className="answer" type="text" name="question_title" defaultValue={this.survey.title} /></div>
                 </div>
 
                 <div>
-                    <div className="label-holder holder"><label htmlFor="question_expirationDate"><b>Expiration date: </b></label></div>
-                    <div className="answer-holder holder">
-                        <input className="answer" type="date" name="question_expirationDate" defaultValue={date} style={{display: 'block'}}/>
-                        <input className="answer" type="time" name="question_expirationDate" defaultValue={time} style={{marginTop: '1em'}}/>
+                    <div className="edit-label-holder holder"><label htmlFor="question_expirationDate"><b>Expiration date: </b></label></div>
+                    <div className="edit-answer-holder holder">
+                        <input className="answer" type="date" name="question_expirationDate" defaultValue={date}/>
+                        <br/><br/>
+                        <input className="answer" type="time" name="question_expirationDate" defaultValue={time}/>
                     </div>
                 </div>
             
                 <div>
-                    <div className="page_label-holder holder"><label htmlFor="question_description"><b>Description: </b></label></div>
-                    <div className="answer-holder holder"><textarea className="answer" name="question_description" defaultValue={this.survey.description} maxLength="32000" /></div>
+                    <div className="edit-label-holder holder"><label htmlFor="question_description"><b>Description: </b></label></div>
+                    <div className="edit-answer-holder holder"><textarea className="answer" name="question_description" defaultValue={this.survey.description} maxLength="32000" /></div>
                 </div>
 
                 <div>
-                    <div className="page_label-holder holder"><label htmlFor="question_ending"><b>Footer description:</b> </label></div>
-                    <div className="answer-holder holder"><textarea className="answer" name="question_ending" defaultValue={this.survey.ending} /></div>
+                    <div className="edit-label-holder holder"><label htmlFor="question_ending"><b>Footer description:</b> </label></div>
+                    <div className="edit-answer-holder holder"><textarea className="answer" name="question_ending" defaultValue={this.survey.ending} /></div>
                 </div>
             </form>
         );
@@ -92,14 +93,14 @@ export class EditForm extends Component {
 
     saveModified(){
         let correct = true;
-        let answerHolders = Array.from(document.getElementsByClassName("answer-holder"));
+        let answerHolders = Array.from(document.getElementsByClassName("edit-answer-holder"));
         answerHolders.forEach(answerHolder => {
             //console.log(answerInput.id);
             let answerInputs = answerHolder.children;
             let key = answerInputs[0].name.split("_")[1];
-            if(answerInputs.length === 2){
-                if(answerInputs[0].value === "" || answerInputs[1].value === "") correct = false;
-                else this.survey[key] = answerInputs[0].value + "T" + answerInputs[1].value + ":00.000+00:00";
+            if(answerInputs.length === 4){
+                if(answerInputs[0].value === "" || answerInputs[3].value === "") correct = false;
+                else this.survey[key] = answerInputs[0].value + "T" + answerInputs[3].value + ":00.000+00:00";
             }
             else{
                 if(answerInputs[0].value === "") correct = false;
@@ -112,21 +113,21 @@ export class EditForm extends Component {
     render() {
         if(this.state.error){
             return (
-                <div>
+                <div id="GeneralPieErrorContainer">
                     <div id="homepage_button_holder">
                         <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
-                    <p>{this.state.error}</p>
+                    <h3 id="GeneralPieError">{this.state.error}</h3>
                 </div>
             );
         }
         else if(this.state.loading){
             return (
-                <div>
+                <div id="GeneralPieErrorContainer">
                     <div id="homepage_button_holder">
                         <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
-                    <p>Loading...</p>
+                    <h3 id="GeneralPieError">Loading...</h3>
                 </div>
             );
         }
@@ -142,10 +143,10 @@ export class EditForm extends Component {
                         <div id="homepage_button_holder">
                             <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                         </div>
-                        <h2 id="edit_survey_title">{this.descriptions.page_title}</h2>
+                        <h2 id="title">{this.descriptions.page_title}</h2>
                         <p className="description"><b>{this.descriptions.active}</b></p>
                         {this.generateMain()}
-                        <button className="edit_survey-button" onClick={this.submitMain}>Save</button>
+                        <button className="nav_button" onClick={this.submitMain}>Save</button>
                     </div> 
                 );
             }
@@ -155,10 +156,10 @@ export class EditForm extends Component {
                         <div id="homepage_button_holder">
                             <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                         </div>
-                        <h2 id="edit_survey_title">{this.descriptions.page_title}</h2>
+                        <h2 id="title">{this.descriptions.page_title}</h2>
                         <p className="description"><b>{this.descriptions.created}</b></p>
                         {this.generateMain()}
-                        <button className="edit_survey-button" onClick={this.submitMain}>Edit the questions</button>
+                        <button className="nav_button" onClick={this.submitMain}>Edit the questions</button>
                     </div>
                 );
             }

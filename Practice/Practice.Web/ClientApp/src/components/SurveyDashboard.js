@@ -241,10 +241,10 @@ export class SurveyDashboard extends Component {
                         <td>{this.getRespondents(survey.surveyId)}</td>
                         <td>{survey.createDate.slice(0, 16).replace("T", " ")}</td>
                         <td>{survey.expirationDate.slice(0, 16).replace("T", " ")}</td>
-                        <td>{survey.status === "active" ? <button id={"link-button-"+survey.surveyId} className="survey_dashboard_button" onClick={this.onClickHandler}>Get Link</button> : survey.status === "created" ? <button id={"publish-button-"+survey.surveyId} className="button" onClick={this.onClickHandler}>Publish</button> : null} </td>
-                        <td>{survey.status !== "closed" ? <Link to={"/editform/"+survey.surveyId}><button id={"view-button-"+survey.surveyId} className="survey_dashboard_button">Edit</button></Link> : null}</td>
-                        <td>{survey.status !== "created" ? <Link to={"/reporting/"+survey.surveyId}><button id={"report-button-"+survey.surveyId} className="survey_dashboard_button" onClick={this.onClickHandler}>Results</button></Link> : null}</td>
-                        <td><button id={"delete-button-"+survey.surveyId} className="survey_dashboard_button" onClick={this.onClickHandler}>Delete</button></td>
+                        <td>{survey.status === "active" ? <button id={"link-button-"+survey.surveyId} className="nav_button" onClick={this.onClickHandler}>Get Link</button> : survey.status === "created" ? <button id={"publish-button-"+survey.surveyId} className="nav_button" onClick={this.onClickHandler}>Publish</button> : null} </td>
+                        <td>{survey.status !== "closed" ? <Link to={"/editform/"+survey.surveyId}><button id={"view-button-"+survey.surveyId} className="nav_button">Edit</button></Link> : null}</td>
+                        <td>{survey.status !== "created" ? <Link to={"/reporting/"+survey.surveyId}><button id={"report-button-"+survey.surveyId} className="nav_button" onClick={this.onClickHandler}>Results</button></Link> : null}</td>
+                        <td><button id={"delete-button-"+survey.surveyId} className="nav_button" onClick={this.onClickHandler}>Delete</button></td>
                         
                     </tr>
                 )}
@@ -256,38 +256,38 @@ export class SurveyDashboard extends Component {
     render() {
         if(this.state.error){
             return (
-                <div>
+                <div id="GeneralPieErrorContainer">
                     <div id="homepage_button_holder">
                         <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
-                    <p>{this.state.error}</p>
+                    <h3 id="GeneralPieError">{this.state.error}</h3>
                 </div>
             );
         }
         else if(this.state.loading){
             return (
-                <div>
+                <div id="GeneralPieErrorContainer">
                     <div id="homepage_button_holder">
                         <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
-                    <p>Loading...</p>
+                    <h3 id="GeneralPieError">Loading...</h3>
                 </div>
             );
         }
         else if(this.state.option === "link" || this.state.option === "publish"){
-            let publishButton = this.state.option === "publish" ? <button className="survey_dashboard_button" onClick={this.publishSurvey}>Publish</button> : null;
+            let publishButton = this.state.option === "publish" ? <button className="nav_button" onClick={this.publishSurvey}>Publish</button> : null;
             let link = window.location.href.replace(this.props.match.url, "/personal/" + this.state.survey.surveyId);
             return (
                 <div id="link-page">
-                    <h2 id="survey_dashboard_title">Share Form</h2>
+                    <h2 id="title">Share Form</h2>
                     <div>
                         <label>Link for "{this.state.survey.title}": </label>
                         <input id="link" type="text" defaultValue={link} size={link.length} disabled></input>
-                        <button className="survey_dashboard_button" onClick={this.copyLink}>Copy Link</button>
+                        <button className="nav_button" onClick={this.copyLink}>Copy Link</button>
                     </div>
                     {publishButton}
                     <br/>
-                    <button className="survey_dashboard_button" onClick={event => this.setState({ survey: null, option: null })}>Ok</button>
+                    <button className="nav_button" onClick={event => this.setState({ survey: null, option: null })}>Ok</button>
                 </div>
             );
         }
@@ -296,13 +296,13 @@ export class SurveyDashboard extends Component {
             return (
                 <div id="dashboard-page">
                     <div id="homepage_button_holder">
-                        <Link to="./MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
-                        <Link to="./generalReport" className="Link"><button id="personal_report_button">Personal data report</button></Link>
+                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        <Link to="/GeneralReporting" className="Link"><button id="personal_report_button">Personal data report</button></Link>
                     </div>
-                    <h2 id="survey_dashboard_title">My Forms</h2>
+                    <h2 id="title">My Forms</h2>
                     <div id="survey_dashboard_table_holder">
                         {table}
-                        <Link to="/CreateSurvey"><button id="new-survey-button" className="AddNewFormButton">Add new form</button></Link>
+                        <Link to="/CreateSurvey"><button className="nav_button">Add new form</button></Link>
                     </div>
                 </div>
             );

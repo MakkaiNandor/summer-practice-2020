@@ -13,6 +13,7 @@ import { EditQuestionTemplate } from './components/EditQuestionTemplate';
 import { SurveyDashboard } from './components/SurveyDashboard';
 import { CreateSurvey } from './components/CreateSurvey';
 import { Reporting } from './components/Reporting/Reporting';
+import { GeneralReport } from './components/Reporting/GeneralReport';
 
 import './custom.css'
 
@@ -36,6 +37,7 @@ export default class App extends Component {
         <Route path='/editform/:id' component={EditForm} />
         <Route path='/editformquestion/:id' component={EditFormQuestion} />
         <Route path='/Reporting/:id' component={Reporting} />
+        <Route path='/GeneralReporting' component={GeneralReport} />
       </Layout>
     );
   }

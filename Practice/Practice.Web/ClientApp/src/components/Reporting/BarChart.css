@@ -11,8 +11,8 @@
     margin: 0.5em;
     width: auto;
     padding: 0.5em;
-    border: 1px solid black;
     border-radius: 2em;
+    background-color: white;
 }
 .question > * {
     margin: 0;
@@ -28,11 +28,14 @@
     display: grid;
     grid-template-columns: auto auto auto;
 }
-#buttons button:first-of-type {
-    border-radius: 2em 0 0 2em;
-}
-#buttons button:last-of-type {
+#buttons button:nth-last-of-type(1) {
     border-radius: 0 2em 2em 0;
+}
+#buttons button:nth-last-of-type(2) {
+    border-radius: 0;
+}
+#buttons button:nth-last-of-type(3) {
+    border-radius: 2em 0 0 2em;
 }
 #buttons > button{
     margin-top: 10px;
