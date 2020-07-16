@@ -279,7 +279,7 @@ export class SurveyDashboard extends Component {
             let link = window.location.href.replace(this.props.match.url, "/personal/" + this.state.survey.surveyId);
             return (
                 <div id="link-page">
-                    <h2 id="title">Share Form</h2>
+                    <h2 id="title">Share Survey</h2>
                     <div>
                         <label>Link for "{this.state.survey.title}": </label>
                         <input id="link" type="text" defaultValue={link} size={link.length} disabled></input>
@@ -299,10 +299,10 @@ export class SurveyDashboard extends Component {
                         <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                         <Link to="/GeneralReporting" className="Link"><button id="personal_report_button">Personal data report</button></Link>
                     </div>
-                    <h2 id="title">My Forms</h2>
+                    <h2 id="title">My Surveys</h2>
                     <div id="survey_dashboard_table_holder">
                         {table}
-                        <Link to="/CreateSurvey"><button className="nav_button">Add new form</button></Link>
+                        <Link to="/CreateSurvey"><button className="nav_button">Add new survey</button></Link>
                     </div>
                 </div>
             );

@@ -290,7 +290,7 @@ export class Survey extends Component {
         else if(this.state.submitted){
             return (
                 <div id="survey_page">
-                    <h2 id="survey_page_title">{this.survey.title}</h2>
+                    <h2 id="title">{this.survey.title}</h2>
                 <div id="survey_page_progress_bar_holder">
                     <p>End of survey</p>
                     <div id="survey_page_progress_bar_frame">
@@ -302,9 +302,9 @@ export class Survey extends Component {
             );
         }
         else{
-            let prevPageButton = !this.state.firstPage ? <button className="survey-button2" onClick={this.prevPage}>Previous Page</button> : null;
-            let nextPageButton = !this.state.lastPage ? <button className="survey-button" onClick={this.nextPage}>Next Page</button> : null;
-            let submitSurveyButton = this.state.lastPage ? <button className="survey-button" onClick={this.submitSurvey}>Submit Survey</button> : null;
+            let prevPageButton = !this.state.firstPage ? <button className="nav_button" onClick={this.prevPage}>Previous Page</button> : null;
+            let nextPageButton = !this.state.lastPage ? <button className="nav_button" onClick={this.nextPage}>Next Page</button> : null;
+            let submitSurveyButton = this.state.lastPage ? <button className="nav_button" onClick={this.submitSurvey}>Submit Survey</button> : null;
 
             let description = this.state.firstPage ? <p className="survey_page_description"><b>Description: </b>{this.survey.description}</p> : null; 
             let ending = this.state.lastPage ? <p className="survey_page_description">{this.survey.ending}</p> : null; 
@@ -313,7 +313,7 @@ export class Survey extends Component {
 
             return (
                 <div id="survey_page">
-                    <h2 id="survey_page_title">{this.survey.title}</h2>
+                    <h2 id="title">{this.survey.title}</h2>
                     <div id="survey_page_progress_bar_holder">
                         <p>Page {this.state.currPage + 1} of {this.state.numberOfPages}</p>
                         <div id="survey_page_progress_bar_frame">

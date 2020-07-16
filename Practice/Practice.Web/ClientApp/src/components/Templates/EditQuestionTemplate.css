@@ -8,10 +8,16 @@
     top:21%;
 }
 
-/*#edit_question_pageButtons
+
+#WarningContainer
 {
-    margin-left: 5%;
-}*/
+    background-color: rgb(255, 255, 255);
+    width:50%;
+    position:absolute;
+    top:30%;
+    left:25%;
+    border-radius: 20px;
+}
 
 #Question_container{
     margin-top: 1px;
@@ -24,33 +30,19 @@
     text-align: center;
 }
 
-/*.edit_question_buttons
-{
-    border-radius: 10px;
-}*/
 
-#edit_question_page_title {
-    
-    /*position: absolute;
-    top:3%;
-    left: 42%;
-    right: 50%;
-    border: 1px solid black;
-    border-radius: 2em;
-    padding: 1em;
-    margin: 1em;
-    margin-left: auto;
-    margin-right: auto;
-    width: fit-content;
-    font-size: 30px;*/
-    border: 1px solid black;
-    border-radius: 2em;
-    padding: 1em;
-    margin: 1em;
-    margin-left: auto;
-    margin-right: auto;
-    width: fit-content;
+#EditQuestionOverlay
+{
+    position: fixed;
+    width:100%;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
 }
+
 
 
 #editTemplate_saveButton
@@ -63,14 +55,7 @@
     border:solid 1px black;
 }
 
-#template_ok
-{
-    margin-left: 29%;
-    font-size: 20px;
-    color: white;
-    background-color:#0ec900;
-    border:solid 3px black;
-}
+
 
 #QuestionLabelDiv
 {
@@ -121,6 +106,8 @@
     margin-bottom: 10px;
 }
 
+
+
 #edit_question_container input:focus
 {
     background-color: rgb(233, 231, 231);
@@ -137,7 +124,12 @@
     text-align: center;
 }
 
-/*button:hover
+#EditQuestionTemplateWarningMessage
 {
-    background-color: rgb(255, 147, 58);
-}*/
+    color:rgb(0, 0, 0);
+}
+
+#warning
+{
+    text-align: center;
+}

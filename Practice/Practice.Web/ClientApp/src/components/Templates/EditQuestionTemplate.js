@@ -102,11 +102,11 @@ export class EditQuestionTemplate extends Component{
     renderOverlay()
     {
         return(
-                <div id ="overlay">
-                    <div id="edit_question_container">
+                <div id ="EditQuestionOverlay">
+                    <div id="WarningContainer">
                         <div id="warning">
-                            <p id="warning_message"> Template Saved </p>
-                            <Link to='../TemplateDashboard'><button id="template_ok">Back to the Dashboard</button></Link>
+                            <p id="EditQuestionTemplateWarningMessage"> Template Saved </p>
+                            <Link to='../TemplateDashboard'><button className="nav_button">Back to the Dashboard</button></Link>
                             <br></br>
                             <br></br>
                         </div>

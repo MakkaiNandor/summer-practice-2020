@@ -15,7 +15,7 @@ export class MainMenu extends Component{
             error:null
         };
 
-        this.title="Form Creator";
+        this.title="Survey Creator";
     }
 
     render()
@@ -28,7 +28,7 @@ export class MainMenu extends Component{
                 <h2 id="title">{this.title}</h2>
                 <div id="button_container">
                     <Link to="/CreateSurvey" className="Link"><button className="menu_button">Create Survey</button></Link>
-                    <Link to="/SurveyDashboard" className="Link"><button className="menu_button">My Forms</button></Link>
+                    <Link to="/SurveyDashboard" className="Link"><button className="menu_button">My Surveys</button></Link>
                     <Link to="/TemplateDashboard" className="Link"><button className="menu_button">Templates</button></Link>
                     <Link to="" className="Link"><button className="menu_button">Logout</button></Link>
                 </div>
