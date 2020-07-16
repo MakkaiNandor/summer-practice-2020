@@ -645,7 +645,7 @@ export class EditFormQuestion extends Component {
                     <div id="homepage_button_holder">
                         <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
-                    <h2 id="title">Edit Form's Questions</h2>
+                    <h2 id="title">Edit Survey's Questions</h2>
                     {this.renderQuestionForm()}
                     {this.state.overlay ? this.renderOverlay() : null}
                 </div>

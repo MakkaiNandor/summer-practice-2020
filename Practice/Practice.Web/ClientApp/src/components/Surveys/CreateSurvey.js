@@ -99,7 +99,7 @@ export class CreateSurvey extends Component {
                 
             }
         });
-        if(!response.ok) this.setState({ error: "There are no form templates!" });
+        if(!response.ok) this.setState({ error: "There are no survey templates!" });
         else{
             this.state.surveyTemplates = await response.json();
             this.setState({ loading: false });
@@ -947,7 +947,7 @@ export class CreateSurvey extends Component {
             let content = null, message = null;
             switch(this.state.pageStatus){
                 case "templates":
-                    message = "Select a form template";
+                    message = "Select a survey template";
                     content = this.renderSurveyTemplates();
                     break;
                 case "creation_1":
@@ -971,7 +971,7 @@ export class CreateSurvey extends Component {
                     <div id="homepage_button_holder">
                         <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
-                    <h2 id="title">Create Form</h2>
+                    <h2 id="title">Create Survey</h2>
                     <p className="message">{message}</p>
                     {content}
                     {this.state.overlay ? this.renderOverlay() : null}

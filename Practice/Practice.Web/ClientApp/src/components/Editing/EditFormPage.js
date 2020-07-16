@@ -20,7 +20,7 @@ export class EditForm extends Component {
         this.submitMain = this.submitMain.bind(this);
         this.saveModified = this.saveModified.bind(this);
         //this.modified = {title:null, expirationDate:null, description:null, ending:null};
-        this.descriptions={page_title:"Edit Form", active: "This survey is active, in this case you can modify only this parts", created: "This survey is not finished, you can modify this page, and the questions"};
+        this.descriptions={page_title:"Edit Survey", active: "This survey is active, in this case you can modify only this parts", created: "This survey is not finished, you can modify this page, and the questions"};
     }
 
     async getSurvey(){
