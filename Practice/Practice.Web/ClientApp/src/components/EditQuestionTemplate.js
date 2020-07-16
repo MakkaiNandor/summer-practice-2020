@@ -180,23 +180,23 @@ export class EditQuestionTemplate extends Component{
     {
         if (this.state.error)
         {
-            return ( 
-                <div>
+            return (
+                <div id="GeneralPieErrorContainer">
                     <div id="homepage_button_holder">
                         <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
-                    <p>{this.state.error}</p>
+                    <h3 id="GeneralPieError">{this.state.error}</h3>
                 </div>
             );
         }
         else if (this.state.loading)
         {
             return (
-                <div>
+                <div id="GeneralPieErrorContainer">
                     <div id="homepage_button_holder">
                         <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
-                    <p>Loading ...</p>
+                    <h3 id="GeneralPieError">Loading...</h3>
                 </div>
             );
         }
@@ -214,7 +214,7 @@ export class EditQuestionTemplate extends Component{
                         <div id="homepage_button_holder">
                             <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                         </div>
-                        <h2 id="edit_question_page_title">{this.title}</h2>
+                        <h2 id="title">{this.title}</h2>
                     </div>
                     <div id="edit_question_container">
                         <div id="Question_container" >
@@ -225,9 +225,12 @@ export class EditQuestionTemplate extends Component{
                             <option>rating</option>
                         </select>
                             {Generatedpage}
-                            <button id="editTemplate_saveButton" onClick={this.AddAnswer}> Add </button>
                             <br></br>
-                            <button id="editTemplate_saveButton" onClick={this.SaveTemplate}>Save Template</button>
+                            <button className="nav_button" onClick={this.AddAnswer}> Add </button>
+                            <br></br>
+                            <br></br>
+                            <button className="nav_button" onClick={this.SaveTemplate}>Save Template</button>
+                            <br></br>
                             <br></br>
                         </div>
                     </div>

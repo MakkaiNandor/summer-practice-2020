@@ -407,10 +407,8 @@ export class CreateSurvey extends Component {
     onPageButtonClicked(event){
         let pageNumber = parseInt(event.target.id.split("-")[1]);
         let prevPage = document.getElementById("page-"+this.state.currPageNumber);
-        prevPage.style.backgroundColor = "white";
-        prevPage.style.color = "black";
-        event.target.style.backgroundColor = "blue";
-        event.target.style.color = "white";
+        prevPage.style.backgroundColor = "#4e4376";
+        event.target.style.backgroundColor = "#FF3CAC";
         this.setState({ currPageNumber: pageNumber});
     }
 
@@ -447,10 +445,8 @@ export class CreateSurvey extends Component {
         let pageNumber = this.state.currPageNumber;
         if(prevPage){
             pageNumber = parseInt(prevPage.id.split("-")[1]);
-            currPage.style.backgroundColor = "white";
-            currPage.style.color = "black";
-            prevPage.style.backgroundColor = "blue";
-            prevPage.style.color = "white";
+            currPage.style.backgroundColor = "#4e4376";
+            prevPage.style.backgroundColor = "#FF3CAC";
         }
 
         this.setState({ data: data, currPageNumber: pageNumber });
@@ -735,7 +731,7 @@ export class CreateSurvey extends Component {
                     <div id="templates">
                         {this.questionTemplates ? this.renderQuestionTemplates() : "There are no question templates!"}
                     </div>
-                    <button id="overlay-back" className="button" onClick={() => this.setState({ overlay: false })}>Back</button>
+                    <button id="overlay-back" className="nav_button" onClick={() => this.setState({ overlay: false })}>Back</button>
                 </div>
             </div>
         );
@@ -827,8 +823,8 @@ export class CreateSurvey extends Component {
                     <textarea name="ending" defaultValue={this.state.baseTemplate.ending}></textarea>
                 </div>
                 <div className="buttons">
-                    {edit ? null : <button className="button float-button-left" onClick={this.backToTheTemplates} id="RedBackground">Back to the templates</button>}
-                    <button className="button float-button-right" id="GreenBackground" onClick={this.nextToTheQuestions}>Next to the questions</button>
+                    {edit ? null : <button className="nav_button float-button-left" onClick={this.backToTheTemplates}>Back to the templates</button>}
+                    <button className="nav_button float-button-right" onClick={this.nextToTheQuestions}>Next to the questions</button>
                 </div>
             </form>
         );
@@ -838,7 +834,7 @@ export class CreateSurvey extends Component {
     renderQuestionForm(edit){
         return (
             <div id="content-holder">
-                <button className="button back-button" onClick={this.backToTheProperties}>Back to the properties</button>
+                <button className="nav_button back-button" onClick={this.backToTheProperties}>Back to the properties</button>
                 <div id="page-buttons">
                     {this.state.data.map(page => 
                         <button id={"page-"+page.pageNumber} key={page.pageNumber} className="page-button" onClick={this.onPageButtonClicked}>Page {page.pageNumber}</button>
@@ -849,13 +845,13 @@ export class CreateSurvey extends Component {
                 {this.renderQuestions()}
                 <div id="buttons-holder">
                     <div id="question-buttons">
-                        <button className="button button-left" onClick={this.addNewQuestion}>Add new question</button>
-                        <button className="button button-right" onClick={() => this.setState({ overlay: true })}>Add template question</button>
+                        <button className="nav_button button_left" onClick={this.addNewQuestion}>Add new question</button>
+                        <button className="nav_button button_right" onClick={() => this.setState({ overlay: true })}>Add template question</button>
                     </div>
                     <div id="save-buttons">
-                        {edit ? null : <button className="button button-left" id="save-as-survey" onClick={this.saveSurveyClicked}>Save as survey</button>}
-                        {edit ? null : <button className="button button-right" id="save-as-template" onClick={this.saveSurveyClicked}>Save as template</button>}
-                        {edit ? <button className="button" id="edit-template" onClick={this.saveSurveyClicked}>Save template</button> : null}
+                        {edit ? null : <button className="nav_button button_left" id="save-as-survey" onClick={this.saveSurveyClicked}>Save as survey</button>}
+                        {edit ? null : <button className="nav_button button_right" id="save-as-template" onClick={this.saveSurveyClicked}>Save as template</button>}
+                        {edit ? <button className="nav_button" id="edit-template" onClick={this.saveSurveyClicked}>Save template</button> : null}
                     </div>
                 </div>
             </div>
@@ -912,9 +908,9 @@ export class CreateSurvey extends Component {
                                 )}
                             </div>
                         }
-                        {question.type === "input" || question.type === "rating" ? null : <button className="button add-answer-button" onClick={this.addNewAnswer}>Add answer</button>}
-                        <button className="button add-to-templates-button" onClick={this.addToQuestionTemplates}>Add to question templates</button>
-                        <button className="button remove-question-button" onClick={this.removeQuestion}>Remove question</button>
+                        {question.type === "input" || question.type === "rating" ? null : <button className="nav_button add-answer-button" onClick={this.addNewAnswer}>Add answer</button>}
+                        <button className="nav_button add-to-templates-button" onClick={this.addToQuestionTemplates}>Add to question templates</button>
+                        <button className="nav_button remove-question-button" onClick={this.removeQuestion}>Remove question</button>
                     </div>
                 )}
             </div>
@@ -924,21 +920,21 @@ export class CreateSurvey extends Component {
     render(){
         if(this.state.error){
             return (
-                <div>
+                <div id="GeneralPieErrorContainer">
                     <div id="homepage_button_holder">
                         <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
-                    <p>{this.state.error}</p>
+                    <h3 id="GeneralPieError">{this.state.error}</h3>
                 </div>
             );
         }
         else if(this.state.loading){
             return (
-                <div>
+                <div id="GeneralPieErrorContainer">
                     <div id="homepage_button_holder">
                         <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
-                    <p>Loading...</p>
+                    <h3 id="GeneralPieError">Loading...</h3>
                 </div>
             );
         }

@@ -1,13 +1,3 @@
-#survey_title {
-    padding: 1em;
-    border: 1px solid black;
-    border-radius: 2em;
-    width: fit-content;
-    margin-top: 1em;
-    margin-left: auto;
-    margin-right: auto;
-}
-
 #agegroup_div > button {
     margin-bottom: 0.5em;
     border-radius: 1em;

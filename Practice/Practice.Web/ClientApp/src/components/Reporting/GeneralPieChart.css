@@ -11,7 +11,6 @@
     top:40%;
     border:1px solid black;
     width:20%;
-    background-color: white;
     border-radius: 20px;
     max-height: 70%;
     overflow-y: auto;
@@ -47,14 +46,3 @@ button:focus{outline:none}
 input:focus{outline:none}
 
 .PieQuestionLabel:hover {background-color:#dddada;}
-
-#GeneralPieError
-{
-    margin-top: 30%;
-}
-
-#GeneralPieErrorContainer
-{
-    width:100%;
-    text-align: center;
-}

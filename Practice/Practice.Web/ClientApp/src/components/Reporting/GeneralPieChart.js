@@ -241,10 +241,14 @@ export class GeneralPie extends Component
     {
         return {
             chart:{
-                type:"pie"
+                type:"pie",
+                backgroundColor: 'transparent'
             },
             title:{
-                text:"Results:"
+                text:"Results:",
+                style: {
+                    color: 'white'
+                }
             },
             tooltip: {
                 pointFormat: '<b>{point.name}</b>: {point.percentage:.1f}%'
@@ -256,7 +260,12 @@ export class GeneralPie extends Component
                     dataLabels: {
                         enabled: false
                     },
-                    showInLegend: true
+                    showInLegend: true,
+                    labels: {
+                        style: {
+                            color: 'white'
+                        }
+                    }
                 }
             },
             series:[
@@ -272,11 +281,10 @@ export class GeneralPie extends Component
     {      
         if (this.state.error)
         {
-            return(
+            return (
                 <div id="GeneralPieErrorContainer">
                     <h3 id="GeneralPieError">{this.state.error}</h3>
                 </div>
-                
             );
         }
         else 
@@ -285,8 +293,8 @@ export class GeneralPie extends Component
             {
                 return (
                     <div id="GeneralPieErrorContainer">
-                    <h3 id="GeneralPieError">Loading ...</h3>
-                </div>
+                        <h3 id="GeneralPieError">Loading...</h3>
+                    </div>
                 );
             }
             else
@@ -298,7 +306,7 @@ export class GeneralPie extends Component
                         {/*<div id="homepage_button_holder">
                             <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                         </div>*/}
-                        <h2 id="PageTitlePie">{this.state.SurveyTitle}</h2>
+                        <h2 id="title">{this.state.SurveyTitle}</h2>
                         <br></br>
                         <br></br>
                         <HighchartsReact id="GeneralPieChart" highcharts={Highcharts} options={options} />

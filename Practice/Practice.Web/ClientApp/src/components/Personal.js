@@ -145,12 +145,16 @@ export class Personal extends Component {
     render() {
         if(this.state.error){
             return (
-                    <p>{this.state.error}</p>
+                <div id="GeneralPieErrorContainer">
+                    <h3 id="GeneralPieError">{this.state.error}</h3>
+                </div>
             );
         }
         else if(this.state.loading){
             return (
-                    <p>Loading...</p>
+                <div id="GeneralPieErrorContainer">
+                    <h3 id="GeneralPieError">Loading...</h3>
+                </div>
             );
         }
         else if(this.state.redirect){

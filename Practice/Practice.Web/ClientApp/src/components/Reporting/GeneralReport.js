@@ -117,18 +117,35 @@ export class GeneralReport extends Component {
     makeBarChart(){
         const BarOptions = {
             chart:{
-                type: "column"
+                type: "column",
+                backgroundColor: 'transparent'
             },
             title: {
                 text: 'Number of fillings, distributed to age intervals by gender',
+                style: {
+                    color: "white"
+                }
             },
             xAxis: {
-                categories: ['0-10','11-20','21-30','31-40','41-50','51-60','61-70','71-80','81-90','91-100','100+']
+                categories: ['0-10','11-20','21-30','31-40','41-50','51-60','61-70','71-80','81-90','91-100','100+'],
+                labels: {
+                    style: {
+                        color: "white"
+                    }
+                }
             },
             yAxis: {
                 title: {
-                    text: 'Number of surveys'
+                    text: 'Number of surveys',
+                    style: {
+                        color: "white"
+                    }
                 },
+                labels: {
+                    style: {
+                        color: "white"
+                    }
+                }
             },
             series: [{
                 name: 'Male',
@@ -149,10 +166,14 @@ export class GeneralReport extends Component {
     makePieChart(){
         const pieOptions={
         chart:{
-            type:"pie"
+            type:"pie",
+            backgroundColor: 'transparent'
         },
         title:{
-            text:"Gender distribution"
+            text:"Gender distribution",
+            style: {
+                color: "white"
+            }
         },
         tooltip: {
             pointFormat: '<b>{series.name} </b> : <b>{point.percentage:.2f}%</b><br>Number of fillings by {point.name} gender: {point.x}</br>' 
@@ -163,7 +184,10 @@ export class GeneralReport extends Component {
                 cursor: 'pointer',
                 dataLabels: {
                     enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.2f} %'
+                    format: '{point.name}: {point.percentage:.2f} %',
+                    style: {
+                        color: "white"
+                    }
                 }
             }
         },
@@ -268,21 +292,15 @@ export class GeneralReport extends Component {
     render(){
         if(this.state.error){
             return (
-                <div>
-                    <div id="homepage_button_holder">
-                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
-                    </div>
-                        <p>{this.state.error}</p>
+                <div id="GeneralPieErrorContainer">
+                    <h3 id="GeneralPieError">{this.state.error}</h3>
                 </div>
             );
         }
         else if(this.state.loading){
             return (
-                <div>
-                    <div id="homepage_button_holder">
-                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
-                    </div>
-                    <p>Loading...</p>
+                <div id="GeneralPieErrorContainer">
+                    <h3 id="GeneralPieError">Loading...</h3>
                 </div>
             );
         }        
@@ -292,10 +310,10 @@ export class GeneralReport extends Component {
                     <div id="homepage_button_holder">
                         <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                     </div>
-                    <h2 id="survey_title">{this.title}</h2>
+                    <h2 id="title">{this.title}</h2>
                     {this.getPersonalData()}
                     {this.makePieChart()}
-                    <p>Total number of fillings: {(this.gender[0]+this.gender[1])}</p>
+                    <p style={{color: 'white'}}>Total number of fillings: {(this.gender[0]+this.gender[1])}</p>
                     <div id="barchart">
                         {this.makeBarChart()}
                     </div>

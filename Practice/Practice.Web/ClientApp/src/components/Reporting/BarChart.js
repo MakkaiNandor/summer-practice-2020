@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import HighchartsReact from 'highcharts-react-official';
-import Highcharts from 'highcharts/highstock'
+import Highcharts from 'highcharts/highstock';
 import Cookies from 'universal-cookie';
-import { Link } from 'react-router-dom';
 import './BarChart.css';
 
 export class BarChart extends Component {
@@ -83,23 +82,46 @@ export class BarChart extends Component {
         let categories = isRating ? ["1", "2", "3", "4", "5"] : this.state.selectedQuestion.answers.map(answer => answer.value);
         return {
             chart: {
-                type: 'bar'
+                type: 'bar',
+                backgroundColor: 'transparent'
             },
             title: {
-                text: this.state.selectedQuestion.questionId + ": " + this.state.selectedQuestion.label
+                text: this.state.selectedQuestion.questionId + ": " + this.state.selectedQuestion.label,
+                style: {
+                    color: 'white'
+                }
             },
             subtitle: {
-                text: subtitle
+                text: subtitle,
+                style: {
+                    color: 'white'
+                }
             },
             xAxis: {
                 categories: categories,
                 title: {
-                    text: 'Answer options'
+                    text: 'Answer options',
+                    style: {
+                        color: 'white'
+                    }
+                },
+                labels: {
+                    style: {
+                        color: 'white'
+                    }
                 }
             },
             yAxis: {
                 title: {
-                    text: 'Number of respondents'
+                    text: 'Number of respondents',
+                    style: {
+                        color: 'white'
+                    }
+                },
+                labels: {
+                    style: {
+                        color: 'white'
+                    }
                 },
                 allowDecimals: false
             },
@@ -135,21 +157,15 @@ export class BarChart extends Component {
     render(){
         if(this.state.error){
             return (
-                <div>
-                    <div id="homepage_button_holder">
-                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
-                    </div>
-                    <p>{this.state.error}</p>
+                <div id="GeneralPieErrorContainer">
+                    <h3 id="GeneralPieError">{this.state.error}</h3>
                 </div>
             );
         }
         else if(this.state.loading){
             return (
-                <div>
-                    <div id="homepage_button_holder">
-                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
-                    </div>
-                    <p>Loading...</p>
+                <div id="GeneralPieErrorContainer">
+                    <h3 id="GeneralPieError">Loading...</h3>
                 </div>
             );
         }
