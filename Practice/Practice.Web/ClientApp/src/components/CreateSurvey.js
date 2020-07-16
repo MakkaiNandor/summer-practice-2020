@@ -827,8 +827,8 @@ export class CreateSurvey extends Component {
                     <textarea name="ending" defaultValue={this.state.baseTemplate.ending}></textarea>
                 </div>
                 <div className="buttons">
-                    {edit ? null : <button className="button float-button-left" onClick={this.backToTheTemplates}>Back to the templates</button>}
-                    <button className="button float-button-right" onClick={this.nextToTheQuestions}>Next to the questions</button>
+                    {edit ? null : <button className="button float-button-left" onClick={this.backToTheTemplates} id="RedBackground">Back to the templates</button>}
+                    <button className="button float-button-right" id="GreenBackground" onClick={this.nextToTheQuestions}>Next to the questions</button>
                 </div>
             </form>
         );

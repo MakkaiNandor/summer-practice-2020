@@ -52,8 +52,9 @@
     margin-top: 20px;
     border-radius: 10px;
     color:white;
-    background-color: green;
+    background-color: #0ec900;
     margin-bottom: 20px;
+    border:solid 1px black;
 }
 
 #template_ok
@@ -61,7 +62,8 @@
     margin-left: 29%;
     font-size: 20px;
     color: white;
-    background-color:green;
+    background-color:#0ec900;
+    border:solid 3px black;
 }
 
 #QuestionLabelDiv
@@ -127,4 +129,9 @@ input:focus
     border-radius: 50%;
     margin-left: 10px;
     text-align: center;
+}
+
+button:hover
+{
+    background-color: rgb(255, 147, 58);
 }

@@ -37,10 +37,23 @@ label {
     margin: 1em;
     padding: 0.5em;
     border-radius: 0.5em;
+    border: 1px solid black;
+}
+
+.survey-button2 {
+    margin: 1em;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    border: 1px solid black;
+    background-color:red;
 }
 .survey-button:hover {
     border: 1px solid black;
-    background-color: blue;
+    color: white;
+}
+
+.survey-button2:hover {
+    border: 1px solid black;
     color: white;
 }
 #progress-bar-holder {

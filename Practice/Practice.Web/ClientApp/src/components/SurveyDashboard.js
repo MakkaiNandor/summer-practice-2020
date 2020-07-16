@@ -302,7 +302,7 @@ export class SurveyDashboard extends Component {
                     <h2 id="title">My Forms</h2>
                     <div id="survey-table-holder">
                         {table}
-                        <Link to="/CreateSurvey"><button id="new-survey-button" className="button">Add new form</button></Link>
+                        <Link to="/CreateSurvey"><button id="new-survey-button" className="AddNewFormButton">Add new form</button></Link>
                     </div>
                 </div>
             );
