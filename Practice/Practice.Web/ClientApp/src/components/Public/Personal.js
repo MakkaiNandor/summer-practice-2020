@@ -165,11 +165,11 @@ export class Personal extends Component {
         else{
             return (
                 <div id="personal_page">
-                    <h2 id="personal_page_title">{this.descriptions.title}</h2>
+                    <h2 id="title">{this.descriptions.title}</h2>
                     <p className="personal_page_description"><b>What will happen with your data: </b>{this.descriptions.description}</p>
                     {this.generateQuestions()}
                     <p className="personal_page_description"><b>{this.descriptions.footer_description}</b></p>
-                    <button className="personal_page_button" onClick={this.submitData}>Begin the questions</button>
+                    <button className="nav_button" onClick={this.submitData}>Begin the questions</button>
                 </div>
             );
         }
