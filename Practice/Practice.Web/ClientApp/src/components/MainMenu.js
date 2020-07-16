@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import "./MainMenu.css"
 import { Link } from 'react-router-dom';
-
+import Cookies from 'universal-cookie';
 
 export class MainMenu extends Component{
 
@@ -16,6 +16,14 @@ export class MainMenu extends Component{
         };
 
         this.title="Survey Creator";
+        this.DeleteCookie=this.DeleteCookie.bind(this);
+    }
+
+
+    DeleteCookie()
+    {
+            const cookies = new Cookies();
+            cookies.remove("token");
     }
 
     render()
@@ -30,7 +38,7 @@ export class MainMenu extends Component{
                     <Link to="/CreateSurvey" className="Link"><button className="menu_button">Create Survey</button></Link>
                     <Link to="/SurveyDashboard" className="Link"><button className="menu_button">My Surveys</button></Link>
                     <Link to="/TemplateDashboard" className="Link"><button className="menu_button">Templates</button></Link>
-                    <Link to="" className="Link"><button className="menu_button">Logout</button></Link>
+                    <Link to="" className="Link"><button className="menu_button" onClick={this.DeleteCookie}>Logout</button></Link>
                 </div>
             </div>
         );
