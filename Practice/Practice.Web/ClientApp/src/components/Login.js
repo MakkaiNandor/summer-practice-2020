@@ -124,7 +124,7 @@ export class Login extends Component {
                 <label><b>Password</b></label><br></br>
                 <input type = "password" name="Password" placeholder="Enter Password" onChange={this.onChange} required></input><br></br>
 
-                <button type="submit" value="login" className="button" onClick={this.login} >Login</button><br></br>
+                <button type="submit" value="login" className="button" style={{backgroundColor:"#0ec900",marginTop:"10px"}} onClick={this.login} >Login</button><br></br>
                 <label >{this.state.text}</label>
               </div>
         </div>

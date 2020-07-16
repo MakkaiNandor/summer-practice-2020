@@ -76,7 +76,9 @@
     margin-left: 20%;
     margin-right: 20%;
     font-size: 20px;
-    background-color:green;
+    background-color:#0ec900;
+    border-radius: 20px;
+    font-size: 20px;
 }
 #template_no
 {
@@ -84,6 +86,8 @@
     margin-right: 20%;
     font-size: 20px;
     background-color: red;
+    border-radius: 20px;
+    font-size: 20px;
 }
 
 /*.expandable
@@ -119,4 +123,10 @@
     background-position: 10px 16px; 
     background-repeat: no-repeat;
     padding: 12px 0px 12px 5px;
+}
+
+.BasicButton
+{
+    border-radius: 20px;
+    width:80px;
 }

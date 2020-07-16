@@ -298,9 +298,9 @@ export class Survey extends Component {
             );
         }
         else{
-            let prevPageButton = !this.state.firstPage ? <button className="survey_page_button" onClick={this.prevPage}>Previous Page</button> : null;
-            let nextPageButton = !this.state.lastPage ? <button className="survey_page_button" onClick={this.nextPage}>Next Page</button> : null;
-            let submitSurveyButton = this.state.lastPage ? <button className="survey_page_button" onClick={this.submitSurvey}>Submit Survey</button> : null;
+            let prevPageButton = !this.state.firstPage ? <button className="survey-button2" onClick={this.prevPage}>Previous Page</button> : null;
+            let nextPageButton = !this.state.lastPage ? <button className="survey-button" onClick={this.nextPage}>Next Page</button> : null;
+            let submitSurveyButton = this.state.lastPage ? <button className="survey-button" onClick={this.submitSurvey}>Submit Survey</button> : null;
 
             let description = this.state.firstPage ? <p className="survey_page_description"><b>Description: </b>{this.survey.description}</p> : null; 
             let ending = this.state.lastPage ? <p className="survey_page_description">{this.survey.ending}</p> : null; 

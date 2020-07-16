@@ -31,8 +31,7 @@
     padding: 0.5em;
     border-radius: 0.5em;
 }
-.survey_dashboard_button:hover {
-    background-color: blue;
+.button:hover {
     color: white;
 }
 #survey_dashboard_new_survey_button {
@@ -73,4 +72,12 @@
     box-sizing: border-box;
     border: 2px solid #ccc;
     font-size: 14px;
+}
+
+.AddNewFormButton
+{
+    background-color: #0ec900;
+    color:white;
+    padding: 0.5em;
+    border-radius: 0.5em;
 }

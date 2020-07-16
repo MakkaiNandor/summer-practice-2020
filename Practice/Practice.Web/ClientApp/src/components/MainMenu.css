@@ -26,8 +26,7 @@
     background-color:#dddada;
 }
 
-#menu_survey_title {
-    font-weight: bold;
+.survey_title {
     border: 1px solid black;
     border-radius: 2em;
     padding: 1em;
@@ -35,11 +34,12 @@
     margin-left: auto;
     margin-right: auto;
     width: fit-content;
-    font-size: 30px;
-    letter-spacing: 4px;
 }
 
-.menu_link 
+
+button:hover {background-color:#dddada;}
+
+.Link 
 {
     margin-left: auto;
     margin-right: auto;
@@ -60,4 +60,27 @@
     background-position: 10px 16px; 
     background-repeat: no-repeat;
     padding: 12px 0px 12px 5px;
+}
+
+.LogoutButton
+{
+    background: rgb(181,0,0);
+    background: linear-gradient(0deg, rgba(181,0,0,1) 0%, rgba(255,65,65,1) 100%);
+}
+
+.TemplatesButton
+{
+    background: rgb(1,201,0);
+    background: linear-gradient(0deg, rgba(1,201,0,1) 0%, rgba(0,255,8,1) 100%);
+}
+.MyFormsButton
+{
+    background: rgb(0,124,149);
+    background: linear-gradient(0deg, rgba(0,124,149,1) 0%, rgba(0,212,255,1) 100%);
+}
+
+.CreateSurveyButton
+{
+    background: rgb(233,113,0);
+    background: linear-gradient(0deg, rgba(233,113,0,1) 0%, rgba(255,98,0,1) 99%);
 }
