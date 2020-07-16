@@ -1,0 +1,47 @@
+#survey_title {
+    padding: 1em;
+    border: 1px solid black;
+    border-radius: 2em;
+    width: fit-content;
+    margin-top: 1em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#agegroup_div > button {
+    margin-bottom: 0.5em;
+    border-radius: 1em;
+    padding: 0.5em;
+    width: 6em;
+}
+
+.select_age_group_button {
+    background: lightgrey;
+    border: 0;
+    border-radius: 1em;
+    padding: 0.5em;
+    width: 5em;
+}
+
+#agegroup_div{
+    display: grid;
+    grid-template-columns: auto auto;
+    margin-top: 3em;
+    margin-bottom: 3em;
+    justify-items: center;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 1em;
+    padding: 1em;
+}
+
+#filter_ages{
+    width: 22%;
+    float: left;
+}
+
+#barchart{
+    width: 75%;
+    float: right;
+    margin-top: 1em;
+}

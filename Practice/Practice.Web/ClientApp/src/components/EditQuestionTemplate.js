@@ -103,7 +103,7 @@ export class EditQuestionTemplate extends Component{
     {
         return(
                 <div id ="overlay">
-                    <div id="container">
+                    <div id="edit_question_container">
                         <div id="warning">
                             <p id="warning_message"> Template Saved </p>
                             <Link to='../TemplateDashboard'><button id="template_ok">Back to the Dashboard</button></Link>
@@ -155,7 +155,6 @@ export class EditQuestionTemplate extends Component{
     //Delete Answer
     DeleteAnswer(event)
     {
-        var id=event.target.name;
         var temp=this.state.template;
         temp.answers.splice(event.target.name-1,1);
         this.setState({template:temp});
@@ -211,9 +210,9 @@ export class EditQuestionTemplate extends Component{
                         <div id="homepage_button_holder">
                             <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
                         </div>
-                        <h2 id="page_title">{this.title}</h2>
+                        <h2 id="edit_question_page_title">{this.title}</h2>
                     </div>
-                    <div id="container">
+                    <div id="edit_question_container">
                         <div id="Question_container" >
                         <select id="EditSelect" onChange={this.ChangeType} defaultValue={this.state.template.type}>
                             <option>radio</option>

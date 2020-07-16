@@ -2,25 +2,26 @@ import React, {Component} from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import "./GeneralPieChart.css"
-import {Link} from 'react-router-dom'
 import Cookies from 'universal-cookie';
 
 export class GeneralPie extends Component
 {
+    static displayName = GeneralPie.name; 
+
     constructor(props)
     {
         super(props);
         this.state={
             loading:true,
             error:null,
-            SurveyId:this.props.match.params.id,
-            answers:null,
-            SurveyTitle:null,
-            QuestionList:null,
-            EnabledQuestions:null
+            SurveyId:this.props.surveyId,
+            answers: null,
+            SurveyTitle: null,
+            QuestionList: null,
+            EnabledQuestions: null
         };
 
-        this.title="GeneralPie"
+        this.title="GeneralPie";
 
         this.GetAnswer=this.GetAnswer.bind(this);
         this.GenerateQuestions=this.GenerateQuestions.bind(this);
@@ -35,6 +36,7 @@ export class GeneralPie extends Component
     componentDidMount()
     {
         this.GetAnswer();
+
     }
 
     //Get Answers
@@ -106,11 +108,11 @@ export class GeneralPie extends Component
             {   
                 if(this.IsEnabled(question))
                 {
-                    return <button className="PieQuestionLabel" onClick={this.AddOrRemove} style={{backgroundColor:"#0ec900",color:"white"}} name={question}>{question}</button>
+                    return <button key={question} className="PieQuestionLabel" onClick={this.AddOrRemove} style={{backgroundColor:"#0ec900",color:"white"}} name={question}>{question}</button>
                 }
                 else
                 {
-                    return <button className="PieQuestionLabel" onClick={this.AddOrRemove} style={{backgroundColor:"white"}} name={question}>{question}</button>
+                    return <button key={question} className="PieQuestionLabel" onClick={this.AddOrRemove} style={{backgroundColor:"white"}} name={question}>{question}</button>
                 }
             }
             
@@ -126,7 +128,7 @@ export class GeneralPie extends Component
 
         if (list.length===1)
         {
-            for (var i=0 ; i<list.length;i++)
+            for (let i=0 ; i<list.length;i++)
             {
                 if (event.target.name===list[i])
                 {
@@ -142,7 +144,7 @@ export class GeneralPie extends Component
             return;
         } 
         
-        for (var i=0 ; i<list.length;i++)
+        for (let i=0 ; i<list.length;i++)
         {
             if (event.target.name===list[i])
             {
@@ -290,12 +292,12 @@ export class GeneralPie extends Component
             else
             {
                 var questions=this.DisplayQuestions();
-                const options = this.GenerateOptions(this.GenerateData());  
+                const options = this.GenerateOptions(this.GenerateData());
                 return (
                     <div>
-                        <div id="homepage_button_holder">
+                        {/*<div id="homepage_button_holder">
                             <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
-                        </div>
+                        </div>*/}
                         <h2 id="PageTitlePie">{this.state.SurveyTitle}</h2>
                         <br></br>
                         <br></br>

@@ -185,11 +185,11 @@ export class TemplateDashboard extends Component {
     renderOverlay()
     {
         return(
-                <div id ="overlay">
-                    <div id="container">
-                        <div id="warning">
-                            <p id="warning_message"> Delete template? </p>
-                            <button id="yes" onClick={this.Delete}>Yes</button><button id="no" onClick={this.OverlayOFF}>No</button>
+                <div id ="template_overlay">
+                    <div id="template_container">
+                        <div id="template_warning">
+                            <p id="template_warning_message"> Delete template? </p>
+                            <button id="template_yes" onClick={this.Delete}>Yes</button><button id="template_no" onClick={this.OverlayOFF}>No</button>
                             <br></br>
                             <br></br>
                         </div>
@@ -270,10 +270,10 @@ export class TemplateDashboard extends Component {
                         <h2 id="survey-title">{this.title}</h2>
                         {overlay}
                         <div>
-                            <button id="left_button" onClick={this.ChangeToSurveyTemplate}>Surveys</button>
-                            <button id="right_button" onClick={this.ChangeToQuestionTemplate}>Questions</button>
+                            <button id="template_left_button" onClick={this.ChangeToSurveyTemplate}>Surveys</button>
+                            <button id="template_right_button" onClick={this.ChangeToQuestionTemplate}>Questions</button>
                         </div>
-                        <div id='create_button_container'><Link to="/CreateSurvey"><button id="create_survey">Create survey</button></Link></div>
+                        <div id='template_create_button_container'><Link to="/CreateSurvey"><button id="template_create_survey">Create survey</button></Link></div>
                         <br></br>
                         {table}
                         

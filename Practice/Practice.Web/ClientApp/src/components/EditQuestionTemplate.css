@@ -1,4 +1,4 @@
-#container{
+#edit_question_container{
     position: absolute;
     width:100%;
     display: flex;
@@ -8,10 +8,10 @@
     top:21%;
 }
 
-#pageButtons
+/*#edit_question_pageButtons
 {
     margin-left: 5%;
-}
+}*/
 
 #Question_container{
     margin-top: 1px;
@@ -24,14 +24,14 @@
     text-align: center;
 }
 
-.buttons
+/*.edit_question_buttons
 {
     border-radius: 10px;
-}
+}*/
 
-#page_title {
+#edit_question_page_title {
     
-    position: absolute;
+    /*position: absolute;
     top:3%;
     left: 42%;
     right: 50%;
@@ -42,8 +42,14 @@
     margin-left: auto;
     margin-right: auto;
     width: fit-content;
-    font-size: 30px;
-    
+    font-size: 30px;*/
+    border: 1px solid black;
+    border-radius: 2em;
+    padding: 1em;
+    margin: 1em;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
 }
 
 
@@ -113,7 +119,7 @@
     margin-bottom: 10px;
 }
 
-input:focus
+#edit_question_container input:focus
 {
     background-color: rgb(233, 231, 231);
 }

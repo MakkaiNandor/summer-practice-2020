@@ -1,4 +1,4 @@
-#title {
+#survey_dashboard_title {
     border: 1px solid black;
     border-radius: 2em;
     padding: 1em;
@@ -7,41 +7,41 @@
     margin-right: auto;
     width: fit-content;
 }
-#survey-table-holder {
+#survey_dashboard_table_holder {
     text-align: center;
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
 }
-#survey-table {
+#survey_dashboard_table {
     border-collapse: collapse;
 }
-#survey-table tr > * {
+#survey_dashboard_table tr > * {
     min-width: 5em;
     padding: 0.5em;
     border: 1px solid black;
 }
-#survey-table > thead {
+#survey_dashboard_table > thead {
     background-color: lightgray;
 }
-#survey-table > thead > tr:hover{
+#survey_dashboard_table > thead > tr:hover{
     background-color: lightgray;
 }
-.button {
+.survey_dashboard_button {
     padding: 0.5em;
     border-radius: 0.5em;
 }
-.button:hover {
+.survey_dashboard_button:hover {
     background-color: blue;
     color: white;
 }
-#new-survey-button {
+#survey_dashboard_new_survey_button {
     margin: 1em;
 }
 #link-page {
     text-align: center;
 }
-#link-page button {
+#link-page .survey_dashboard_button {
     margin: 1em;
 }
 #link-page label {

@@ -23,14 +23,14 @@ export class MainMenu extends Component{
         return(
             <div>
                 <div id="homepage_button_holder">
-                        <Link to="/MainMenu" className="Link"><button id="homepage_button">Home page</button></Link>
+                        <Link to="/MainMenu" className="menu_link"><button id="homepage_button">Home page</button></Link>
                 </div>
-                <h2 id="survey_title">{this.title}</h2>
-                <div id="button_container">
-                    <Link to="/CreateSurvey" className="Link"><button id="survey-title" className="button">Create Form</button></Link>
-                    <Link to="/SurveyDashboard" className="Link"><button id="survey-title" className="button">My Forms</button></Link>
-                    <Link to="/TemplateDashboard" className="Link"><button id="survey-title" className="button">Templates</button></Link>
-                    <Link to="" className="Link"><button id="survey-title" className="button">Logout</button></Link>
+                <h2 id="menu_survey_title">{this.title}</h2>
+                <div id="menu_button_container">
+                    <Link to="/CreateSurvey" className="menu_link"><button className="menu_button">Create Form</button></Link>
+                    <Link to="/SurveyDashboard" className="menu_link"><button className="menu_button">My Forms</button></Link>
+                    <Link to="/TemplateDashboard" className="menu_link"><button className="menu_button">Templates</button></Link>
+                    <Link to="" className="menu_link"><button className="menu_button">Logout</button></Link>
                 </div>
             </div>
         );

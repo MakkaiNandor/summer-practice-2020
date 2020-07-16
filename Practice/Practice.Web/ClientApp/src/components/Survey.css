@@ -1,7 +1,7 @@
-#survey-page {
+#survey_page {
     text-align: center;
 }
-#survey-title {
+#survey_page_title {
     border: 1px solid black;
     border-radius: 2em;
     padding: 1em;
@@ -10,12 +10,12 @@
     margin-right: auto;
     width: fit-content;
 }
-.description {
+.survey_page_description {
     width: 50%;
     margin-left: auto;
     margin-right: auto;
 }
-.question {
+.survey_page_question {
     border: 1px solid black;
     border-radius: 2em;
     margin: 1em;
@@ -24,32 +24,32 @@
     margin-left: auto;
     margin-right: auto;
 }
-label {
+#survey_page label {
     margin-left: 1em;
 }
-.answer-holder {
+.survey_page_answer_holder {
     text-align: left;
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
 }
-.survey-button {
+.survey_page_button {
     margin: 1em;
     padding: 0.5em;
     border-radius: 0.5em;
 }
-.survey-button:hover {
+.survey_page_button:hover {
     border: 1px solid black;
     background-color: blue;
     color: white;
 }
-#progress-bar-holder {
+#survey_page_progress_bar_holder {
     margin-bottom: 1em;
 }
-#progress-bar-holder > p {
+#survey_page_progress_bar_holder > p {
     margin: 0;
 }
-#progress-bar-frame {
+#survey_page_progress_bar_frame {
     margin-left: auto;
     margin-right: auto;
     width: 25%;
@@ -57,12 +57,12 @@ label {
     background-color: grey;
     border-radius: 1em;
 }
-#progress-bar {
+#survey_page_progress_bar {
     background-color: yellowgreen;
     border-radius: 1em;
     height: 1em;
 }
-.rating_answer {
+.survey_page_rating_answer {
     display: inline-block;
     margin-left: 0.5em;
     margin-right: 0.5em;

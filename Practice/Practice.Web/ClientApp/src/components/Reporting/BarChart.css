@@ -1,0 +1,42 @@
+#question_holder {
+    width: 25%;
+    height: 25em;
+    overflow: auto;
+    border: 1px solid black;
+    border-radius: 2em;
+    float: left;
+}
+.question {
+    text-align: center;
+    margin: 0.5em;
+    width: auto;
+    padding: 0.5em;
+    border: 1px solid black;
+    border-radius: 2em;
+}
+.question > * {
+    margin: 0;
+}
+.question:hover {
+    cursor: pointer;
+}
+#chart {
+    width: 70%;
+    float: right;
+}
+#buttons {
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+#buttons button:first-of-type {
+    border-radius: 2em 0 0 2em;
+}
+#buttons button:last-of-type {
+    border-radius: 0 2em 2em 0;
+}
+#buttons > button{
+    margin-top: 10px;
+    height: 3em;
+    margin-left: 4px;
+    margin-right: 4px;
+}
